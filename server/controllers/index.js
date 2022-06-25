@@ -13,7 +13,7 @@ function action(req, res) {
   const { ownState, enemyStates } = parseState(state, href);
 
   if (ownState.wasHit) {
-    return res.send('F');
+    return res.send(['F', 'L', 'R'][Math.floor(Math.random() * 3)]);
   } else if (checkEnemyInRange(ownState, enemyStates)) {
     return res.send('T');
   } else {
