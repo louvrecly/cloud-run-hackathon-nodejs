@@ -1,34 +1,40 @@
-export function parseState(state, ownKey) {
-  const ownState = state[ownKey];
-  delete state[ownKey];
+export function scanArena(dims, state) {
+  const arena = [...Array(dims[1])].map(row => Array(dims[0]).fill(null));
 
-  return { ownState, enemyStates: state };
+  for (let key in state) {
+    const { x, y } = state[key];
+    arena[y][x] = {
+      [key]: key,
+      ...state[key]
+    };
+  }
+
+  return arena;
 }
 
-export function checkEnemyInRange(ownState, enemyStates) {
-  let checkDimensionOrder = null;
-  let enemyState = null;
+export function checkEnemyInRange(ownState, arena, dims) {
+  const { x, y, direction } = ownState;
+  let dir = ['E', 'S'].includes(direction) ? 1 : -1;
 
-  switch (ownState.direction) {
-    case 'N':
-    case 'S':
-      checkDimensionOrder = ['x', 'y'];
-      break;
+  function checkIndexInRange(index, dimIndex) {
+    return index >= 0 && index < dims[dimIndex];
+  }
+
+  switch (direction) {
     case 'E':
     case 'W':
-      checkDimensionOrder = ['y', 'x'];
+      for (let i = 1; i < 4 && checkIndexInRange(x + i * dir, 0); i++) {
+        if (arena[y][x + i * dir]) return true;
+      }
+      break;
+    case 'S':
+    case 'N':
+      for (let i = 1; i < 4 && checkIndexInRange(y + i * dir, 1); i++) {
+        if (arena[y + i * dir][x]) return true;
+      }
       break;
     default:
       throw Error(`Invalid direction ${ownState.direction}`);
-  }
-
-  for (let key in enemyStates) {
-    enemyState = enemyStates[key];
-
-    if (
-      ownState[checkDimensionOrder[0]] === enemyState[checkDimensionOrder[0]] &&
-      Math.abs(ownState[checkDimensionOrder[1]] - enemyState[checkDimensionOrder[1]]) <= 3
-    ) return true;
   }
 
   return false;
