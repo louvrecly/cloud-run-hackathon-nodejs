@@ -1,12 +1,24 @@
+import { parseState, checkEnemyInRange } from "../services";
+
 function get(req, res) {
   return res.send('Let the battle begin!');
 }
 
 function action(req, res) {
-  const { _links, arena } = req.body;
-  console.log({ _links, arena });
-  const moves = ['F', 'T', 'L', 'R'];
-  res.send(moves[Math.floor(Math.random() * moves.length)]);
+  const {
+    _links: { self: { href } },
+    arena: { state }
+  } = req.body;
+
+  const { ownState, enemyStates } = parseState(state, href);
+
+  if (ownState.wasHit) {
+    return res.send('F');
+  } else if (checkEnemyInRange(ownState, enemyStates)) {
+    return res.send('T');
+  } else {
+    return res.send(['L', 'R'][Math.floor(Math.random()) * 2]);
+  }
 }
 
 export default { get, action };
