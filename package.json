@@ -9,7 +9,7 @@
   "scripts": {
     "start": "node --experimental-specifier-resolution=node web",
     "dev": "NODE_ENV=development nodemon --experimental-specifier-resolution=node web",
-    "test": "mocha test/app.test --check-leaks --experimental-specifier-resolution=node"
+    "test": "mocha test --check-leaks --experimental-specifier-resolution=node"
   },
   "engines": {
     "node": "14"
