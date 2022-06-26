@@ -5,8 +5,6 @@ function get(req, res) {
 }
 
 function action(req, res) {
-  if (req.headers['user-agent'] === 'AHC/2.1') return res.send('F');
-
   const {
     _links: { self: { href } },
     arena: { dims, state }
