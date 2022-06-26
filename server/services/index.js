@@ -41,12 +41,12 @@ export function getMultiplier(direction, relativeDirection) {
   }
 }
 
-export function scanSurroundings(ownState, arena, dims) {
+export function scanSurroundings(ownState, arena, dims, visibility = 5) {
   const surroundings = {
-    front: { obstacle: null, distance: 4 },
-    back: { obstacle: null, distance: 4 },
-    left: { obstacle: null, distance: 4 },
-    right: { obstacle: null, distance: 4 }
+    front: { obstacle: null, distance: visibility },
+    back: { obstacle: null, distance: visibility },
+    left: { obstacle: null, distance: visibility },
+    right: { obstacle: null, distance: visibility }
   };
   const relativeDirections = Object.keys(surroundings);
   const { direction } = ownState;
@@ -56,7 +56,7 @@ export function scanSurroundings(ownState, arena, dims) {
       const multiplier = getMultiplier(direction, relativeDirection);
       const { dim, index } = getDimAndIndex(direction, relativeDirection);
 
-      for (let i = 1; i < 4; i++) {
+      for (let i = 1; i < visibility; i++) {
         if (!checkIndexInRange(ownState[dim] + i * multiplier, dims[index])) {
           surroundings[relativeDirection].obstacle = 'wall';
           surroundings[relativeDirection].distance = i;
@@ -82,4 +82,78 @@ export function scanSurroundings(ownState, arena, dims) {
 
 export function checkEnemyInRange({ obstacle, distance }) {
   return typeof obstacle === 'object' && obstacle !== null && distance < 4;
+}
+
+export function escape(surroundings) {
+  const { front, back, left, right } = surroundings;
+
+  if (
+    // left or right has enemy
+    (
+      (left.obstacle !== null && left.obstacle !== 'wall') ||
+      (right.obstacle !== null && right.obstacle !== 'wall')
+    ) &&
+    // front has no obstacle within distance 2
+    front.distance > 2
+  ) {
+    return 'F';
+  } else if (
+    // front or back has enemy
+    (
+      (front.obstacle !== null && front.obstacle !== 'wall') ||
+      (back.obstacle !== null && back.obstacle !== 'wall')
+    ) &&
+    // left has no obstacle within distance 2
+    left.distance > 2
+  ) {
+    return 'L';
+  } else {
+    return 'R';
+  }
+}
+
+export function hunt(surroundings) {
+  const { front, back, left, right } = surroundings;
+
+  if (
+    // left has enemy within range of throw
+    left.distance < 4 && left.obstacle !== 'wall'
+  ) {
+    return 'L';
+  } else if (
+    // right has enemy within range of throw
+    right.distance < 4 && right.obstacle !== 'wall'
+  ) {
+    return 'R';
+  } else if (
+    // front has enemy at distance 4
+    front.distance === 4 && front.obstacle !== 'wall'
+  ) {
+    return 'F';
+  } else if (
+    // back has enemy within range of throw
+    back.distance < 4 && back.obstacle !== 'wall'
+  ) {
+    if (
+      // left has a wall within distance 2
+      left.distance < 3 && left.obstacle === 'wall'
+    ) {
+      return 'R';
+    } else if (
+      // right has a wall within distance 2
+      right.distance < 3 && right.obstacle === 'wall'
+    ) {
+      return 'L';
+    } else {
+      // no wall on both left and right within distance 2
+      return ['L', 'R'][Math.floor(Math.random()) * 2];
+    }
+  } else if (
+    // front has no wall within distance 2
+    front.distance > 2
+  ) {
+    return 'F';
+  } else {
+    return ['L', 'R'][Math.floor(Math.random()) * 2];
+  }
 }
