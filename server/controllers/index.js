@@ -16,7 +16,7 @@ function action(req, res) {
   const forwardState = surroundings.front.distance > 1 ? getForwardState(ownState, dims) : false;
   const forwardSurroundings = forwardState && scanSurroundings(forwardState, arena, dims);
 
-  greetPeers(state, href, req.body, 100);
+  greetPeers(state, href, {}, 100);
 
   return res.send(decideAction(ownState.wasHit, surroundings, forwardSurroundings));
 }
