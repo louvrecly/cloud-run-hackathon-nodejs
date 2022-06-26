@@ -1,4 +1,4 @@
-import { scanArena, getForwardState, scanSurroundings, decideAction } from '../services';
+import { scanArena, getForwardState, scanSurroundings, decideAction, greetPeers } from '../services';
 
 function get(req, res) {
   return res.send('Let the battle begin!');
@@ -15,6 +15,8 @@ function action(req, res) {
   const surroundings = scanSurroundings(ownState, arena, dims);
   const forwardState = surroundings.front.distance > 1 ? getForwardState(ownState, dims) : false;
   const forwardSurroundings = forwardState && scanSurroundings(forwardState, arena, dims);
+
+  greetPeers(state, href, req.body, 100);
 
   return res.send(decideAction(ownState.wasHit, surroundings, forwardSurroundings));
 }
