@@ -11,3 +11,5 @@ app.use(logger);
 app.use('/', router);
 
 app.listen(process.env.PORT || 8080);
+
+export default app;
