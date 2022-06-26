@@ -7,33 +7,33 @@ import {
   getDimAndIndex,
   getMultiplier,
   scanSurroundings,
-  checkEnemyInRange
+  checkEnemyInRange,
+  escape,
+  hunt
 } from '../server/services';
 
 describe('Unit Tests on services', () => {
-  const dims = [4, 3];
-  let state = {
-    BASE_URL: {
-      x: 0,
-      y: 0,
-      direction: 'E',
-      wasHit: false,
-      score: 0
-    },
-    ENEMY_BOT_URL: {
-      x: 3,
-      y: 0,
-      direction: 'N',
-      wasHit: false,
-      score: 0
-    }
-  };
-  let ownState = state.BASE_URL;
-  let arena = scanArena(dims, state);
   const relativeDirections = ['front', 'back', 'left', 'right'];
-  let surroundings = scanSurroundings(ownState, arena, dims);
 
   it('scanArena should correctly scan the arena and identify the locations of all bots', () => {
+    const dims = [4, 3];
+    const state = {
+      BASE_URL: {
+        x: 0,
+        y: 0,
+        direction: 'E',
+        wasHit: false,
+        score: 0
+      },
+      ENEMY_BOT_URL: {
+        x: 3,
+        y: 0,
+        direction: 'N',
+        wasHit: false,
+        score: 0
+      }
+    };
+    const arena = scanArena(dims, state);
     assert.ok(Array.isArray(arena), 'arena should be an array');
     assert.ok(Array.isArray(arena[0]), 'arena should be a 2-dimensional array');
     assert.equal(arena.length, dims[1], 'height of arena should be equal to value defined in dims');
@@ -44,6 +44,7 @@ describe('Unit Tests on services', () => {
   });
 
   it('checkIndexInRange should correctly check if the index provided is within range', () => {
+    const dims = [4, 3];
     assert.ok(checkIndexInRange(0, dims[0]), 'index 0 should be within range in x');
     assert.ok(checkIndexInRange(0, dims[1]), 'index 0 should be within range in y');
     assert.ok(!checkIndexInRange(4, dims[0]), 'index 4 should be out of range in x');
@@ -207,7 +208,8 @@ describe('Unit Tests on services', () => {
   });
 
   it('scanSurroundings should locate enemy in the front', () => {
-    state = {
+    const dims = [4, 3];
+    const state = {
       BASE_URL: {
         x: 0,
         y: 0,
@@ -223,9 +225,9 @@ describe('Unit Tests on services', () => {
         score: 0
       }
     };
-    ownState = state.BASE_URL;
-    arena = scanArena(dims, state);
-    surroundings = scanSurroundings(ownState, arena, dims);
+    const ownState = state.BASE_URL;
+    const arena = scanArena(dims, state);
+    const surroundings = scanSurroundings(ownState, arena, dims);
     assert.ok(typeof surroundings === 'object' && surroundings !== null, 'surroundings should be an object');
     assert.ok(Object.keys(surroundings).every(key => relativeDirections.includes(key)) , 'surroundings should contain valid keys');
     assert.ok(typeof surroundings.front.obstacle === 'object' && surroundings.front.obstacle !== null, 'enemy should be detected in the front');
@@ -239,7 +241,8 @@ describe('Unit Tests on services', () => {
   });
 
   it('scanSurroundings should locate enemy on the left', () => {
-    state = {
+    const dims = [4, 3];
+    const state = {
       BASE_URL: {
         x: 0,
         y: 0,
@@ -255,9 +258,9 @@ describe('Unit Tests on services', () => {
         score: 0
       }
     };
-    ownState = state.BASE_URL;
-    arena = scanArena(dims, state);
-    surroundings = scanSurroundings(ownState, arena, dims);
+    const ownState = state.BASE_URL;
+    const arena = scanArena(dims, state);
+    const surroundings = scanSurroundings(ownState, arena, dims);
     assert.ok(typeof surroundings === 'object' && surroundings !== null, 'surroundings should be an object');
     assert.ok(Object.keys(surroundings).every(key => relativeDirections.includes(key)) , 'surroundings should contain valid keys');
     assert.equal(surroundings.front.obstacle, 'wall', 'wall should be detected in the front');
@@ -271,7 +274,8 @@ describe('Unit Tests on services', () => {
   });
 
   it('scanSurroundings should locate enemy on the right', () => {
-    state = {
+    const dims = [4, 3];
+    const state = {
       BASE_URL: {
         x: 3,
         y: 2,
@@ -287,12 +291,12 @@ describe('Unit Tests on services', () => {
         score: 0
       }
     };
-    ownState = state.BASE_URL;
-    arena = scanArena(dims, state);
-    surroundings = scanSurroundings(ownState, arena, dims);
+    const ownState = state.BASE_URL;
+    const arena = scanArena(dims, state);
+    const surroundings = scanSurroundings(ownState, arena, dims);
     assert.ok(typeof surroundings === 'object' && surroundings !== null, 'surroundings should be an object');
     assert.ok(Object.keys(surroundings).every(key => relativeDirections.includes(key)) , 'surroundings should contain valid keys');
-    assert.equal(surroundings.front.obstacle, null, 'no obstacle should be detected in the front');
+    assert.equal(surroundings.front.obstacle, 'wall', 'wall should be detected in the front');
     assert.equal(surroundings.front.distance, 4, 'no obstacle should be detected in the front at a distance of 4');
     assert.equal(surroundings.back.obstacle, 'wall', 'wall should be detected in the back');
     assert.equal(surroundings.back.distance, 1, 'wall should be detected in the back at a distance of 1');
@@ -303,7 +307,8 @@ describe('Unit Tests on services', () => {
   });
 
   it('scanSurroundings should locate enemy in the back', () => {
-    state = {
+    const dims = [4, 3];
+    const state = {
       BASE_URL: {
         x: 3,
         y: 2,
@@ -319,9 +324,9 @@ describe('Unit Tests on services', () => {
         score: 0
       }
     };
-    ownState = state.BASE_URL;
-    arena = scanArena(dims, state);
-    surroundings = scanSurroundings(ownState, arena, dims);
+    const ownState = state.BASE_URL;
+    const arena = scanArena(dims, state);
+    const surroundings = scanSurroundings(ownState, arena, dims);
     assert.ok(typeof surroundings === 'object' && surroundings !== null, 'surroundings should be an object');
     assert.ok(Object.keys(surroundings).every(key => relativeDirections.includes(key)) , 'surroundings should contain valid keys');
     assert.equal(surroundings.front.obstacle, 'wall', 'wall should be detected in the front');
@@ -330,12 +335,13 @@ describe('Unit Tests on services', () => {
     assert.equal(surroundings.back.distance, 2, 'enemy should be detected in the back at a distance of 2');
     assert.equal(surroundings.left.obstacle, 'wall', 'wall should be detected on the left');
     assert.equal(surroundings.left.distance, 1, 'wall should be detected on the left at a distance of 1');
-    assert.equal(surroundings.right.obstacle, null, 'no obstacle should be detected on the right');
+    assert.equal(surroundings.right.obstacle, 'wall', 'no obstacle should be detected on the right');
     assert.equal(surroundings.right.distance, 4, 'no obstacle should be detected on the right at a distance of 4');
   });
 
   it('checkEnemyInRange should identify enemy in range', () => {
-    state = {
+    const dims = [4, 3];
+    let state = {
       BASE_URL: {
         x: 0,
         y: 0,
@@ -351,9 +357,9 @@ describe('Unit Tests on services', () => {
         score: 0
       }
     };
-    ownState = state.BASE_URL;
-    arena = scanArena(dims, state);
-    surroundings = scanSurroundings(ownState, arena, dims);
+    let ownState = state.BASE_URL;
+    let arena = scanArena(dims, state);
+    let surroundings = scanSurroundings(ownState, arena, dims);
     assert.ok(checkEnemyInRange(surroundings.front), 'enemy should be detected within range of throw');
 
     state = {
@@ -379,7 +385,8 @@ describe('Unit Tests on services', () => {
   });
 
   it('checkEnemyInRange should identify enemy is not in range', () => {
-    state = {
+    const dims = [4, 3];
+    let state = {
       BASE_URL: {
         x: 0,
         y: 0,
@@ -395,9 +402,9 @@ describe('Unit Tests on services', () => {
         score: 0
       }
     };
-    ownState = state.BASE_URL;
-    arena = scanArena(dims, state);
-    surroundings = scanSurroundings(ownState, arena, dims);
+    let ownState = state.BASE_URL;
+    let arena = scanArena(dims, state);
+    let surroundings = scanSurroundings(ownState, arena, dims);
     assert.ok(!checkEnemyInRange(surroundings.front), 'enemy should not be detected within range of throw');
 
     state = {
@@ -420,5 +427,272 @@ describe('Unit Tests on services', () => {
     arena = scanArena(dims, state);
     surroundings = scanSurroundings(ownState, arena, dims);
     assert.ok(!checkEnemyInRange(surroundings.front), 'enemy should not be detected within range of throw');
+  });
+
+  it('escape should return F when being hit from the left while forward is available', () => {
+    const dims = [4, 3];
+    const state = {
+      BASE_URL: {
+        x: 0,
+        y: 0,
+        direction: 'S',
+        wasHit: true,
+        score: 0
+      },
+      ENEMY_BOT_URL: {
+        x: 3,
+        y: 0,
+        direction: 'W',
+        wasHit: false,
+        score: 0
+      }
+    };
+    const ownState = state.BASE_URL;
+    const arena = scanArena(dims, state);
+    const surroundings = scanSurroundings(ownState, arena, dims);
+    const action = escape(surroundings);
+    assert.ok(typeof action === 'string' && action.length === 1, 'action should be a string of length 1');
+    assert.equal(action, 'F', 'F should be returned when being hit from the left and forward is available');
+  });
+
+  it('escape should return R when being hit from the front and left has a wall', () => {
+    const dims = [4, 3];
+    const state = {
+      BASE_URL: {
+        x: 0,
+        y: 0,
+        direction: 'E',
+        wasHit: true,
+        score: 0
+      },
+      ENEMY_BOT_URL: {
+        x: 3,
+        y: 0,
+        direction: 'W',
+        wasHit: false,
+        score: 0
+      }
+    };
+    const ownState = state.BASE_URL;
+    const arena = scanArena(dims, state);
+    const surroundings = scanSurroundings(ownState, arena, dims);
+    const action = escape(surroundings);
+    assert.ok(typeof action === 'string' && action.length === 1, 'action should be a string of length 1');
+    assert.equal(action, 'R', 'R should be returned when being hit from the front and left has a wall');
+  });
+
+  it('escape should return R when being hit from the right and left has a wall', () => {
+    const dims = [4, 3];
+    const state = {
+      BASE_URL: {
+        x: 0,
+        y: 0,
+        direction: 'N',
+        wasHit: true,
+        score: 0
+      },
+      ENEMY_BOT_URL: {
+        x: 3,
+        y: 0,
+        direction: 'W',
+        wasHit: false,
+        score: 0
+      }
+    };
+    const ownState = state.BASE_URL;
+    const arena = scanArena(dims, state);
+    const surroundings = scanSurroundings(ownState, arena, dims);
+    const action = escape(surroundings);
+    assert.ok(typeof action === 'string' && action.length === 1, 'action should be a string of length 1');
+    assert.equal(action, 'R', 'R should be returned when being hit from the right and left has a wall');
+  });
+
+  it('escape should return L when being hit from the back and right has a wall', () => {
+    const dims = [4, 3];
+    const state = {
+      BASE_URL: {
+        x: 0,
+        y: 0,
+        direction: 'W',
+        wasHit: true,
+        score: 0
+      },
+      ENEMY_BOT_URL: {
+        x: 3,
+        y: 0,
+        direction: 'W',
+        wasHit: false,
+        score: 0
+      }
+    };
+    const ownState = state.BASE_URL;
+    const arena = scanArena(dims, state);
+    const surroundings = scanSurroundings(ownState, arena, dims);
+    const action = escape(surroundings);
+    assert.ok(typeof action === 'string' && action.length === 1, 'action should be a string of length 1');
+    assert.equal(action, 'L', 'L should be returned when being hit from the back and right has a wall');
+  });
+
+  it('escape should return L or R when being hit from both left and right while forward is unavailable', () => {
+    const dims = [4, 3];
+    const state = {
+      BASE_URL: {
+        x: 1,
+        y: 0,
+        direction: 'N',
+        wasHit: true,
+        score: 0
+      },
+      ENEMY_BOT_URL: {
+        x: 3,
+        y: 0,
+        direction: 'W',
+        wasHit: false,
+        score: 0
+      },
+      ENEMY_BOT_URL_1: {
+        x: 0,
+        y: 0,
+        direction: 'E',
+        wasHit: false,
+        score: 0
+      }
+    };
+    const ownState = state.BASE_URL;
+    const arena = scanArena(dims, state);
+    const surroundings = scanSurroundings(ownState, arena, dims);
+    const action = escape(surroundings);
+    assert.ok(typeof action === 'string' && action.length === 1, 'action should be a string of length 1');
+    assert.ok(['L', 'R'].includes(action), 'L or R should be returned when being hit from both left and right while forward is unavailable');
+  });
+
+  it('hunt should return L when enemy is on the left', () => {
+    const dims = [4, 3];
+    const state = {
+      BASE_URL: {
+        x: 0,
+        y: 0,
+        direction: 'S',
+        wasHit: false,
+        score: 0
+      },
+      ENEMY_BOT_URL: {
+        x: 3,
+        y: 0,
+        direction: 'W',
+        wasHit: false,
+        score: 0
+      }
+    };
+    const ownState = state.BASE_URL;
+    const arena = scanArena(dims, state);
+    const surroundings = scanSurroundings(ownState, arena, dims);
+    const action = hunt(surroundings);
+    assert.ok(typeof action === 'string' && action.length === 1, 'action should be a string of length 1');
+    assert.equal(action, 'L', 'L should be returned when enemy is on the left');
+  });
+
+  it('hunt should return R when enemy is on the right', () => {
+    const dims = [4, 3];
+    const state = {
+      BASE_URL: {
+        x: 0,
+        y: 0,
+        direction: 'N',
+        wasHit: false,
+        score: 0
+      },
+      ENEMY_BOT_URL: {
+        x: 3,
+        y: 0,
+        direction: 'W',
+        wasHit: false,
+        score: 0
+      }
+    };
+    const ownState = state.BASE_URL;
+    const arena = scanArena(dims, state);
+    const surroundings = scanSurroundings(ownState, arena, dims);
+    const action = hunt(surroundings);
+    assert.ok(typeof action === 'string' && action.length === 1, 'action should be a string of length 1');
+    assert.equal(action, 'R', 'R should be returned when enemy is on the right');
+  });
+
+  it('hunt should return L when enemy is in the back and right has a wall', () => {
+    const dims = [4, 3];
+    const state = {
+      BASE_URL: {
+        x: 0,
+        y: 0,
+        direction: 'W',
+        wasHit: false,
+        score: 0
+      },
+      ENEMY_BOT_URL: {
+        x: 3,
+        y: 0,
+        direction: 'W',
+        wasHit: false,
+        score: 0
+      }
+    };
+    const ownState = state.BASE_URL;
+    const arena = scanArena(dims, state);
+    const surroundings = scanSurroundings(ownState, arena, dims);
+    const action = hunt(surroundings);
+    assert.ok(typeof action === 'string' && action.length === 1, 'action should be a string of length 1');
+    assert.equal(action, 'L', 'L should be returned when enemy is in the back and right has a wall');
+  });
+
+  it('hunt should return R when enemy is in the back and left has a wall', () => {
+    const dims = [4, 3];
+    const state = {
+      BASE_URL: {
+        x: 0,
+        y: 0,
+        direction: 'N',
+        wasHit: false,
+        score: 0
+      },
+      ENEMY_BOT_URL: {
+        x: 0,
+        y: 2,
+        direction: 'N',
+        wasHit: false,
+        score: 0
+      }
+    };
+    const ownState = state.BASE_URL;
+    const arena = scanArena(dims, state);
+    const surroundings = scanSurroundings(ownState, arena, dims);
+    const action = hunt(surroundings);
+    assert.ok(typeof action === 'string' && action.length === 1, 'action should be a string of length 1');
+    assert.equal(action, 'R', 'R should be returned when enemy is in the back and left has a wall');
+  });
+
+  it('hunt should return F when enemy is in the front at a distance 4', () => {
+    const dims = [5, 3];
+    const state = {
+      BASE_URL: {
+        x: 0,
+        y: 0,
+        direction: 'E',
+        wasHit: false,
+        score: 0
+      },
+      ENEMY_BOT_URL: {
+        x: 4,
+        y: 0,
+        direction: 'N',
+        wasHit: false,
+        score: 0
+      }
+    };
+    const ownState = state.BASE_URL;
+    const arena = scanArena(dims, state);
+    const surroundings = scanSurroundings(ownState, arena, dims);
+    const action = hunt(surroundings);
+    assert.ok(typeof action === 'string' && action.length === 1, 'action should be a string of length 1');
+    assert.equal(action, 'F', 'F should be returned when enemy is in the front at a distance 4');
   });
 });
