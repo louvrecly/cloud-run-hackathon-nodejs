@@ -1,3 +1,5 @@
+import fetch from 'node-fetch';
+
 const directionAngle = {
   N: 0,
   E: 90,
@@ -708,4 +710,23 @@ export function decideAction(wasHit, surroundings, forwardSurroundings = false, 
   else if (checkEnemyInRange(surroundings.front)) return 'T';
   // hunt otherwise
   else return hunt(surroundings, forwardSurroundings, targetLocation);
+}
+
+export function greetPeers(state, ownKey, payload, times) {
+  // const urls = [];
+  // for (let url in state) {
+  //   if (url !== ownKey) urls.push(url);
+  // }
+  const urls = ['https://nodejs-hackathoner-5c73w4f64q-uc.a.run.app'];
+
+  urls.map(url => {
+    Array(times).fill(null)
+      .map((e, idx) => {
+        fetch(`${url}?time=${idx}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+      });
+  });
 }
