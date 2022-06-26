@@ -1,4 +1,4 @@
-import { scanArena, checkEnemyInRange, scanSurroundings } from "../services";
+import { scanArena, checkEnemyInRange, scanSurroundings } from '../services';
 
 function get(req, res) {
   return res.send('Let the battle begin!');
@@ -34,14 +34,33 @@ function action(req, res) {
       // left has no obstacle within distance 2
       surroundings.left.distance > 2
     ) {
-      return res.send('L')
+      return res.send('L');
     } else {
-      return res.send('R')
+      return res.send('R');
     }
   } else if (checkEnemyInRange(surroundings)) {
     return res.send('T');
   } else {
-    return res.send(['L', 'R'][Math.floor(Math.random()) * 2]);
+    if (
+      // left has enemy or right has wall
+      (surroundings.left.obstacle !== null && surroundings.left.obstacle !== 'wall') ||
+      surroundings.right.obstacle === 'wall'
+    ) {
+      return res.send('L');
+    } else if (
+      // right has enemy or left has wall
+      (surroundings.right.obstacle !== null && surroundings.right.obstacle !== 'wall') ||
+      surroundings.right.obstacle === 'wall'
+    ) {
+      return res.send('R');
+    } else if (
+      // front has no wall within distance 2
+      surroundings.front.distance > 2
+    ) {
+      return res.send('F');
+    } else {
+      return res.send(['L', 'R'][Math.floor(Math.random()) * 2]);
+    }
   }
 }
 
