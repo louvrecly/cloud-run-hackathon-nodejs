@@ -4,6 +4,8 @@ import assert from 'assert';
 import {
   scanArena,
   checkIndexInRange,
+  getDimAndIndex,
+  getMultiplier,
   scanSurroundings,
   checkEnemyInRange
 } from '../server/services';
@@ -28,7 +30,7 @@ describe('Unit Tests on services', () => {
   };
   let ownState = state.BASE_URL;
   let arena = scanArena(dims, state);
-  const surroundingKeys = ['front', 'back', 'left', 'right'];
+  const relativeDirections = ['front', 'back', 'left', 'right'];
   let surroundings = scanSurroundings(ownState, arena, dims);
 
   it('scanArena should correctly scan the arena and identify the locations of all bots', () => {
@@ -52,6 +54,158 @@ describe('Unit Tests on services', () => {
     assert.ok(!checkIndexInRange(-1, dims[1]), 'index -1 should be out of range in y');
   });
 
+  it('getDimAndIndex should return x dimension and 0 index for E and front', () => {
+    const direction = 'E';
+    const relativeDirection = 'front';
+    const dimAndIndex = getDimAndIndex(direction, relativeDirection);
+    assert.ok(typeof dimAndIndex === 'object' && dimAndIndex !== null, 'dimAndIndex should be an object');
+    assert.ok(dimAndIndex.hasOwnProperty('dim') && typeof dimAndIndex.dim === 'string', 'dim key should exist and be a string');
+    assert.ok(dimAndIndex.hasOwnProperty('index') && typeof dimAndIndex.index === 'number', 'index key should exist and be a number');
+    assert.equal(dimAndIndex.dim, 'x', 'x should be returned as dim value');
+    assert.equal(dimAndIndex.index, 0, '0 should be returned as index value');
+  });
+
+  it('getDimAndIndex should return y dimension and 1 index for S and front', () => {
+    const direction = 'S';
+    const relativeDirection = 'front';
+    const dimAndIndex = getDimAndIndex(direction, relativeDirection);
+    assert.ok(typeof dimAndIndex === 'object' && dimAndIndex !== null, 'dimAndIndex should be an object');
+    assert.ok(dimAndIndex.hasOwnProperty('dim') && typeof dimAndIndex.dim === 'string', 'dim key should exist and be a string');
+    assert.ok(dimAndIndex.hasOwnProperty('index') && typeof dimAndIndex.index === 'number', 'index key should exist and be a number');
+    assert.equal(dimAndIndex.dim, 'y', 'y should be returned as dim value');
+    assert.equal(dimAndIndex.index, 1, '1 should be returned as index value');
+  });
+
+  it('getDimAndIndex should return x dimension and 0 index for W and back', () => {
+    const direction = 'W';
+    const relativeDirection = 'back';
+    const dimAndIndex = getDimAndIndex(direction, relativeDirection);
+    assert.ok(typeof dimAndIndex === 'object' && dimAndIndex !== null, 'dimAndIndex should be an object');
+    assert.ok(dimAndIndex.hasOwnProperty('dim') && typeof dimAndIndex.dim === 'string', 'dim key should exist and be a string');
+    assert.ok(dimAndIndex.hasOwnProperty('index') && typeof dimAndIndex.index === 'number', 'index key should exist and be a number');
+    assert.equal(dimAndIndex.dim, 'x', 'x should be returned as dim value');
+    assert.equal(dimAndIndex.index, 0, '0 should be returned as index value');
+  });
+
+  it('getDimAndIndex should return y dimension and 1 index for N and back', () => {
+    const direction = 'N';
+    const relativeDirection = 'back';
+    const dimAndIndex = getDimAndIndex(direction, relativeDirection);
+    assert.ok(typeof dimAndIndex === 'object' && dimAndIndex !== null, 'dimAndIndex should be an object');
+    assert.ok(dimAndIndex.hasOwnProperty('dim') && typeof dimAndIndex.dim === 'string', 'dim key should exist and be a string');
+    assert.ok(dimAndIndex.hasOwnProperty('index') && typeof dimAndIndex.index === 'number', 'index key should exist and be a number');
+    assert.equal(dimAndIndex.dim, 'y', 'y should be returned as dim value');
+    assert.equal(dimAndIndex.index, 1, '1 should be returned as index value');
+  });
+
+  it('getDimAndIndex should return y dimension and 1 index for E and left', () => {
+    const direction = 'E';
+    const relativeDirection = 'left';
+    const dimAndIndex = getDimAndIndex(direction, relativeDirection);
+    assert.ok(typeof dimAndIndex === 'object' && dimAndIndex !== null, 'dimAndIndex should be an object');
+    assert.ok(dimAndIndex.hasOwnProperty('dim') && typeof dimAndIndex.dim === 'string', 'dim key should exist and be a string');
+    assert.ok(dimAndIndex.hasOwnProperty('index') && typeof dimAndIndex.index === 'number', 'index key should exist and be a number');
+    assert.equal(dimAndIndex.dim, 'y', 'y should be returned as dim value');
+    assert.equal(dimAndIndex.index, 1, '1 should be returned as index value');
+  });
+
+  it('getDimAndIndex should return x dimension and 0 index for S and right', () => {
+    const direction = 'S';
+    const relativeDirection = 'right';
+    const dimAndIndex = getDimAndIndex(direction, relativeDirection);
+    assert.ok(typeof dimAndIndex === 'object' && dimAndIndex !== null, 'dimAndIndex should be an object');
+    assert.ok(dimAndIndex.hasOwnProperty('dim') && typeof dimAndIndex.dim === 'string', 'dim key should exist and be a string');
+    assert.ok(dimAndIndex.hasOwnProperty('index') && typeof dimAndIndex.index === 'number', 'index key should exist and be a number');
+    assert.equal(dimAndIndex.dim, 'x', 'x should be returned as dim value');
+    assert.equal(dimAndIndex.index, 0, '0 should be returned as index value');
+  });
+
+  it('getDimAndIndex should return y dimension and 1 index for W and right', () => {
+    const direction = 'W';
+    const relativeDirection = 'right';
+    const dimAndIndex = getDimAndIndex(direction, relativeDirection);
+    assert.ok(typeof dimAndIndex === 'object' && dimAndIndex !== null, 'dimAndIndex should be an object');
+    assert.ok(dimAndIndex.hasOwnProperty('dim') && typeof dimAndIndex.dim === 'string', 'dim key should exist and be a string');
+    assert.ok(dimAndIndex.hasOwnProperty('index') && typeof dimAndIndex.index === 'number', 'index key should exist and be a number');
+    assert.equal(dimAndIndex.dim, 'y', 'y should be returned as dim value');
+    assert.equal(dimAndIndex.index, 1, '1 should be returned as index value');
+  });
+
+  it('getDimAndIndex should return x dimension and 0 index for N and left', () => {
+    const direction = 'N';
+    const relativeDirection = 'left';
+    const dimAndIndex = getDimAndIndex(direction, relativeDirection);
+    assert.ok(typeof dimAndIndex === 'object' && dimAndIndex !== null, 'dimAndIndex should be an object');
+    assert.ok(dimAndIndex.hasOwnProperty('dim') && typeof dimAndIndex.dim === 'string', 'dim key should exist and be a string');
+    assert.ok(dimAndIndex.hasOwnProperty('index') && typeof dimAndIndex.index === 'number', 'index key should exist and be a number');
+    assert.equal(dimAndIndex.dim, 'x', 'x should be returned as dim value');
+    assert.equal(dimAndIndex.index, 0, '0 should be returned as index value');
+  });
+
+  it('getMultiplier should return 1 as multiplier value for E and front', () => {
+    const direction = 'E';
+    const relativeDirection = 'front';
+    const multiplier = getMultiplier(direction, relativeDirection);
+    assert.equal(typeof multiplier, 'number', 'multiplier should be a number');
+    assert.equal(multiplier, 1, 'multiplier should be 1 for E and front');
+  });
+
+  it('getMultiplier should return -1 as multiplier value for S and back', () => {
+    const direction = 'S';
+    const relativeDirection = 'back';
+    const multiplier = getMultiplier(direction, relativeDirection);
+    assert.equal(typeof multiplier, 'number', 'multiplier should be a number');
+    assert.equal(multiplier, -1, 'multiplier should be -1 for S and back');
+  });
+
+  it('getMultiplier should return -1 as multiplier value for W and front', () => {
+    const direction = 'W';
+    const relativeDirection = 'front';
+    const multiplier = getMultiplier(direction, relativeDirection);
+    assert.equal(typeof multiplier, 'number', 'multiplier should be a number');
+    assert.equal(multiplier, -1, 'multiplier should be -1 for W and front');
+  });
+
+  it('getMultiplier should return 1 as multiplier value for N and back', () => {
+    const direction = 'N';
+    const relativeDirection = 'back';
+    const multiplier = getMultiplier(direction, relativeDirection);
+    assert.equal(typeof multiplier, 'number', 'multiplier should be a number');
+    assert.equal(multiplier, 1, 'multiplier should be 1 for N and back');
+  });
+
+  it('getMultiplier should return -1 as multiplier value for E and left', () => {
+    const direction = 'E';
+    const relativeDirection = 'left';
+    const multiplier = getMultiplier(direction, relativeDirection);
+    assert.equal(typeof multiplier, 'number', 'multiplier should be a number');
+    assert.equal(multiplier, -1, 'multiplier should be -1 for E and left');
+  });
+
+  it('getMultiplier should return 1 as multiplier value for S and left', () => {
+    const direction = 'S';
+    const relativeDirection = 'left';
+    const multiplier = getMultiplier(direction, relativeDirection);
+    assert.equal(typeof multiplier, 'number', 'multiplier should be a number');
+    assert.equal(multiplier, 1, 'multiplier should be 1 for S and left');
+  });
+
+  it('getMultiplier should return -1 as multiplier value for W and right', () => {
+    const direction = 'W';
+    const relativeDirection = 'right';
+    const multiplier = getMultiplier(direction, relativeDirection);
+    assert.equal(typeof multiplier, 'number', 'multiplier should be a number');
+    assert.equal(multiplier, -1, 'multiplier should be -1 for W and right');
+  });
+
+  it('getMultiplier should return 1 as multiplier value for N and right', () => {
+    const direction = 'N';
+    const relativeDirection = 'right';
+    const multiplier = getMultiplier(direction, relativeDirection);
+    assert.equal(typeof multiplier, 'number', 'multiplier should be a number');
+    assert.equal(multiplier, 1, 'multiplier should be 1 for N and right');
+  });
+
   it('scanSurroundings should locate enemy in the front', () => {
     state = {
       BASE_URL: {
@@ -72,8 +226,8 @@ describe('Unit Tests on services', () => {
     ownState = state.BASE_URL;
     arena = scanArena(dims, state);
     surroundings = scanSurroundings(ownState, arena, dims);
-    assert.ok(typeof surroundings === 'object', 'surroundings should be an object');
-    assert.ok(Object.keys(surroundings).every(key => surroundingKeys.includes(key)) , 'surroundings should contain valid keys');
+    assert.ok(typeof surroundings === 'object' && surroundings !== null, 'surroundings should be an object');
+    assert.ok(Object.keys(surroundings).every(key => relativeDirections.includes(key)) , 'surroundings should contain valid keys');
     assert.ok(typeof surroundings.front.obstacle === 'object' && surroundings.front.obstacle !== null, 'enemy should be detected in the front');
     assert.equal(surroundings.front.distance, 3, 'enemy should be detected in the front at a distance of 3');
     assert.equal(surroundings.back.obstacle, 'wall', 'wall should be detected in the back');
@@ -104,8 +258,8 @@ describe('Unit Tests on services', () => {
     ownState = state.BASE_URL;
     arena = scanArena(dims, state);
     surroundings = scanSurroundings(ownState, arena, dims);
-    assert.ok(typeof surroundings === 'object', 'surroundings should be an object');
-    assert.ok(Object.keys(surroundings).every(key => surroundingKeys.includes(key)) , 'surroundings should contain valid keys');
+    assert.ok(typeof surroundings === 'object' && surroundings !== null, 'surroundings should be an object');
+    assert.ok(Object.keys(surroundings).every(key => relativeDirections.includes(key)) , 'surroundings should contain valid keys');
     assert.equal(surroundings.front.obstacle, 'wall', 'wall should be detected in the front');
     assert.equal(surroundings.front.distance, 3, 'wall should be detected in the front at a distance of 3');
     assert.equal(surroundings.back.obstacle, 'wall', 'wall should be detected in the back');
@@ -136,8 +290,8 @@ describe('Unit Tests on services', () => {
     ownState = state.BASE_URL;
     arena = scanArena(dims, state);
     surroundings = scanSurroundings(ownState, arena, dims);
-    assert.ok(typeof surroundings === 'object', 'surroundings should be an object');
-    assert.ok(Object.keys(surroundings).every(key => surroundingKeys.includes(key)) , 'surroundings should contain valid keys');
+    assert.ok(typeof surroundings === 'object' && surroundings !== null, 'surroundings should be an object');
+    assert.ok(Object.keys(surroundings).every(key => relativeDirections.includes(key)) , 'surroundings should contain valid keys');
     assert.equal(surroundings.front.obstacle, null, 'no obstacle should be detected in the front');
     assert.equal(surroundings.front.distance, 4, 'no obstacle should be detected in the front at a distance of 4');
     assert.equal(surroundings.back.obstacle, 'wall', 'wall should be detected in the back');
@@ -168,8 +322,8 @@ describe('Unit Tests on services', () => {
     ownState = state.BASE_URL;
     arena = scanArena(dims, state);
     surroundings = scanSurroundings(ownState, arena, dims);
-    assert.ok(typeof surroundings === 'object', 'surroundings should be an object');
-    assert.ok(Object.keys(surroundings).every(key => surroundingKeys.includes(key)) , 'surroundings should contain valid keys');
+    assert.ok(typeof surroundings === 'object' && surroundings !== null, 'surroundings should be an object');
+    assert.ok(Object.keys(surroundings).every(key => relativeDirections.includes(key)) , 'surroundings should contain valid keys');
     assert.equal(surroundings.front.obstacle, 'wall', 'wall should be detected in the front');
     assert.equal(surroundings.front.distance, 1, 'wall should be detected in the front at a distance of 1');
     assert.ok(typeof surroundings.back.obstacle === 'object' && surroundings.back.obstacle !== null, 'enemy should be detected in the back');
