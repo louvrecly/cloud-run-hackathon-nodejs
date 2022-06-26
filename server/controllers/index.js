@@ -12,50 +12,53 @@ function action(req, res) {
 
   const arena = scanArena(dims, state);
   const ownState = state[href];
-  const surroundings = scanSurroundings(ownState, arena, dims);
+  const { front, back, left, right } = scanSurroundings(ownState, arena, dims);
 
+  // check if under attack
   if (ownState.wasHit) {
     if (
       // left or right has enemy
       (
-        (surroundings.left.obstacle !== null && surroundings.left.obstacle !== 'wall') ||
-        (surroundings.right.obstacle !== null && surroundings.right.obstacle !== 'wall')
+        (left.obstacle !== null && left.obstacle !== 'wall') ||
+        (right.obstacle !== null && right.obstacle !== 'wall')
       ) &&
       // front has no obstacle within distance 2
-      surroundings.front.distance > 2
+      front.distance > 2
     ) {
       return res.send('F');
     } else if (
       // front or back has enemy
       (
-        (surroundings.front.obstacle !== null && surroundings.front.obstacle !== 'wall') ||
-        (surroundings.back.obstacle !== null && surroundings.back.obstacle !== 'wall')
+        (front.obstacle !== null && front.obstacle !== 'wall') ||
+        (back.obstacle !== null && back.obstacle !== 'wall')
       ) &&
       // left has no obstacle within distance 2
-      surroundings.left.distance > 2
+      left.distance > 2
     ) {
       return res.send('L');
     } else {
       return res.send('R');
     }
-  } else if (checkEnemyInRange(surroundings)) {
+  // check if enemy within range of throw
+  } else if (checkEnemyInRange(front)) {
     return res.send('T');
+  // look for target
   } else {
     if (
       // left has enemy or right has wall
-      (surroundings.left.obstacle !== null && surroundings.left.obstacle !== 'wall') ||
-      surroundings.right.obstacle === 'wall'
+      (left.obstacle !== null && left.obstacle !== 'wall') ||
+      right.obstacle === 'wall'
     ) {
       return res.send('L');
     } else if (
       // right has enemy or left has wall
-      (surroundings.right.obstacle !== null && surroundings.right.obstacle !== 'wall') ||
-      surroundings.right.obstacle === 'wall'
+      (right.obstacle !== null && right.obstacle !== 'wall') ||
+      right.obstacle === 'wall'
     ) {
       return res.send('R');
     } else if (
       // front has no wall within distance 2
-      surroundings.front.distance > 2
+      front.distance > 2
     ) {
       return res.send('F');
     } else {

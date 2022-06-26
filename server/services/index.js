@@ -80,6 +80,6 @@ export function scanSurroundings(ownState, arena, dims) {
   return surroundings;
 }
 
-export function checkEnemyInRange(surroundings) {
-  return typeof surroundings.front.obstacle === 'object' && surroundings.front.obstacle !== null && surroundings.front.distance < 4;
+export function checkEnemyInRange({ obstacle, distance }) {
+  return typeof obstacle === 'object' && obstacle !== null && distance < 4;
 }
