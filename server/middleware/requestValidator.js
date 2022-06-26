@@ -8,3 +8,5 @@ function requestValidator(req, res, next) {
 
   next();
 }
+
+export default requestValidator;
