@@ -9,6 +9,7 @@ import {
   getMultiplier,
   getForwardState,
   getThreatLevel,
+  evaluateOverallThreat,
   scanSurroundings,
   checkEnemyInRange,
   escape,
@@ -561,6 +562,76 @@ describe('Unit Tests on services', () => {
     const threatLevel = getThreatLevel(ownDirection, enemyDirection, relativeDirection);
     assert.equal(typeof threatLevel, 'number', 'threatLevel should be a number');
     assert.equal(threatLevel, 1, '1 should be returned for W vs N on the right');
+  });
+
+  it('evaluateOverallThreat should return 0 for threat levels 0, 0, 0', () => {
+    const threatLevels = [0, 0, 0];
+    const overallThreat = evaluateOverallThreat(...threatLevels);
+    assert.equal(typeof overallThreat, 'number', 'overallThreat should be a number');
+    assert.equal(overallThreat, 0, '0 should be returned for threat levels 0, 0, 0');
+  });
+
+  it('evaluateOverallThreat should return 0 for threat levels -1, 0, 0', () => {
+    const threatLevels = [-1, 0, 0];
+    const overallThreat = evaluateOverallThreat(...threatLevels);
+    assert.equal(typeof overallThreat, 'number', 'overallThreat should be a number');
+    assert.equal(overallThreat, 0, '0 should be returned for threat levels -1, 0, 0');
+  });
+
+  it('evaluateOverallThreat should return 0 for threat levels -1, 0, -1', () => {
+    const threatLevels = [-1, 0, -1];
+    const overallThreat = evaluateOverallThreat(...threatLevels);
+    assert.equal(typeof overallThreat, 'number', 'overallThreat should be a number');
+    assert.equal(overallThreat, 0, '0 should be returned for threat levels -1, 0, -1');
+  });
+
+  it('evaluateOverallThreat should return 0 for threat levels -1, -1, -1', () => {
+    const threatLevels = [-1, -1, -1];
+    const overallThreat = evaluateOverallThreat(...threatLevels);
+    assert.equal(typeof overallThreat, 'number', 'overallThreat should be a number');
+    assert.equal(overallThreat, 0, '0 should be returned for threat levels -1, -1, -1');
+  });
+
+  it('evaluateOverallThreat should return 1 for threat levels 0, 0, 1', () => {
+    const threatLevels = [0, 0, 1];
+    const overallThreat = evaluateOverallThreat(...threatLevels);
+    assert.equal(typeof overallThreat, 'number', 'overallThreat should be a number');
+    assert.equal(overallThreat, 1, '1 should be returned for threat levels 0, 0, 1');
+  });
+
+  it('evaluateOverallThreat should return 1 for threat levels -1, 0, 1', () => {
+    const threatLevels = [-1, 0, 1];
+    const overallThreat = evaluateOverallThreat(...threatLevels);
+    assert.equal(typeof overallThreat, 'number', 'overallThreat should be a number');
+    assert.equal(overallThreat, 1, '1 should be returned for threat levels -1, 0, 1');
+  });
+
+  it('evaluateOverallThreat should return 1 for threat levels 1, -1, -1', () => {
+    const threatLevels = [1, -1, -1];
+    const overallThreat = evaluateOverallThreat(...threatLevels);
+    assert.equal(typeof overallThreat, 'number', 'overallThreat should be a number');
+    assert.equal(overallThreat, 1, '1 should be returned for threat levels 1, -1, -1');
+  });
+
+  it('evaluateOverallThreat should return 2 for threat levels 1, 1, 0', () => {
+    const threatLevels = [1, 1, 0];
+    const overallThreat = evaluateOverallThreat(...threatLevels);
+    assert.equal(typeof overallThreat, 'number', 'overallThreat should be a number');
+    assert.equal(overallThreat, 2, '2 should be returned for threat levels 1, 1, 0');
+  });
+
+  it('evaluateOverallThreat should return 2 for threat levels 1, 1, -1', () => {
+    const threatLevels = [1, 1, -1];
+    const overallThreat = evaluateOverallThreat(...threatLevels);
+    assert.equal(typeof overallThreat, 'number', 'overallThreat should be a number');
+    assert.equal(overallThreat, 2, '2 should be returned for threat levels 1, 1, -1');
+  });
+
+  it('evaluateOverallThreat should return 3 for threat levels 1, 1, 1', () => {
+    const threatLevels = [1, 1, 1];
+    const overallThreat = evaluateOverallThreat(...threatLevels);
+    assert.equal(typeof overallThreat, 'number', 'overallThreat should be a number');
+    assert.equal(overallThreat, 3, '3 should be returned for threat levels 1, 1, 1');
   });
 
   it('scanSurroundings should locate enemy in the front', () => {
