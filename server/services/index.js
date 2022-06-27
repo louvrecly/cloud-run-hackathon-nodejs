@@ -712,20 +712,27 @@ export function decideAction(wasHit, surroundings, forwardSurroundings = false, 
   else return hunt(surroundings, forwardSurroundings, targetLocation);
 }
 
-export function greetPeers(state, ownKey, payload, times) {
-  // const urls = [];
-  // for (let url in state) {
-  //   if (url !== ownKey) urls.push(url);
-  // }
-  const urls = ['https://nodejs-hackathoner-5c73w4f64q-uc.a.run.app'];
+export function greetPeers(state, ownState, gift = {}, times = 50) {
+  const { key, score } = ownState;
+  const denominator = 300;
 
-  urls.map(url => {
+  delete state[key];
+  const botIds = [];
+  for (let botId in state) {
+    const adjustment = (state[botId].score - score) / (score + 1);
+    const random = Math.random();
+    const result = (random + adjustment) * score / denominator;
+
+    if (result > 0.5) botIds.push(botId);
+  }
+
+  botIds.map(botId => {
     Array(times).fill(null)
       .map((e, idx) => {
-        fetch(`${url}?time=${idx}`, {
+        fetch(`${botId}?time=${idx}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
+          body: JSON.stringify(gift)
         });
       });
   });
