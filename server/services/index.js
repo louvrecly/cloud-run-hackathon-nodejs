@@ -475,6 +475,47 @@ export function hunt(surroundings, forwardSurroundings = false) {
 
   // look for potential target at cost 2
   if (
+    // back has enemy within range of throw and both left and right have enemy at distance 4
+    back.distance < 4 && back.obstacle !== 'wall' &&
+    left.distance === 4 && left.obstacle !== 'wall' &&
+    right.distance === 4 && right.obstacle !== 'wall'
+  ) {
+    if (
+      // left enemy has a higher score
+      left.obstacle.score > right.obstacle.score
+    ) {
+      return 'L';
+    } else {
+      // right enemy has a higher score
+      return 'R';
+    }
+  } else if (
+    // both left and right have enemy at distance 4
+    left.distance === 4 && left.obstacle !== 'wall' &&
+    right.distance === 4 && right.obstacle !== 'wall'
+  ) {
+    if (
+      // left enemy has a higher score
+      left.obstacle.score > right.obstacle.score
+    ) {
+      return 'L';
+    } else {
+      // right enemy has a higher score
+      return 'R';
+    }
+  } else if (
+    // back has enemy within range of throw and left has enemy at distance 4
+    back.distance < 4 && back.obstacle !== 'wall' &&
+    left.distance === 4 && left.obstacle !== 'wall'
+  ) {
+    return 'L';
+  } else if (
+    // back has enemy within range of throw and right has enemy at distance 4
+    back.distance < 4 && back.obstacle !== 'wall' &&
+    right.distance === 4 && right.obstacle !== 'wall'
+  ) {
+    return 'R';
+  } else if (
     // back has enemy within range of throw
     back.distance < 4 && back.obstacle !== 'wall'
   ) {
