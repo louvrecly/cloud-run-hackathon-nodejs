@@ -2,6 +2,7 @@
 
 import assert from 'assert';
 import {
+  compareDirections,
   scanArena,
   checkIndexInRange,
   getDimAndIndex,
@@ -16,6 +17,110 @@ import {
 
 describe('Unit Tests on services', () => {
   const relativeDirections = ['front', 'back', 'left', 'right'];
+
+  it('compareDirections should return 0 for E against E', () => {
+    const directionA = 'E';
+    const directionB = 'E';
+    const compareValue = compareDirections(directionA, directionB);
+    assert.equal(typeof compareValue, 'number', 'compareValue should be a number');
+    assert.equal(compareValue, 0, '0 should be returned for E against E');
+  });
+
+  it('compareDirections should return 0 for S against S', () => {
+    const directionA = 'S';
+    const directionB = 'S';
+    const compareValue = compareDirections(directionA, directionB);
+    assert.equal(typeof compareValue, 'number', 'compareValue should be a number');
+    assert.equal(compareValue, 0, '0 should be returned for S against S');
+  });
+
+  it('compareDirections should return 0 for W against W', () => {
+    const directionA = 'W';
+    const directionB = 'W';
+    const compareValue = compareDirections(directionA, directionB);
+    assert.equal(typeof compareValue, 'number', 'compareValue should be a number');
+    assert.equal(compareValue, 0, '0 should be returned for W against W');
+  });
+
+  it('compareDirections should return 0 for N against N', () => {
+    const directionA = 'N';
+    const directionB = 'N';
+    const compareValue = compareDirections(directionA, directionB);
+    assert.equal(typeof compareValue, 'number', 'compareValue should be a number');
+    assert.equal(compareValue, 0, '0 should be returned for N against N');
+  });
+
+  it('compareDirections should return 90 for S against E', () => {
+    const directionA = 'S';
+    const directionB = 'E';
+    const compareValue = compareDirections(directionA, directionB);
+    assert.equal(typeof compareValue, 'number', 'compareValue should be a number');
+    assert.equal(compareValue, 90, '90 should be returned for S against E');
+  });
+
+  it('compareDirections should return 90 for W against S', () => {
+    const directionA = 'W';
+    const directionB = 'S';
+    const compareValue = compareDirections(directionA, directionB);
+    assert.equal(typeof compareValue, 'number', 'compareValue should be a number');
+    assert.equal(compareValue, 90, '90 should be returned for W against S');
+  });
+
+  it('compareDirections should return 180 for W against E', () => {
+    const directionA = 'W';
+    const directionB = 'E';
+    const compareValue = compareDirections(directionA, directionB);
+    assert.equal(typeof compareValue, 'number', 'compareValue should be a number');
+    assert.equal(compareValue, 180, '180 should be returned for W against E');
+  });
+
+  it('compareDirections should return 270 for W against N', () => {
+    const directionA = 'W';
+    const directionB = 'N';
+    const compareValue = compareDirections(directionA, directionB);
+    assert.equal(typeof compareValue, 'number', 'compareValue should be a number');
+    assert.equal(compareValue, 270, '270 should be returned for W against N');
+  });
+
+  it('compareDirections should return -270 for N against W', () => {
+    const directionA = 'N';
+    const directionB = 'W';
+    const compareValue = compareDirections(directionA, directionB);
+    assert.equal(typeof compareValue, 'number', 'compareValue should be a number');
+    assert.equal(compareValue, -270, '-270 should be returned for N against W');
+  });
+
+  it('compareDirections should return -180 for N against S', () => {
+    const directionA = 'N';
+    const directionB = 'S';
+    const compareValue = compareDirections(directionA, directionB);
+    assert.equal(typeof compareValue, 'number', 'compareValue should be a number');
+    assert.equal(compareValue, -180, '-180 should be returned for N against S');
+  });
+
+  it('compareDirections should return -180 for E against W', () => {
+    const directionA = 'E';
+    const directionB = 'W';
+    const compareValue = compareDirections(directionA, directionB);
+    assert.equal(typeof compareValue, 'number', 'compareValue should be a number');
+    assert.equal(compareValue, -180, '-180 should be returned for E against W');
+  });
+
+  it('compareDirections should return -90 for E against S', () => {
+    const directionA = 'E';
+    const directionB = 'S';
+    const compareValue = compareDirections(directionA, directionB);
+    assert.equal(typeof compareValue, 'number', 'compareValue should be a number');
+    assert.equal(compareValue, -90, '-90 should be returned for E against S');
+  });
+
+  it('compareDirections should return -90 for N against E', () => {
+    const directionA = 'N';
+    const directionB = 'E';
+    const compareValue = compareDirections(directionA, directionB);
+    assert.equal(typeof compareValue, 'number', 'compareValue should be a number');
+    assert.equal(compareValue, -90, '-90 should be returned for N against E');
+  });
 
   it('scanArena should correctly scan the arena and identify the locations of all bots', () => {
     const dims = [4, 3];
