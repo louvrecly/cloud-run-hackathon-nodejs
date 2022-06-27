@@ -101,27 +101,165 @@ export function escape(surroundings) {
   const { front, back, left, right } = surroundings;
 
   if (
-    // left or right has enemy
-    (
-      (left.obstacle !== null && left.obstacle !== 'wall') ||
-      (right.obstacle !== null && right.obstacle !== 'wall')
-    ) &&
-    // front has no obstacle within distance 2
-    front.distance > 2
+    // front has enemy or a wall at distance 1
+    front.distance === 1
   ) {
-    return 'F';
+    if (
+      // left, right and back has no space for escape
+      left.distance === 1 &&
+      right.distance === 1 &&
+      back.distance === 1
+    ) {
+      if (
+        // front has an enemy
+        front.obstacle !== 'wall'
+      ) {
+        return 'T';
+      } else if (
+        // left has an enemy
+        left.obstacle !== 'wall'
+      ) {
+        return 'L';
+      } else {
+        // right has an enemy
+        return 'R';
+      }
+    } else if (
+      // only left has space for escape
+      left.distance > 1 &&
+      right.distance === 1 &&
+      back.distance === 1
+    ) {
+      return 'L';
+    } else if (
+      // only right has space for escape
+      right.distance > 1 &&
+      left.distance === 1 &&
+      back.distance === 1
+    ) {
+      return 'R';
+    } else if (
+      // only back has space for escape
+      back.distance > 1 &&
+      left.distance === 1 &&
+      right.distance === 1
+    ) {
+      if (
+        // left has an enemy
+        left.obstacle !== 'wall'
+      ) {
+        return 'L';
+      } else {
+        // right has an enemy
+        return 'R';
+      }
+    } else if (
+      // left has space for escape while right has none
+      left.distance > 1 &&
+      right.distance === 1
+    ) {
+      return 'L';
+    }  else if (
+      // right has space for escape while left has none
+      right.distance > 1 &&
+      left.distance === 1
+    ) {
+      return 'R';
+    }else if (
+      // left has no space for escape
+      left.distance === 1
+    ) {
+      return 'R';
+    } else if (
+      // both left and right have space for escape
+      left.distance > 1 &&
+      right.distance > 1
+    ) {
+      if (
+        // left has an enemy
+        left.obstacle !== 'wall'
+      ) {
+        return 'L';
+      } else if (
+        // right has an enemy
+        right.obstacle !== 'wall'
+      ) {
+        return 'R';
+      } else {
+        // no enemy on either left or right
+        if (
+          // left has a wall within distance 2
+          left.distance < 3 && left.obstacle === 'wall'
+        ) {
+          return 'R';
+        } else if (
+          // right has a wall within distance 2
+          right.distance < 3 && right.obstacle === 'wall'
+        ) {
+          return 'L';
+        } else {
+          return ['L', 'R'][Math.floor(Math.random()) * 2];
+        }
+      }
+    }
   } else if (
-    // front or back has enemy
-    (
-      (front.obstacle !== null && front.obstacle !== 'wall') ||
-      (back.obstacle !== null && back.obstacle !== 'wall')
-    ) &&
-    // left has no obstacle within distance 2
-    left.distance > 2
+    // front has enemy
+    front.distance < 4 && front.obstacle !== 'wall'
   ) {
-    return 'L';
+    if (
+      // left or right has enemy
+      (left.distance < 4 && left.obstacle !== 'wall') ||
+      (right.distance < 4 && right.obstacle !== 'wall')
+    ) {
+      return 'F';
+    } else {
+      // turn regardless of whether back has enemy or not
+      if (
+        // left has a wall within distance 2
+        left.distance < 3 && left.obstacle === 'wall'
+      ) {
+        return 'R';
+      } else if (
+        // right has a wall within distance 2
+        right.distance < 3 && right.obstacle === 'wall'
+      ) {
+        return 'L';
+      } else {
+        return ['L', 'R'][Math.floor(Math.random()) * 2];
+      }
+    }
   } else {
-    return 'R';
+    // front has no enemy or wall within distance 1
+    if (
+      // left or right has enemy
+      (left.distance < 4 && left.obstacle !== 'wall') ||
+      (right.distance < 4 && right.obstacle !== 'wall')
+    ) {
+      return 'F';
+    } else {
+      // back has enemy
+      if (
+        // back has enemy at distance 3
+        back.distance === 3
+      ) {
+        return 'F';
+      } else {
+        if (
+          // left has a wall within distance 2
+          left.distance < 3 && left.obstacle === 'wall'
+        ) {
+          return 'R';
+        } else if (
+          // right has a wall within distance 2
+          right.distance < 3 && right.obstacle === 'wall'
+        ) {
+          return 'L';
+        } else {
+          // no wall on both left and right within distance 2
+          return ['L', 'R'][Math.floor(Math.random()) * 2];
+        }
+      }
+    }
   }
 }
 
@@ -140,7 +278,7 @@ export function hunt(surroundings, forwardSurroundings = false) {
   ) {
     return 'R';
   } else if (
-    // front has enemy at a distance 4
+    // front has enemy at distance 4
     front.distance === 4 && front.obstacle !== 'wall'
   ) {
     return 'F';
@@ -166,17 +304,17 @@ export function hunt(surroundings, forwardSurroundings = false) {
       return ['L', 'R'][Math.floor(Math.random()) * 2];
     }
   } else if (
-    // left has enemy at a distance 4
+    // left has enemy at distance 4
     left.distance === 4 && left.obstacle !== 'wall'
   ) {
     return 'L';
   } else if (
-    // right has enemy at a distance 4
+    // right has enemy at distance 4
     right.distance === 4 && right.obstacle !== 'wall'
   ) {
     return 'R';
   } else if (
-    // front has enemy at a distance 5
+    // front has enemy at distance 5
     front.distance === 5 && front.obstacle !== 'wall'
   ) {
     return 'F';
