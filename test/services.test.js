@@ -10,7 +10,8 @@ import {
   scanSurroundings,
   checkEnemyInRange,
   escape,
-  hunt
+  hunt,
+  decideAction
 } from '../server/services';
 
 describe('Unit Tests on services', () => {
@@ -969,5 +970,187 @@ describe('Unit Tests on services', () => {
     const action = hunt(surroundings, forwardSurroundings);
     assert.ok(typeof action === 'string' && action.length === 1, 'action should be a string of length 1');
     assert.equal(action, 'F', 'F should be returned when enemy is on the right within range of throw when stepped forward');
+  });
+
+  it('decideAction should return L when being hit from the left and forward has a wall', () => {
+    const dims = [6, 5];
+    const state = {
+      BASE_URL: {
+        x: 3,
+        y: 0,
+        direction: 'N',
+        wasHit: true,
+        score: 0
+      },
+      ENEMY_BOT_URL: {
+        x: 0,
+        y: 0,
+        direction: 'E',
+        wasHit: false,
+        score: 0
+      }
+    };
+    const ownState = state.BASE_URL;
+    const arena = scanArena(dims, state);
+    const surroundings = scanSurroundings(ownState, arena, dims);
+    const forwardState = surroundings.front.distance > 1 ? getForwardState(ownState, dims) : false;
+    const forwardSurroundings = forwardState && scanSurroundings(forwardState, arena, dims);
+    const action = decideAction(ownState.wasHit, surroundings, forwardSurroundings);
+    assert.ok(typeof action === 'string' && action.length === 1, 'action should be a string of length 1');
+    assert.equal(action, 'L', 'L should be returned when being hit from the left and forward has a wall');
+  });
+
+  it('decideAction should return R when being hit from the right and forward has a wall', () => {
+    const dims = [6, 5];
+    const state = {
+      BASE_URL: {
+        x: 3,
+        y: 0,
+        direction: 'N',
+        wasHit: true,
+        score: 0
+      },
+      ENEMY_BOT_URL: {
+        x: 5,
+        y: 0,
+        direction: 'W',
+        wasHit: false,
+        score: 0
+      }
+    };
+    const ownState = state.BASE_URL;
+    const arena = scanArena(dims, state);
+    const surroundings = scanSurroundings(ownState, arena, dims);
+    const forwardState = surroundings.front.distance > 1 ? getForwardState(ownState, dims) : false;
+    const forwardSurroundings = forwardState && scanSurroundings(forwardState, arena, dims);
+    const action = decideAction(ownState.wasHit, surroundings, forwardSurroundings);
+    assert.ok(typeof action === 'string' && action.length === 1, 'action should be a string of length 1');
+    assert.equal(action, 'R', 'R should be returned when being hit from the right and forward has a wall');
+  });
+
+  it('decideAction should return L when being hit from the left and the back while forward has a wall', () => {
+    const dims = [6, 5];
+    const state = {
+      BASE_URL: {
+        x: 3,
+        y: 0,
+        direction: 'N',
+        wasHit: true,
+        score: 0
+      },
+      ENEMY_BOT_URL: {
+        x: 3,
+        y: 3,
+        direction: 'N',
+        wasHit: false,
+        score: 0
+      },
+      ENEMY_BOT_URL_1: {
+        x: 0,
+        y: 0,
+        direction: 'E',
+        wasHit: false,
+        score: 0
+      }
+    };
+    const ownState = state.BASE_URL;
+    const arena = scanArena(dims, state);
+    const surroundings = scanSurroundings(ownState, arena, dims);
+    const forwardState = surroundings.front.distance > 1 ? getForwardState(ownState, dims) : false;
+    const forwardSurroundings = forwardState && scanSurroundings(forwardState, arena, dims);
+    const action = decideAction(ownState.wasHit, surroundings, forwardSurroundings);
+    assert.ok(typeof action === 'string' && action.length === 1, 'action should be a string of length 1');
+    assert.equal(action, 'L', 'L should be returned when being hit from the left and the back while forward has a wall');
+  });
+
+  it('decideAction should return R when being hit from the left and the back while forward has a wall', () => {
+    const dims = [6, 5];
+    const state = {
+      BASE_URL: {
+        x: 3,
+        y: 0,
+        direction: 'N',
+        wasHit: true,
+        score: 0
+      },
+      ENEMY_BOT_URL: {
+        x: 3,
+        y: 3,
+        direction: 'N',
+        wasHit: false,
+        score: 0
+      },
+      ENEMY_BOT_URL_1: {
+        x: 5,
+        y: 0,
+        direction: 'W',
+        wasHit: false,
+        score: 0
+      }
+    };
+    const ownState = state.BASE_URL;
+    const arena = scanArena(dims, state);
+    const surroundings = scanSurroundings(ownState, arena, dims);
+    const forwardState = surroundings.front.distance > 1 ? getForwardState(ownState, dims) : false;
+    const forwardSurroundings = forwardState && scanSurroundings(forwardState, arena, dims);
+    const action = decideAction(ownState.wasHit, surroundings, forwardSurroundings);
+    assert.ok(typeof action === 'string' && action.length === 1, 'action should be a string of length 1');
+    assert.equal(action, 'R', 'R should be returned when being hit from the left and the back while forward has a wall');
+  });
+
+  it('decideAction should return F when being hit from the left and forward is available', () => {
+    const dims = [6, 5];
+    const state = {
+      BASE_URL: {
+        x: 3,
+        y: 0,
+        direction: 'S',
+        wasHit: true,
+        score: 0
+      },
+      ENEMY_BOT_URL: {
+        x: 5,
+        y: 0,
+        direction: 'W',
+        wasHit: false,
+        score: 0
+      }
+    };
+    const ownState = state.BASE_URL;
+    const arena = scanArena(dims, state);
+    const surroundings = scanSurroundings(ownState, arena, dims);
+    const forwardState = surroundings.front.distance > 1 ? getForwardState(ownState, dims) : false;
+    const forwardSurroundings = forwardState && scanSurroundings(forwardState, arena, dims);
+    const action = decideAction(ownState.wasHit, surroundings, forwardSurroundings);
+    assert.ok(typeof action === 'string' && action.length === 1, 'action should be a string of length 1');
+    assert.equal(action, 'F', 'F should be returned when being hit from the left and forward is available');
+  });
+
+  it('decideAction should return F when being hit from the right and forward is available', () => {
+    const dims = [6, 5];
+    const state = {
+      BASE_URL: {
+        x: 3,
+        y: 0,
+        direction: 'S',
+        wasHit: true,
+        score: 0
+      },
+      ENEMY_BOT_URL: {
+        x: 0,
+        y: 0,
+        direction: 'E',
+        wasHit: false,
+        score: 0
+      }
+    };
+    const ownState = state.BASE_URL;
+    const arena = scanArena(dims, state);
+    const surroundings = scanSurroundings(ownState, arena, dims);
+    const forwardState = surroundings.front.distance > 1 ? getForwardState(ownState, dims) : false;
+    const forwardSurroundings = forwardState && scanSurroundings(forwardState, arena, dims);
+    const action = decideAction(ownState.wasHit, surroundings, forwardSurroundings);
+    assert.ok(typeof action === 'string' && action.length === 1, 'action should be a string of length 1');
+    assert.equal(action, 'F', 'F should be returned when being hit from the right and forward is available');
   });
 });
