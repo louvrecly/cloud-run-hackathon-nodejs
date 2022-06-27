@@ -1,3 +1,14 @@
+const directionAngle = {
+  N: 0,
+  E: 90,
+  S: 180,
+  W: 270
+};
+
+export function compareDirections(directionA, directionB) {
+  return directionAngle[directionA] - directionAngle[directionB];
+}
+
 export function scanArena(dims, state) {
   const arena = [...Array(dims[1])].map(row => Array(dims[0]).fill(null));
 
