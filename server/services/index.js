@@ -90,6 +90,10 @@ export function getThreatLevel(ownDirection, enemyDirection, relativeDirection) 
   }
 }
 
+export function evaluateOverallThreat(...threatLevels) {
+  return threatLevels.reduce((overallThreat, threatLevel) => threatLevel > 0 ? overallThreat + threatLevel : overallThreat, 0);
+}
+
 export function scanSurroundings(ownState, arena, dims, visibility = 5) {
   const surroundings = {
     front: { obstacle: null, distance: visibility },
@@ -345,6 +349,114 @@ export function hunt(surroundings, forwardSurroundings = false) {
 
   // look for potential target at cost 1
   if (
+    // both left and right have enemy within range of throw and front has enemy at distance 4
+    (left.distance < 4 && left.obstacle !== 'wall') &&
+    (right.distance < 4 && right.obstacle !== 'wall') &&
+    (front.distance === 4 && front.obstacle !== 'wall')
+  ) {
+    const overallThreat = evaluateOverallThreat(left.obstacle.threatLevel, right.obstacle.threatLevel, front.obstacle.threatLevel);
+    if (
+      // at least 2 enemy are considered threats
+      overallThreat > 1
+    ) {
+      return 'F';
+    } else if (
+      // only 1 enemy is considered a threat
+      overallThreat === 1
+    ) {
+      if (
+        // left or right enemy is a threat
+        left.obstacle.threatLevel === 1 ||
+        right.obstacle.threatLevel === 1
+      ) {
+        return 'F';
+      } else {
+        // front enemy is a potential threat if stepped forward
+        if (
+          // left enemy has a higher score
+          left.obstacle.score > right.obstacle.score
+        ) {
+          return 'L';
+        } else {
+          // right enemy has a higher score
+          return 'R';
+        }
+      }
+    } else {
+      // no immediate threat among the 3 enemies
+      const highestScore = Math.max(left.obstacle.score, right.obstacle.score, front.obstacle.score);
+      if (
+        // left enemy has the highest score among the 3
+        highestScore === left.obstacle.score
+      ) {
+        return 'L';
+      } else if (
+        // right enemy has the highest score among the 3
+        highestScore === right.obstacle.score
+      ) {
+        return 'R';
+      } else {
+        // front enemy has the highest score among the 3
+        return 'F';
+      }
+    }
+  } else if (
+    // both left and right have enemy within range of throw
+    (left.distance < 4 && left.obstacle !== 'wall') &&
+    (right.distance < 4 && right.obstacle !== 'wall')
+  ) {
+    if (
+      // left enemy has a higher score
+      left.obstacle.score > right.obstacle.score
+    ) {
+      return 'L';
+    } else {
+      // right enemy has a higher score
+      return 'R';
+    }
+  } else if (
+    // left has enemy within range of throw and front has enemy at distance 4
+    (left.distance < 4 && left.obstacle !== 'wall') &&
+    (front.distance === 4 && front.obstacle !== 'wall')
+  ) {
+    if (
+      // left enemy is a threat
+      left.obstacle.threatLevel === 1
+    ) {
+      return 'F';
+    } else {
+      if (
+        // left enemy has a higher score
+        left.obstacle.score > front.obstacle.score
+      ) {
+        return 'L';
+      } else {
+        // front enemy has a higher score
+        return 'F';
+      }
+    }
+  } else if (
+    // right has enemy within range of throw and front has enemy at distance 4
+    (right.distance < 4 && right.obstacle !== 'wall') &&
+    (front.distance === 4 && front.obstacle !== 'wall')
+  ) {
+    if (
+      // right enemy is a threat
+      right.obstacle.threatLevel === 1
+    ) {
+      return 'F';
+    } else {
+      if (
+        // right enemy has a higher score
+        right.obstacle.score > front.obstacle.score
+      ) {
+        return 'R';
+      } else {
+        // front enemy has a higher score
+        return 'F';
+      }
+    }
+  } else if (
     // left has enemy within range of throw
     left.distance < 4 && left.obstacle !== 'wall'
   ) {
