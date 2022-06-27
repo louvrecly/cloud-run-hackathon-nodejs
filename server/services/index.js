@@ -115,6 +115,7 @@ export function escape(surroundings) {
 export function hunt(surroundings) {
   const { front, back, left, right } = surroundings;
 
+  // look for potential target at a cost 1
   if (
     // left has enemy within range of throw
     left.distance < 4 && left.obstacle !== 'wall'
@@ -126,11 +127,14 @@ export function hunt(surroundings) {
   ) {
     return 'R';
   } else if (
-    // front has enemy at distance 4
+    // front has enemy at a distance 4
     front.distance === 4 && front.obstacle !== 'wall'
   ) {
     return 'F';
-  } else if (
+  }
+
+  // look for potential target at a cost 2
+  if (
     // back has enemy within range of throw
     back.distance < 4 && back.obstacle !== 'wall'
   ) {
@@ -149,6 +153,19 @@ export function hunt(surroundings) {
       return ['L', 'R'][Math.floor(Math.random()) * 2];
     }
   } else if (
+    // left has enemy at a distance 4
+    left.distance === 4 && left.obstacle !== 'wall'
+  ) {
+    return 'L';
+  } else if (
+    // right has enemy at a distance 4
+    right.distance === 4 && right.obstacle !== 'wall'
+  ) {
+    return 'R';
+  }
+
+  // no potential target under cost 2
+  if (
     // front has no wall within distance 2
     front.distance > 2
   ) {
