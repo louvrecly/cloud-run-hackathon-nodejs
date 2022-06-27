@@ -8,6 +8,7 @@ import {
   getDimAndIndex,
   getMultiplier,
   getForwardState,
+  getThreatLevel,
   scanSurroundings,
   checkEnemyInRange,
   escape,
@@ -452,6 +453,114 @@ describe('Unit Tests on services', () => {
     let forwardState = getForwardState(ownState, dims);
     assert.equal(typeof forwardState, 'boolean', 'forwardState should be a boolean');
     assert.equal(forwardState, false, 'false should be returned when wall is in the front');
+  });
+
+  it('getThreatLevel should return -1 for E vs E in the front', () => {
+    const ownDirection = 'E';
+    const enemyDirection = 'E';
+    const relativeDirection = 'front';
+    const threatLevel = getThreatLevel(ownDirection, enemyDirection, relativeDirection);
+    assert.equal(typeof threatLevel, 'number', 'threatLevel should be a number');
+    assert.equal(threatLevel, -1, '-1 should be returned for E vs E in the front');
+  });
+
+  it('getThreatLevel should return -1 for S vs S in the front', () => {
+    const ownDirection = 'S';
+    const enemyDirection = 'S';
+    const relativeDirection = 'front';
+    const threatLevel = getThreatLevel(ownDirection, enemyDirection, relativeDirection);
+    assert.equal(typeof threatLevel, 'number', 'threatLevel should be a number');
+    assert.equal(threatLevel, -1, '-1 should be returned for S vs S in the front');
+  });
+
+  it('getThreatLevel should return 1 for W vs W in the back', () => {
+    const ownDirection = 'W';
+    const enemyDirection = 'W';
+    const relativeDirection = 'back';
+    const threatLevel = getThreatLevel(ownDirection, enemyDirection, relativeDirection);
+    assert.equal(typeof threatLevel, 'number', 'threatLevel should be a number');
+    assert.equal(threatLevel, 1, '1 should be returned for W vs W in the back');
+  });
+
+  it('getThreatLevel should return 1 for N vs N in the back', () => {
+    const ownDirection = 'N';
+    const enemyDirection = 'N';
+    const relativeDirection = 'back';
+    const threatLevel = getThreatLevel(ownDirection, enemyDirection, relativeDirection);
+    assert.equal(typeof threatLevel, 'number', 'threatLevel should be a number');
+    assert.equal(threatLevel, 1, '1 should be returned for N vs N in the back');
+  });
+
+  it('getThreatLevel should return 0 for S vs E in the front', () => {
+    const ownDirection = 'E';
+    const enemyDirection = 'S';
+    const relativeDirection = 'front';
+    const threatLevel = getThreatLevel(ownDirection, enemyDirection, relativeDirection);
+    assert.equal(typeof threatLevel, 'number', 'threatLevel should be a number');
+    assert.equal(threatLevel, 0, '0 should be returned for S vs E in the front');
+  });
+
+  it('getThreatLevel should return 1 for N vs S in the front', () => {
+    const ownDirection = 'S';
+    const enemyDirection = 'N';
+    const relativeDirection = 'front';
+    const threatLevel = getThreatLevel(ownDirection, enemyDirection, relativeDirection);
+    assert.equal(typeof threatLevel, 'number', 'threatLevel should be a number');
+    assert.equal(threatLevel, 1, '1 should be returned for N vs S in the front');
+  });
+
+  it('getThreatLevel should return -1 for E vs W in the back', () => {
+    const ownDirection = 'W';
+    const enemyDirection = 'E';
+    const relativeDirection = 'back';
+    const threatLevel = getThreatLevel(ownDirection, enemyDirection, relativeDirection);
+    assert.equal(typeof threatLevel, 'number', 'threatLevel should be a number');
+    assert.equal(threatLevel, -1, '-1 should be returned for E vs W in the back');
+  });
+
+  it('getThreatLevel should return 0 for W vs N in the back', () => {
+    const ownDirection = 'N';
+    const enemyDirection = 'W';
+    const relativeDirection = 'back';
+    const threatLevel = getThreatLevel(ownDirection, enemyDirection, relativeDirection);
+    assert.equal(typeof threatLevel, 'number', 'threatLevel should be a number');
+    assert.equal(threatLevel, 0, '0 should be returned for W vs N in the back');
+  });
+
+  it('getThreatLevel should return 1 for S vs E on the left', () => {
+    const ownDirection = 'E';
+    const enemyDirection = 'S';
+    const relativeDirection = 'left';
+    const threatLevel = getThreatLevel(ownDirection, enemyDirection, relativeDirection);
+    assert.equal(typeof threatLevel, 'number', 'threatLevel should be a number');
+    assert.equal(threatLevel, 1, '1 should be returned for S vs E on the left');
+  });
+
+  it('getThreatLevel should return 0 for N vs S on the right', () => {
+    const ownDirection = 'S';
+    const enemyDirection = 'N';
+    const relativeDirection = 'right';
+    const threatLevel = getThreatLevel(ownDirection, enemyDirection, relativeDirection);
+    assert.equal(typeof threatLevel, 'number', 'threatLevel should be a number');
+    assert.equal(threatLevel, 0, '0 should be returned for N vs S on the right');
+  });
+
+  it('getThreatLevel should return 0 for E vs W on the left', () => {
+    const ownDirection = 'W';
+    const enemyDirection = 'E';
+    const relativeDirection = 'left';
+    const threatLevel = getThreatLevel(ownDirection, enemyDirection, relativeDirection);
+    assert.equal(typeof threatLevel, 'number', 'threatLevel should be a number');
+    assert.equal(threatLevel, 0, '0 should be returned for E vs W on the left');
+  });
+
+  it('getThreatLevel should return 1 for W vs N on the right', () => {
+    const ownDirection = 'N';
+    const enemyDirection = 'W';
+    const relativeDirection = 'right';
+    const threatLevel = getThreatLevel(ownDirection, enemyDirection, relativeDirection);
+    assert.equal(typeof threatLevel, 'number', 'threatLevel should be a number');
+    assert.equal(threatLevel, 1, '1 should be returned for W vs N on the right');
   });
 
   it('scanSurroundings should locate enemy in the front', () => {
