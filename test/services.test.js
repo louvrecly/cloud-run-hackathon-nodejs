@@ -6,6 +6,7 @@ import {
   checkIndexInRange,
   getDimAndIndex,
   getMultiplier,
+  getForwardState,
   scanSurroundings,
   checkEnemyInRange,
   escape,
@@ -205,6 +206,146 @@ describe('Unit Tests on services', () => {
     const multiplier = getMultiplier(direction, relativeDirection);
     assert.equal(typeof multiplier, 'number', 'multiplier should be a number');
     assert.equal(multiplier, 1, 'multiplier should be 1 for N and right');
+  });
+
+  it('getForwardState should return a state at (1, 0) towards E', () => {
+    const dims = [4, 3];
+    const state = {
+      BASE_URL: {
+        x: 0,
+        y: 0,
+        direction: 'E',
+        wasHit: false,
+        score: 0
+      },
+      ENEMY_BOT_URL: {
+        x: 3,
+        y: 0,
+        direction: 'N',
+        wasHit: false,
+        score: 0
+      }
+    };
+    const ownState = state.BASE_URL;
+    const forwardState = getForwardState(ownState, dims);
+    assert.ok(typeof forwardState === 'object' && forwardState !== null, 'forwardState should be an object');
+    assert.ok(forwardState.hasOwnProperty('x') && typeof forwardState.x === 'number', 'x key should exist and be a number');
+    assert.ok(forwardState.hasOwnProperty('y') && typeof forwardState.y === 'number', 'y key should exist and be a number');
+    assert.ok(forwardState.hasOwnProperty('direction') && typeof forwardState.direction === 'string', 'direction key should exist and be a string');
+    assert.equal(forwardState.x, 1, '1 should be returned as x value');
+    assert.equal(forwardState.y, 0, '0 should be returned as y value');
+    assert.equal(forwardState.direction, 'E', 'E should be returned as direction value');
+  });
+
+  it('getForwardState should return a state at (0, 1) towards S', () => {
+    const dims = [4, 3];
+    const state = {
+      BASE_URL: {
+        x: 0,
+        y: 0,
+        direction: 'S',
+        wasHit: false,
+        score: 0
+      },
+      ENEMY_BOT_URL: {
+        x: 3,
+        y: 0,
+        direction: 'N',
+        wasHit: false,
+        score: 0
+      }
+    };
+    const ownState = state.BASE_URL;
+    const forwardState = getForwardState(ownState, dims);
+    assert.ok(typeof forwardState === 'object' && forwardState !== null, 'forwardState should be an object');
+    assert.ok(forwardState.hasOwnProperty('x') && typeof forwardState.x === 'number', 'x key should exist and be a number');
+    assert.ok(forwardState.hasOwnProperty('y') && typeof forwardState.y === 'number', 'y key should exist and be a number');
+    assert.ok(forwardState.hasOwnProperty('direction') && typeof forwardState.direction === 'string', 'direction key should exist and be a string');
+    assert.equal(forwardState.x, 0, '0 should be returned as x value');
+    assert.equal(forwardState.y, 1, '1 should be returned as y value');
+    assert.equal(forwardState.direction, 'S', 'S should be returned as direction value');
+  });
+
+  it('getForwardState should return a state at (2, 2) towards W', () => {
+    const dims = [4, 3];
+    const state = {
+      BASE_URL: {
+        x: 3,
+        y: 2,
+        direction: 'W',
+        wasHit: false,
+        score: 0
+      },
+      ENEMY_BOT_URL: {
+        x: 3,
+        y: 0,
+        direction: 'N',
+        wasHit: false,
+        score: 0
+      }
+    };
+    const ownState = state.BASE_URL;
+    const forwardState = getForwardState(ownState, dims);
+    assert.ok(typeof forwardState === 'object' && forwardState !== null, 'forwardState should be an object');
+    assert.ok(forwardState.hasOwnProperty('x') && typeof forwardState.x === 'number', 'x key should exist and be a number');
+    assert.ok(forwardState.hasOwnProperty('y') && typeof forwardState.y === 'number', 'y key should exist and be a number');
+    assert.ok(forwardState.hasOwnProperty('direction') && typeof forwardState.direction === 'string', 'direction key should exist and be a string');
+    assert.equal(forwardState.x, 2, '2 should be returned as x value');
+    assert.equal(forwardState.y, 2, '2 should be returned as y value');
+    assert.equal(forwardState.direction, 'W', 'W should be returned as direction value');
+  });
+
+  it('getForwardState should return a state at (3, 1) towards N', () => {
+    const dims = [4, 3];
+    const state = {
+      BASE_URL: {
+        x: 3,
+        y: 2,
+        direction: 'N',
+        wasHit: false,
+        score: 0
+      },
+      ENEMY_BOT_URL: {
+        x: 3,
+        y: 0,
+        direction: 'N',
+        wasHit: false,
+        score: 0
+      }
+    };
+    const ownState = state.BASE_URL;
+    const forwardState = getForwardState(ownState, dims);
+    assert.ok(typeof forwardState === 'object' && forwardState !== null, 'forwardState should be an object');
+    assert.ok(forwardState.hasOwnProperty('x') && typeof forwardState.x === 'number', 'x key should exist and be a number');
+    assert.ok(forwardState.hasOwnProperty('y') && typeof forwardState.y === 'number', 'y key should exist and be a number');
+    assert.ok(forwardState.hasOwnProperty('direction') && typeof forwardState.direction === 'string', 'direction key should exist and be a string');
+    assert.equal(forwardState.x, 3, '3 should be returned as x value');
+    assert.equal(forwardState.y, 1, '1 should be returned as y value');
+    assert.equal(forwardState.direction, 'N', 'N should be returned as direction value');
+  });
+
+  it('getForwardState should return false when wall is in the front', () => {
+    let dims = [4, 3];
+    let state = {
+      BASE_URL: {
+        x: 0,
+        y: 0,
+        direction: 'W',
+        wasHit: false,
+        score: 0
+      },
+      ENEMY_BOT_URL: {
+        x: 3,
+        y: 0,
+        direction: 'N',
+        wasHit: false,
+        score: 0
+      }
+    };
+    let ownState = state.BASE_URL;
+    let forwardState = getForwardState(ownState, dims);
+    assert.equal(typeof forwardState, 'boolean', 'forwardState should be a boolean');
+    assert.equal(forwardState, false, 'false should be returned when wall is in the front');
   });
 
   it('scanSurroundings should locate enemy in the front', () => {
@@ -746,5 +887,87 @@ describe('Unit Tests on services', () => {
     const action = hunt(surroundings);
     assert.ok(typeof action === 'string' && action.length === 1, 'action should be a string of length 1');
     assert.equal(action, 'R', 'R should be returned when enemy is on the right at a distance 4');
+  });
+
+  it('hunt should return F when enemy is in the front at a distance 5', () => {
+    const dims = [6, 5];
+    const state = {
+      BASE_URL: {
+        x: 0,
+        y: 2,
+        direction: 'N',
+        wasHit: false,
+        score: 0
+      },
+      ENEMY_BOT_URL: {
+        x: 5,
+        y: 2,
+        direction: 'N',
+        wasHit: false,
+        score: 0
+      }
+    };
+    const ownState = state.BASE_URL;
+    const arena = scanArena(dims, state);
+    const surroundings = scanSurroundings(ownState, arena, dims);
+    const action = hunt(surroundings);
+    assert.ok(typeof action === 'string' && action.length === 1, 'action should be a string of length 1');
+    assert.equal(action, 'F', 'F should be returned when enemy is in the front at a distance 5');
+  });
+
+  it('hunt should return F when enemy is on the left within range of throw when stepped forward', () => {
+    const dims = [6, 5];
+    const state = {
+      BASE_URL: {
+        x: 4,
+        y: 3,
+        direction: 'N',
+        wasHit: false,
+        score: 0
+      },
+      ENEMY_BOT_URL: {
+        x: 1,
+        y: 2,
+        direction: 'N',
+        wasHit: false,
+        score: 0
+      }
+    };
+    const ownState = state.BASE_URL;
+    const arena = scanArena(dims, state);
+    const surroundings = scanSurroundings(ownState, arena, dims);
+    const forwardState = surroundings.front.distance > 1 ? getForwardState(ownState, dims) : false;
+    const forwardSurroundings = forwardState && scanSurroundings(forwardState, arena, dims);
+    const action = hunt(surroundings, forwardSurroundings);
+    assert.ok(typeof action === 'string' && action.length === 1, 'action should be a string of length 1');
+    assert.equal(action, 'F', 'F should be returned when enemy is on the left within range of throw when stepped forward');
+  });
+
+  it('hunt should return F when enemy is on the right within range of throw when stepped forward', () => {
+    const dims = [6, 5];
+    const state = {
+      BASE_URL: {
+        x: 3,
+        y: 0,
+        direction: 'S',
+        wasHit: false,
+        score: 0
+      },
+      ENEMY_BOT_URL: {
+        x: 0,
+        y: 1,
+        direction: 'N',
+        wasHit: false,
+        score: 0
+      }
+    };
+    const ownState = state.BASE_URL;
+    const arena = scanArena(dims, state);
+    const surroundings = scanSurroundings(ownState, arena, dims);
+    const forwardState = surroundings.front.distance > 1 ? getForwardState(ownState, dims) : false;
+    const forwardSurroundings = forwardState && scanSurroundings(forwardState, arena, dims);
+    const action = hunt(surroundings, forwardSurroundings);
+    assert.ok(typeof action === 'string' && action.length === 1, 'action should be a string of length 1');
+    assert.equal(action, 'F', 'F should be returned when enemy is on the right within range of throw when stepped forward');
   });
 });
