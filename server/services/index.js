@@ -209,3 +209,12 @@ export function hunt(surroundings, forwardSurroundings = false) {
     return ['L', 'R'][Math.floor(Math.random()) * 2];
   }
 }
+
+export function decideAction(wasHit, surroundings, forwardSurroundings = false) {
+  // escape if under attack
+  if (wasHit) return escape(surroundings);
+  // throw if enemy within range of throw
+  else if (checkEnemyInRange(surroundings.front)) return 'T';
+  // hunt otherwise
+  else return hunt(surroundings, forwardSurroundings);
+}

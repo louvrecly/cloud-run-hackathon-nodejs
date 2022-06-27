@@ -1,4 +1,4 @@
-import { scanArena, checkEnemyInRange, getForwardState, scanSurroundings, escape, hunt } from '../services';
+import { scanArena, getForwardState, scanSurroundings, decideAction } from '../services';
 
 function get(req, res) {
   return res.send('Let the battle begin!');
@@ -16,12 +16,7 @@ function action(req, res) {
   const forwardState = surroundings.front.distance > 1 ? getForwardState(ownState, dims) : false;
   const forwardSurroundings = forwardState && scanSurroundings(forwardState, arena, dims);
 
-  // escape if under attack
-  if (ownState.wasHit) return res.send(escape(surroundings));
-  // throw if enemy within range of throw
-  else if (checkEnemyInRange(surroundings.front)) return res.send('T');
-  // hunt otherwise
-  else return res.send(hunt(surroundings, forwardSurroundings));
+  return res.send(decideAction(ownState.wasHit, surroundings, forwardSurroundings));
 }
 
 export default { get, action };
