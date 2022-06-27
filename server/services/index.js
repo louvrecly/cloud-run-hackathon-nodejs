@@ -141,6 +141,14 @@ export function checkEnemyInRange({ obstacle, distance }) {
   return typeof obstacle === 'object' && obstacle !== null && distance < 4;
 }
 
+export function hasEnemy(relativeDirectionState) {
+  return !!relativeDirectionState.obstacle && relativeDirectionState.obstacle !== 'wall';
+}
+
+export function hasWall(relativeDirectionState) {
+  return relativeDirectionState.obstacle === 'wall';
+}
+
 export function escape(surroundings) {
   const { front, back, left, right } = surroundings;
 
@@ -156,13 +164,13 @@ export function escape(surroundings) {
     ) {
       if (
         // front has an enemy
-        front.obstacle !== 'wall'
+        hasEnemy(front)
       ) {
         return 'T';
       } else if (
         // both left and right have enemy
-        left.obstacle !== 'wall' &&
-        right.obstacle !== 'wall'
+        hasEnemy(left) &&
+        hasEnemy(right)
       ) {
         if (
           // left enemy has a higher score
@@ -175,7 +183,7 @@ export function escape(surroundings) {
         }
       } else if (
         // left has an enemy
-        left.obstacle !== 'wall'
+        hasEnemy(left)
       ) {
         return 'L';
       } else {
@@ -204,8 +212,8 @@ export function escape(surroundings) {
     ) {
       if (
         // both left and right have enemy
-        left.obstacle !== 'wall' &&
-        right.obstacle !== 'wall'
+        hasEnemy(left) &&
+        hasEnemy(right)
       ) {
         if (
           // left enemy has a higher score
@@ -218,7 +226,7 @@ export function escape(surroundings) {
         }
       } else if (
         // left has an enemy
-        left.obstacle !== 'wall'
+        hasEnemy(left)
       ) {
         return 'L';
       } else {
@@ -244,8 +252,8 @@ export function escape(surroundings) {
     ) {
       if (
         // both left and right have enemy
-        left.obstacle !== 'wall' &&
-        right.obstacle !== 'wall'
+        hasEnemy(left) &&
+        hasEnemy(right)
       ) {
         if (
           // left enemy has a higher score
@@ -258,24 +266,24 @@ export function escape(surroundings) {
         }
       } else if (
         // left has an enemy
-        left.obstacle !== 'wall'
+        hasEnemy(left)
       ) {
         return 'L';
       } else if (
         // right has an enemy
-        right.obstacle !== 'wall'
+        hasEnemy(right)
       ) {
         return 'R';
       } else {
         // no enemy on either left or right
         if (
           // left has a wall within distance 2
-          left.distance < 3 && left.obstacle === 'wall'
+          hasWall(left) && left.distance < 3
         ) {
           return 'R';
         } else if (
           // right has a wall within distance 2
-          right.distance < 3 && right.obstacle === 'wall'
+          hasWall(right) && right.distance < 3
         ) {
           return 'L';
         } else {
@@ -284,25 +292,25 @@ export function escape(surroundings) {
       }
     }
   } else if (
-    // front has enemy
-    front.distance < 4 && front.obstacle !== 'wall'
-  ) {
+    // front has enemy within range of throw
+    hasEnemy(front) && front.distance < 4
+    ) {
     if (
       // left or right has enemy
-      (left.distance < 4 && left.obstacle !== 'wall') ||
-      (right.distance < 4 && right.obstacle !== 'wall')
+      (hasEnemy(left) && left.distance < 4) ||
+      (hasEnemy(right) && right.distance < 4)
     ) {
       return 'F';
     } else {
       // turn regardless of whether back has enemy or not
       if (
         // left has a wall within distance 2
-        left.distance < 3 && left.obstacle === 'wall'
+        hasWall(left) && left.distance < 3
       ) {
         return 'R';
       } else if (
         // right has a wall within distance 2
-        right.distance < 3 && right.obstacle === 'wall'
+        hasWall(right) && right.distance < 3
       ) {
         return 'L';
       } else {
@@ -313,8 +321,8 @@ export function escape(surroundings) {
     // front has no enemy or wall within distance 1
     if (
       // left or right has enemy
-      (left.distance < 4 && left.obstacle !== 'wall') ||
-      (right.distance < 4 && right.obstacle !== 'wall')
+      (hasEnemy(left) && left.distance < 4) ||
+      (hasEnemy(right) && right.distance < 4)
     ) {
       return 'F';
     } else {
@@ -327,12 +335,12 @@ export function escape(surroundings) {
       } else {
         if (
           // left has a wall within distance 2
-          left.distance < 3 && left.obstacle === 'wall'
+          hasWall(left) && left.distance < 3
         ) {
           return 'R';
         } else if (
           // right has a wall within distance 2
-          right.distance < 3 && right.obstacle === 'wall'
+          hasWall(right) && right.distance < 3
         ) {
           return 'L';
         } else {
