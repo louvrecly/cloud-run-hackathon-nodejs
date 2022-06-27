@@ -115,8 +115,12 @@ export function scanSurroundings(ownState, arena, dims, visibility = 5) {
         const yIndex = dim === 'y' ? ownState.y + i * multiplier : ownState.y;
         const xIndex = dim === 'x' ? ownState.x + i * multiplier : ownState.x;
 
-        if (arena[yIndex][xIndex]) {
-          surroundings[relativeDirection].obstacle = arena[yIndex][xIndex];
+        const enemyState = arena[yIndex][xIndex];
+        if (enemyState) {
+          surroundings[relativeDirection].obstacle = {
+            ...arena[yIndex][xIndex],
+            threatLevel: getThreatLevel(direction, enemyState.direction, relativeDirection)
+          };
           surroundings[relativeDirection].distance = i;
           break;
         }
