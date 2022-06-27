@@ -587,6 +587,13 @@ describe('Unit Tests on services', () => {
     assert.ok(typeof surroundings === 'object' && surroundings !== null, 'surroundings should be an object');
     assert.ok(Object.keys(surroundings).every(key => relativeDirections.includes(key)) , 'surroundings should contain valid keys');
     assert.ok(typeof surroundings.front.obstacle === 'object' && surroundings.front.obstacle !== null, 'enemy should be detected in the front');
+    assert.ok(surroundings.front.obstacle.hasOwnProperty('key') && typeof surroundings.front.obstacle.key === 'string', 'key property should exist in obstacle and be a string');
+    assert.ok(surroundings.front.obstacle.hasOwnProperty('x') && typeof surroundings.front.obstacle.x === 'number', 'x property should exist in obstacle and be a number');
+    assert.ok(surroundings.front.obstacle.hasOwnProperty('y') && typeof surroundings.front.obstacle.y === 'number', 'y property should exist in obstacle and be a number');
+    assert.ok(surroundings.front.obstacle.hasOwnProperty('direction') && typeof surroundings.front.obstacle.direction === 'string', 'direction property should exist in obstacle and be a string');
+    assert.ok(surroundings.front.obstacle.hasOwnProperty('wasHit') && typeof surroundings.front.obstacle.wasHit === 'boolean', 'wasHit property should exist in obstacle and be a boolean');
+    assert.ok(surroundings.front.obstacle.hasOwnProperty('score') && typeof surroundings.front.obstacle.score === 'number', 'score property should exist in obstacle and be a number');
+    assert.ok(surroundings.front.obstacle.hasOwnProperty('threatLevel') && typeof surroundings.front.obstacle.threatLevel === 'number', 'threatLevel property should exist in obstacle and be a number');
     assert.equal(surroundings.front.distance, 3, 'enemy should be detected in the front at a distance of 3');
     assert.equal(surroundings.back.obstacle, 'wall', 'wall should be detected in the back');
     assert.equal(surroundings.back.distance, 1, 'wall should be detected in the back at a distance of 1');
@@ -624,6 +631,13 @@ describe('Unit Tests on services', () => {
     assert.equal(surroundings.back.obstacle, 'wall', 'wall should be detected in the back');
     assert.equal(surroundings.back.distance, 1, 'wall should be detected in the back at a distance of 1');
     assert.ok(typeof surroundings.left.obstacle === 'object' && surroundings.left.obstacle !== null, 'enemy should be detected on the left');
+    assert.ok(surroundings.left.obstacle.hasOwnProperty('key') && typeof surroundings.left.obstacle.key === 'string', 'key property should exist in obstacle and be a string');
+    assert.ok(surroundings.left.obstacle.hasOwnProperty('x') && typeof surroundings.left.obstacle.x === 'number', 'x property should exist in obstacle and be a number');
+    assert.ok(surroundings.left.obstacle.hasOwnProperty('y') && typeof surroundings.left.obstacle.y === 'number', 'y property should exist in obstacle and be a number');
+    assert.ok(surroundings.left.obstacle.hasOwnProperty('direction') && typeof surroundings.left.obstacle.direction === 'string', 'direction property should exist in obstacle and be a string');
+    assert.ok(surroundings.left.obstacle.hasOwnProperty('wasHit') && typeof surroundings.left.obstacle.wasHit === 'boolean', 'wasHit property should exist in obstacle and be a boolean');
+    assert.ok(surroundings.left.obstacle.hasOwnProperty('score') && typeof surroundings.left.obstacle.score === 'number', 'score property should exist in obstacle and be a number');
+    assert.ok(surroundings.left.obstacle.hasOwnProperty('threatLevel') && typeof surroundings.left.obstacle.threatLevel === 'number', 'threatLevel property should exist in obstacle and be a number');
     assert.equal(surroundings.left.distance, 3, 'enemy should be detected on the left at a distance of 3');
     assert.equal(surroundings.right.obstacle, 'wall', 'wall should be detected on the right');
     assert.equal(surroundings.right.distance, 1, 'wall should be detected on the right at a distance of 1');
@@ -659,6 +673,13 @@ describe('Unit Tests on services', () => {
     assert.equal(surroundings.left.obstacle, 'wall', 'wall should be detected on the left');
     assert.equal(surroundings.left.distance, 1, 'wall should be detected on the left at a distance of 1');
     assert.ok(typeof surroundings.right.obstacle === 'object' && surroundings.right.obstacle !== null, 'enemy should be detected on the right');
+    assert.ok(surroundings.right.obstacle.hasOwnProperty('key') && typeof surroundings.right.obstacle.key === 'string', 'key property should exist in obstacle and be a string');
+    assert.ok(surroundings.right.obstacle.hasOwnProperty('x') && typeof surroundings.right.obstacle.x === 'number', 'x property should exist in obstacle and be a number');
+    assert.ok(surroundings.right.obstacle.hasOwnProperty('y') && typeof surroundings.right.obstacle.y === 'number', 'y property should exist in obstacle and be a number');
+    assert.ok(surroundings.right.obstacle.hasOwnProperty('direction') && typeof surroundings.right.obstacle.direction === 'string', 'direction property should exist in obstacle and be a string');
+    assert.ok(surroundings.right.obstacle.hasOwnProperty('wasHit') && typeof surroundings.right.obstacle.wasHit === 'boolean', 'wasHit property should exist in obstacle and be a boolean');
+    assert.ok(surroundings.right.obstacle.hasOwnProperty('score') && typeof surroundings.right.obstacle.score === 'number', 'score property should exist in obstacle and be a number');
+    assert.ok(surroundings.right.obstacle.hasOwnProperty('threatLevel') && typeof surroundings.right.obstacle.threatLevel === 'number', 'threatLevel property should exist in obstacle and be a number');
     assert.equal(surroundings.right.distance, 2, 'enemy should be detected on the right at a distance of 2');
   });
 
@@ -688,6 +709,13 @@ describe('Unit Tests on services', () => {
     assert.equal(surroundings.front.obstacle, 'wall', 'wall should be detected in the front');
     assert.equal(surroundings.front.distance, 1, 'wall should be detected in the front at a distance of 1');
     assert.ok(typeof surroundings.back.obstacle === 'object' && surroundings.back.obstacle !== null, 'enemy should be detected in the back');
+    assert.ok(surroundings.back.obstacle.hasOwnProperty('key') && typeof surroundings.back.obstacle.key === 'string', 'key property should exist in obstacle and be a string');
+    assert.ok(surroundings.back.obstacle.hasOwnProperty('x') && typeof surroundings.back.obstacle.x === 'number', 'x property should exist in obstacle and be a number');
+    assert.ok(surroundings.back.obstacle.hasOwnProperty('y') && typeof surroundings.back.obstacle.y === 'number', 'y property should exist in obstacle and be a number');
+    assert.ok(surroundings.back.obstacle.hasOwnProperty('direction') && typeof surroundings.back.obstacle.direction === 'string', 'direction property should exist in obstacle and be a string');
+    assert.ok(surroundings.back.obstacle.hasOwnProperty('wasHit') && typeof surroundings.back.obstacle.wasHit === 'boolean', 'wasHit property should exist in obstacle and be a boolean');
+    assert.ok(surroundings.back.obstacle.hasOwnProperty('score') && typeof surroundings.back.obstacle.score === 'number', 'score property should exist in obstacle and be a number');
+    assert.ok(surroundings.back.obstacle.hasOwnProperty('threatLevel') && typeof surroundings.back.obstacle.threatLevel === 'number', 'threatLevel property should exist in obstacle and be a number');
     assert.equal(surroundings.back.distance, 2, 'enemy should be detected in the back at a distance of 2');
     assert.equal(surroundings.left.obstacle, 'wall', 'wall should be detected on the left');
     assert.equal(surroundings.left.distance, 1, 'wall should be detected on the left at a distance of 1');
