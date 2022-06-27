@@ -156,6 +156,20 @@ export function escape(surroundings) {
       ) {
         return 'T';
       } else if (
+        // both left and right have enemy
+        left.obstacle !== 'wall' &&
+        right.obstacle !== 'wall'
+      ) {
+        if (
+          // left enemy has a higher score
+          left.obstacle.score > right.obstacle.score
+        ) {
+          return 'L';
+        } else {
+          // right enemy has a higher score
+          return 'R';
+        }
+      } else if (
         // left has an enemy
         left.obstacle !== 'wall'
       ) {
@@ -185,6 +199,20 @@ export function escape(surroundings) {
       right.distance === 1
     ) {
       if (
+        // both left and right have enemy
+        left.obstacle !== 'wall' &&
+        right.obstacle !== 'wall'
+      ) {
+        if (
+          // left enemy has a higher score
+          left.obstacle.score > right.obstacle.score
+        ) {
+          return 'L';
+        } else {
+          // right enemy has a higher score
+          return 'R';
+        }
+      } else if (
         // left has an enemy
         left.obstacle !== 'wall'
       ) {
@@ -199,14 +227,9 @@ export function escape(surroundings) {
       right.distance === 1
     ) {
       return 'L';
-    }  else if (
+    } else if (
       // right has space for escape while left has none
       right.distance > 1 &&
-      left.distance === 1
-    ) {
-      return 'R';
-    }else if (
-      // left has no space for escape
       left.distance === 1
     ) {
       return 'R';
@@ -216,6 +239,20 @@ export function escape(surroundings) {
       right.distance > 1
     ) {
       if (
+        // both left and right have enemy
+        left.obstacle !== 'wall' &&
+        right.obstacle !== 'wall'
+      ) {
+        if (
+          // left enemy has a higher score
+          left.obstacle.score > right.obstacle.score
+        ) {
+          return 'L';
+        } else {
+          // right enemy has a higher score
+          return 'R';
+        }
+      } else if (
         // left has an enemy
         left.obstacle !== 'wall'
       ) {
