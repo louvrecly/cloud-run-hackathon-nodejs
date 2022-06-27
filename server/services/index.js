@@ -41,6 +41,19 @@ export function getMultiplier(direction, relativeDirection) {
   }
 }
 
+export function getForwardState(ownState, dims) {
+  const { direction } = ownState;
+  const { dim, index } = getDimAndIndex(direction, 'front');
+  const multiplier = getMultiplier(direction, 'front');
+
+  if (checkIndexInRange(ownState[dim] + multiplier, dims[index])) {
+    ownState[dim] += multiplier;
+    return ownState;
+  }
+
+  return false
+}
+
 export function scanSurroundings(ownState, arena, dims, visibility = 5) {
   const surroundings = {
     front: { obstacle: null, distance: visibility },
@@ -112,10 +125,10 @@ export function escape(surroundings) {
   }
 }
 
-export function hunt(surroundings) {
+export function hunt(surroundings, forwardSurroundings = false) {
   const { front, back, left, right } = surroundings;
 
-  // look for potential target at a cost 1
+  // look for potential target at cost 1
   if (
     // left has enemy within range of throw
     left.distance < 4 && left.obstacle !== 'wall'
@@ -133,7 +146,7 @@ export function hunt(surroundings) {
     return 'F';
   }
 
-  // look for potential target at a cost 2
+  // look for potential target at cost 2
   if (
     // back has enemy within range of throw
     back.distance < 4 && back.obstacle !== 'wall'
@@ -162,6 +175,28 @@ export function hunt(surroundings) {
     right.distance === 4 && right.obstacle !== 'wall'
   ) {
     return 'R';
+  } else if (
+    // front has enemy at a distance 5
+    front.distance === 5 && front.obstacle !== 'wall'
+  ) {
+    return 'F';
+  } else if (
+    // check for forward surroundings if forward is available
+    forwardSurroundings
+  ) {
+    if (
+      // left has enemy within range of throw when stepped forward
+      forwardSurroundings.left.distance < 4 &&
+      forwardSurroundings.left.obstacle !== 'wall'
+    ) {
+      return 'F';
+    } else if (
+      // right has enemy within range of throw when stepped forward
+      forwardSurroundings.right.distance < 4 &&
+      forwardSurroundings.right.obstacle !== 'wall'
+    ) {
+      return 'F';
+    }
   }
 
   // no potential target under cost 2
