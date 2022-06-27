@@ -65,6 +65,31 @@ export function getForwardState(ownState, dims) {
   return false
 }
 
+export function getThreatLevel(ownDirection, enemyDirection, relativeDirection) {
+  const compareValue = compareDirections(enemyDirection, ownDirection);
+
+  switch (relativeDirection) {
+    case 'front':
+      if (compareValue === 0) return -1;
+      else if (Math.abs(compareValue) === 180) return 1;
+      else return 0;
+    case 'back':
+      if (compareValue === 0) return 1;
+      else if (Math.abs(compareValue) === 180) return -1;
+      else return 0;
+    case 'left':
+      if ([-270, 90].includes(compareValue)) return 1;
+      else if ([-90, 270].includes(compareValue)) return -1;
+      else return 0;
+    case 'right':
+      if ([-270, 90].includes(compareValue)) return -1;
+      else if ([-90, 270].includes(compareValue)) return 1;
+      else return 0;
+    default:
+      throw Error(`Invalid relativeDirection - ${relativeDirection}`);
+  }
+}
+
 export function scanSurroundings(ownState, arena, dims, visibility = 5) {
   const surroundings = {
     front: { obstacle: null, distance: visibility },
