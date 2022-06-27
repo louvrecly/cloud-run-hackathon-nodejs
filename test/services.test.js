@@ -618,6 +618,32 @@ describe('Unit Tests on services', () => {
     assert.equal(action, 'R', 'R should be returned when enemy is on the right');
   });
 
+  it('hunt should return F when enemy is in the front at a distance 4', () => {
+    const dims = [5, 3];
+    const state = {
+      BASE_URL: {
+        x: 0,
+        y: 0,
+        direction: 'E',
+        wasHit: false,
+        score: 0
+      },
+      ENEMY_BOT_URL: {
+        x: 4,
+        y: 0,
+        direction: 'N',
+        wasHit: false,
+        score: 0
+      }
+    };
+    const ownState = state.BASE_URL;
+    const arena = scanArena(dims, state);
+    const surroundings = scanSurroundings(ownState, arena, dims);
+    const action = hunt(surroundings);
+    assert.ok(typeof action === 'string' && action.length === 1, 'action should be a string of length 1');
+    assert.equal(action, 'F', 'F should be returned when enemy is in the front at a distance 4');
+  });
+
   it('hunt should return L when enemy is in the back and right has a wall', () => {
     const dims = [4, 3];
     const state = {
@@ -670,13 +696,13 @@ describe('Unit Tests on services', () => {
     assert.equal(action, 'R', 'R should be returned when enemy is in the back and left has a wall');
   });
 
-  it('hunt should return F when enemy is in the front at a distance 4', () => {
+  it('hunt should return L when enemy is on the left at a distance 4', () => {
     const dims = [5, 3];
     const state = {
       BASE_URL: {
         x: 0,
         y: 0,
-        direction: 'E',
+        direction: 'S',
         wasHit: false,
         score: 0
       },
@@ -693,6 +719,32 @@ describe('Unit Tests on services', () => {
     const surroundings = scanSurroundings(ownState, arena, dims);
     const action = hunt(surroundings);
     assert.ok(typeof action === 'string' && action.length === 1, 'action should be a string of length 1');
-    assert.equal(action, 'F', 'F should be returned when enemy is in the front at a distance 4');
+    assert.equal(action, 'L', 'L should be returned when enemy is on the left at a distance 4');
+  });
+
+  it('hunt should return R when enemy is on the right at a distance 4', () => {
+    const dims = [5, 3];
+    const state = {
+      BASE_URL: {
+        x: 0,
+        y: 0,
+        direction: 'N',
+        wasHit: false,
+        score: 0
+      },
+      ENEMY_BOT_URL: {
+        x: 4,
+        y: 0,
+        direction: 'N',
+        wasHit: false,
+        score: 0
+      }
+    };
+    const ownState = state.BASE_URL;
+    const arena = scanArena(dims, state);
+    const surroundings = scanSurroundings(ownState, arena, dims);
+    const action = hunt(surroundings);
+    assert.ok(typeof action === 'string' && action.length === 1, 'action should be a string of length 1');
+    assert.equal(action, 'R', 'R should be returned when enemy is on the right at a distance 4');
   });
 });
