@@ -562,10 +562,8 @@ export function hunt(surroundings, forwardSurroundings = false) {
   ) {
     if (
       // both left and right have enemy within range of throw when stepped forward
-      forwardSurroundings.left.distance < 4 &&
-      forwardSurroundings.left.obstacle !== 'wall' &&
-      forwardSurroundings.right.distance < 4 &&
-      forwardSurroundings.right.obstacle !== 'wall'
+      hasEnemy(forwardSurroundings.left) && forwardSurroundings.left.distance < 4 &&
+      hasEnemy(forwardSurroundings.right) && forwardSurroundings.right.distance < 4
     ) {
       if (
         // both left and right enemy are threats when stepped forward
@@ -597,8 +595,8 @@ export function hunt(surroundings, forwardSurroundings = false) {
       }
     } else if (
       // either left or right has enemy within range of throw when stepped forward
-      (forwardSurroundings.left.distance < 4 && forwardSurroundings.left.obstacle !== 'wall') ||
-      (forwardSurroundings.right.distance < 4 && forwardSurroundings.right.obstacle !== 'wall')
+      hasEnemy(forwardSurroundings.left) && forwardSurroundings.left.distance < 4 &&
+      hasEnemy(forwardSurroundings.right) && forwardSurroundings.right.distance < 4
     ) {
       return 'F';
     }
