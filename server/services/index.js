@@ -141,12 +141,12 @@ export function checkEnemyInRange({ obstacle, distance }) {
   return typeof obstacle === 'object' && obstacle !== null && distance < 4;
 }
 
-export function hasEnemy(relativeDirectionState) {
-  return !!relativeDirectionState.obstacle && relativeDirectionState.obstacle !== 'wall';
+export function hasEnemy({ obstacle }) {
+  return !!obstacle && obstacle !== 'wall';
 }
 
-export function hasWall(relativeDirectionState) {
-  return relativeDirectionState.obstacle === 'wall';
+export function hasWall({ obstacle }) {
+  return obstacle === 'wall';
 }
 
 export function escape(surroundings) {
