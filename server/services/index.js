@@ -358,11 +358,11 @@ export function hunt(surroundings, forwardSurroundings = false) {
   // look for potential target at cost 1
   if (
     // both left and right have enemy within range of throw and front has enemy at distance 4
-    (left.distance < 4 && left.obstacle !== 'wall') &&
-    (right.distance < 4 && right.obstacle !== 'wall') &&
-    (front.distance === 4 && front.obstacle !== 'wall')
+    hasEnemy(front) && front.distance < 4 &&
+    hasEnemy(left) && left.distance < 4 &&
+    hasEnemy(right) && right.distance < 4
   ) {
-    const overallThreat = evaluateOverallThreat(left.obstacle.threatLevel, right.obstacle.threatLevel, front.obstacle.threatLevel);
+    const overallThreat = evaluateOverallThreat(front.obstacle.threatLevel, left.obstacle.threatLevel, right.obstacle.threatLevel);
     if (
       // at least 2 enemy are considered threats
       overallThreat > 1
@@ -392,7 +392,7 @@ export function hunt(surroundings, forwardSurroundings = false) {
       }
     } else {
       // no immediate threat among the 3 enemies
-      const highestScore = Math.max(left.obstacle.score, right.obstacle.score, front.obstacle.score);
+      const highestScore = Math.max(front.obstacle.score, left.obstacle.score, right.obstacle.score);
       if (
         // left enemy has the highest score among the 3
         highestScore === left.obstacle.score
@@ -410,8 +410,8 @@ export function hunt(surroundings, forwardSurroundings = false) {
     }
   } else if (
     // both left and right have enemy within range of throw
-    (left.distance < 4 && left.obstacle !== 'wall') &&
-    (right.distance < 4 && right.obstacle !== 'wall')
+    hasEnemy(left) && left.distance < 4 &&
+    hasEnemy(right) && right.distance < 4
   ) {
     if (
       // left enemy has a higher score
@@ -424,8 +424,8 @@ export function hunt(surroundings, forwardSurroundings = false) {
     }
   } else if (
     // left has enemy within range of throw and front has enemy at distance 4
-    (left.distance < 4 && left.obstacle !== 'wall') &&
-    (front.distance === 4 && front.obstacle !== 'wall')
+    hasEnemy(front) && front.distance === 4 &&
+    hasEnemy(left) && left.distance < 4
   ) {
     if (
       // left enemy is a threat
@@ -445,8 +445,8 @@ export function hunt(surroundings, forwardSurroundings = false) {
     }
   } else if (
     // right has enemy within range of throw and front has enemy at distance 4
-    (right.distance < 4 && right.obstacle !== 'wall') &&
-    (front.distance === 4 && front.obstacle !== 'wall')
+    hasEnemy(front) && front.distance === 4 &&
+    hasEnemy(right) && right.distance < 4
   ) {
     if (
       // right enemy is a threat
@@ -466,17 +466,17 @@ export function hunt(surroundings, forwardSurroundings = false) {
     }
   } else if (
     // left has enemy within range of throw
-    left.distance < 4 && left.obstacle !== 'wall'
+    hasEnemy(left) && left.distance < 4
   ) {
     return 'L';
   } else if (
     // right has enemy within range of throw
-    right.distance < 4 && right.obstacle !== 'wall'
+    hasEnemy(right) && right.distance < 4
   ) {
     return 'R';
   } else if (
     // front has enemy at distance 4
-    front.distance === 4 && front.obstacle !== 'wall'
+    hasEnemy(front) && front.distance === 4
   ) {
     return 'F';
   }
