@@ -20,6 +20,21 @@ export function scanArena(dims, state) {
   return arena;
 }
 
+export function parseState(state, ownKey) {
+  const ownState = state[ownKey];
+  delete state[ownKey];
+
+  return { ownState, enemyState: state };
+}
+
+export function rankEnemies(state) {
+  const botIds = Object.keys(state);
+
+  return botIds.sort((botIdA, botIdB) => {
+    return state[botIdB].score - state[botIdA].score;
+  });
+}
+
 export function checkIndexInRange(index, dimLimit) {
   return index >= 0 && index < dimLimit;
 }
@@ -50,6 +65,21 @@ export function getMultiplier(direction, relativeDirection) {
     default:
       throw Error(`Invalid relativeDirection - ${relativeDirection}`);
   }
+}
+
+export function locateLeadingEnemy({ ownState, enemyState }) {
+  const { direction } = ownState;
+  const rankedIds = rankEnemies(enemyState);
+  const targetState = enemyState[rankedIds[0]];
+
+  const longitudinalAxis = getDimAndIndex(direction, 'front');
+  const transverseAxis = getDimAndIndex(direction, 'right');
+  const longitudinalMultiplier = getMultiplier(direction, 'front');
+  const transverseMultiplier = getMultiplier(direction, 'right');
+  const longitudinal = (targetState[longitudinalAxis.dim] - ownState[longitudinalAxis.dim]) * longitudinalMultiplier;
+  const transverse = (targetState[transverseAxis.dim] - ownState[transverseAxis.dim]) * transverseMultiplier;
+
+  return { longitudinal, transverse };
 }
 
 export function getForwardState(ownState, dims) {
