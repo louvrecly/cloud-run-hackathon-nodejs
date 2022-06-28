@@ -426,7 +426,7 @@ export function escape(surroundings, targetLocation = null) {
   }
 }
 
-export function hunt(surroundings, forwardSurroundings = false) {
+export function hunt(surroundings, forwardSurroundings = false, targetLocation = null) {
   const { front, back, left, right } = surroundings;
 
   // look for potential target at cost 1
@@ -613,7 +613,21 @@ export function hunt(surroundings, forwardSurroundings = false) {
       return 'L';
     } else {
       // no wall on both left and right within distance 2
-      return ['L', 'R'][Math.floor(Math.random()) * 2];
+      if (targetLocation) {
+        if (
+          // target on the left
+          targetLocation.transverse < 0
+        ) {
+          return 'L';
+        } else if (
+          // target on the right
+          targetLocation.transverse > 0
+        ) {
+          return 'R';
+        }
+      } else {
+        return ['L', 'R'][Math.floor(Math.random()) * 2];
+      }
     }
   } else if (
     // left has enemy at distance 4
@@ -693,5 +707,5 @@ export function decideAction(wasHit, surroundings, forwardSurroundings = false, 
   // throw if enemy within range of throw
   else if (checkEnemyInRange(surroundings.front)) return 'T';
   // hunt otherwise
-  else return hunt(surroundings, forwardSurroundings);
+  else return hunt(surroundings, forwardSurroundings, targetLocation);
 }
