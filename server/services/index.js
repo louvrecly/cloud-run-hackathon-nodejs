@@ -179,7 +179,7 @@ export function hasWall({ obstacle }) {
   return obstacle === 'wall';
 }
 
-export function escape(surroundings) {
+export function escape(surroundings, targetLocation = null) {
   const { front, back, left, right } = surroundings;
 
   if (
@@ -317,7 +317,22 @@ export function escape(surroundings) {
         ) {
           return 'L';
         } else {
-          return ['L', 'R'][Math.floor(Math.random()) * 2];
+          // no wall on both left and right within distance 2
+          if (targetLocation) {
+            if (
+              // target on the left
+              targetLocation.transverse < 0
+            ) {
+              return 'L';
+            } else if (
+              // target on the right
+              targetLocation.transverse > 0
+            ) {
+              return 'R';
+            }
+          } else {
+            return ['L', 'R'][Math.floor(Math.random()) * 2];
+          }
         }
       }
     }
@@ -344,7 +359,22 @@ export function escape(surroundings) {
       ) {
         return 'L';
       } else {
-        return ['L', 'R'][Math.floor(Math.random()) * 2];
+        // no wall on both left and right within distance 2
+        if (targetLocation) {
+          if (
+            // target on the left
+            targetLocation.transverse < 0
+          ) {
+            return 'L';
+          } else if (
+            // target on the right
+            targetLocation.transverse > 0
+          ) {
+            return 'R';
+          }
+        } else {
+          return ['L', 'R'][Math.floor(Math.random()) * 2];
+        }
       }
     }
   } else {
@@ -375,7 +405,21 @@ export function escape(surroundings) {
           return 'L';
         } else {
           // no wall on both left and right within distance 2
-          return ['L', 'R'][Math.floor(Math.random()) * 2];
+          if (targetLocation) {
+            if (
+              // target on the left
+              targetLocation.transverse < 0
+            ) {
+              return 'L';
+            } else if (
+              // target on the right
+              targetLocation.transverse > 0
+            ) {
+              return 'R';
+            }
+          } else {
+            return ['L', 'R'][Math.floor(Math.random()) * 2];
+          }
         }
       }
     }
@@ -643,9 +687,9 @@ export function hunt(surroundings, forwardSurroundings = false) {
   }
 }
 
-export function decideAction(wasHit, surroundings, forwardSurroundings = false) {
+export function decideAction(wasHit, surroundings, forwardSurroundings = false, targetLocation = null) {
   // escape if under attack
-  if (wasHit) return escape(surroundings);
+  if (wasHit) return escape(surroundings, targetLocation);
   // throw if enemy within range of throw
   else if (checkEnemyInRange(surroundings.front)) return 'T';
   // hunt otherwise
