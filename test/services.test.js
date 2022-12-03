@@ -1,6 +1,7 @@
 import { describe, test, expect, assertType } from 'vitest';
 import {
   compareDirections,
+  createEmptyArena,
   scanArena,
   checkIndexInRange,
   getDimAndIndex,
@@ -124,6 +125,20 @@ describe('Unit Tests on services', () => {
     expect(compareValue).toEqual(-90);
   });
 
+  test('createEmptyArena should create an empty arena with correct number of rows and number of columns', () => {
+    const dims = new Array(2).fill(10).map(x => Math.ceil(Math.random() * x));
+    const arena = createEmptyArena(dims[1], dims[0]);
+    assertType<Array>(arena);
+    assertType<Array>(arena[0]);
+    expect(arena.length).toEqual(dims[1]);
+    expect(arena[0].length).toEqual(dims[0]);
+    arena.forEach(row => {
+      row.forEach(col => {
+        expect(col).toBeNull();
+      });
+    });
+  });
+
   test('scanArena should correctly scan the arena and identify the locations of all bots', () => {
     const dims = [4, 3];
     const state = {
@@ -156,12 +171,12 @@ describe('Unit Tests on services', () => {
     const dims = [4, 3];
     expect(checkIndexInRange(0, dims[0])).toBeTruthy();
     expect(checkIndexInRange(0, dims[1])).toBeTruthy();
-    expect(!checkIndexInRange(4, dims[0])).toBeTruthy();
-    expect(!checkIndexInRange(4, dims[1])).toBeTruthy();
+    expect(checkIndexInRange(4, dims[0])).toBeFalsy();
+    expect(checkIndexInRange(4, dims[1])).toBeFalsy();
     expect(checkIndexInRange(3, dims[0])).toBeTruthy();
-    expect(!checkIndexInRange(3, dims[1])).toBeTruthy();
-    expect(!checkIndexInRange(-1, dims[0])).toBeTruthy();
-    expect(!checkIndexInRange(-1, dims[1])).toBeTruthy();
+    expect(checkIndexInRange(3, dims[1])).toBeFalsy();
+    expect(checkIndexInRange(-1, dims[0])).toBeFalsy();
+    expect(checkIndexInRange(-1, dims[1])).toBeFalsy();
   });
 
   test('getDimAndIndex should return x dimension and 0 index for E and front', () => {

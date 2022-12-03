@@ -9,8 +9,12 @@ export function compareDirections(directionA, directionB) {
   return directionAngle[directionA] - directionAngle[directionB];
 }
 
+export function createEmptyArena(rows = 0, cols = 0) {
+  return [...Array(rows)].map(row => Array(cols).fill(null));
+}
+
 export function scanArena(dims, state) {
-  const arena = [...Array(dims[1])].map(row => Array(dims[0]).fill(null));
+  const arena = createEmptyArena(dims[1], dims[0]);
 
   for (let key in state) {
     const { x, y } = state[key];
