@@ -1,21 +1,19 @@
-'use strict';
-
+import { describe, beforeAll, test, expect } from 'vitest';
 import supertest from 'supertest';
-import assert from 'assert';
 import app from '../web';
 
 let request;
 
 describe('Unit Tests on requests at /', () => {
-  before(async () => {
+  beforeAll(async () => {
     request = supertest(app);
   });
 
-  it('should respond OK to GET /', async () => {
+  test('should respond OK to GET /', async () => {
     await request.get('/').expect(200);
   });
 
-  it('should respond an action (F, L, R or T) to POST /', async () => {
+  test('should respond an action (F, L, R or T) to POST /', async () => {
     const payload = {
       _links: { self: { href: 'BASE_URL' } },
       arena: {
@@ -43,10 +41,10 @@ describe('Unit Tests on requests at /', () => {
       .send(payload)
       .set('Content-Type', 'application/json')
       .expect(200)
-      .then(res => assert.ok(['F', 'L', 'R', 'T'].includes(res.text), 'an action of F, L, R or T should be responded to POST /'));
+      .then(res => expect(['F', 'L', 'R', 'T'].includes(res.text)).toBeTruthy());
   });
 
-  it('should respond F when being hit by enemy from the left and forward is available', async () => {
+  test('should respond F when being hit by enemy from the left and forward is available', async () => {
     const payload = {
       _links: { self: { href: 'BASE_URL' } },
       arena: {
@@ -74,10 +72,10 @@ describe('Unit Tests on requests at /', () => {
       .send(payload)
       .set('Content-Type', 'application/json')
       .expect(200)
-      .then(res => assert.equal(res.text, 'F', 'F should be responded when being hit from the left and forward is available'));
+      .then(res => expect(res.text).toEqual('F'));
   });
 
-  it('should respond F when being hit by enemy from the right and forward is available', async () => {
+  test('should respond F when being hit by enemy from the right and forward is available', async () => {
     const payload = {
       _links: { self: { href: 'BASE_URL' } },
       arena: {
@@ -105,10 +103,10 @@ describe('Unit Tests on requests at /', () => {
       .send(payload)
       .set('Content-Type', 'application/json')
       .expect(200)
-      .then(res => assert.equal(res.text, 'F', 'F should be responded when being hit from the right and forward is available'));
+      .then(res => expect(res.text).toEqual('F'));
   });
 
-  it('should respond L when being hit by enemy from the front and left is available', async () => {
+  test('should respond L when being hit by enemy from the front and left is available', async () => {
     const payload = {
       _links: { self: { href: 'BASE_URL' } },
       arena: {
@@ -136,10 +134,10 @@ describe('Unit Tests on requests at /', () => {
       .send(payload)
       .set('Content-Type', 'application/json')
       .expect(200)
-      .then(res => assert.equal(res.text, 'L', 'L should be responded when being hit from the front and left is available'));
+      .then(res => expect(res.text).toEqual('L'));
   });
 
-  it('should respond R when being hit by enemy from the front and right is available', async () => {
+  test('should respond R when being hit by enemy from the front and right is available', async () => {
     const payload = {
       _links: { self: { href: 'BASE_URL' } },
       arena: {
@@ -167,10 +165,10 @@ describe('Unit Tests on requests at /', () => {
       .send(payload)
       .set('Content-Type', 'application/json')
       .expect(200)
-      .then(res => assert.equal(res.text, 'R', 'R should be responded when being hit from the front and right is available'));
+      .then(res => expect(res.text).toEqual('R'));
   });
 
-  it('should respond L when being hit by enemy from the back and left is available', async () => {
+  test('should respond L when being hit by enemy from the back and left is available', async () => {
     const payload = {
       _links: { self: { href: 'BASE_URL' } },
       arena: {
@@ -198,10 +196,10 @@ describe('Unit Tests on requests at /', () => {
       .send(payload)
       .set('Content-Type', 'application/json')
       .expect(200)
-      .then(res => assert.equal(res.text, 'L', 'L should be responded when being hit from the back and left is available'));
+      .then(res => expect(res.text).toEqual('L'));
   });
 
-  it('should respond R when being hit by enemy from the back and right is available', async () => {
+  test('should respond R when being hit by enemy from the back and right is available', async () => {
     const payload = {
       _links: { self: { href: 'BASE_URL' } },
       arena: {
@@ -229,10 +227,10 @@ describe('Unit Tests on requests at /', () => {
       .send(payload)
       .set('Content-Type', 'application/json')
       .expect(200)
-      .then(res => assert.equal(res.text, 'R', 'R should be responded when being hit from the back and right is available'));
+      .then(res => expect(res.text).toEqual('R'));
   });
 
-  it('should respond T when enemy is in range of throw', async () => {
+  test('should respond T when enemy is in range of throw', async () => {
     const payloads = [
       {
         _links: { self: { href: 'BASE_URL' } },
@@ -330,7 +328,7 @@ describe('Unit Tests on requests at /', () => {
           .send(payload)
           .set('Content-Type', 'application/json')
           .expect(200)
-          .then(res => assert.equal(res.text, 'T', 'T should be responded when enemy is in range of throw'))
+          .then(res => expect(res.text).toEqual('T'))
       )
     );
   });
