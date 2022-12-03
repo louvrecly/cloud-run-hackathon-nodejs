@@ -18,9 +18,7 @@ import {
   decideAction
 } from '../server/services';
 
-describe('Unit Tests on services', () => {
-  const relativeDirections = ['front', 'back', 'left', 'right'];
-
+describe('compareDirections should correctly compare 2 directions', () => {
   test('compareDirections should return 0 for E against E', () => {
     const directionA = 'E';
     const directionB = 'E';
@@ -124,7 +122,9 @@ describe('Unit Tests on services', () => {
     assertType<Number>(compareValue);
     expect(compareValue).toEqual(-90);
   });
+});
 
+describe('createEmptyArena should create an empty arena', () => {
   test('createEmptyArena should create an empty arena with correct number of rows and number of columns', () => {
     const dims = new Array(2).fill(10).map(x => Math.ceil(Math.random() * x));
     const arena = createEmptyArena(dims[1], dims[0]);
@@ -138,8 +138,10 @@ describe('Unit Tests on services', () => {
       });
     });
   });
+});
 
-  test('scanArena should correctly scan the arena and identify the locations of all bots', () => {
+describe('scanArena should scan the arena', () => {
+  test('scanArena should correctly scan the arena and identify the location of the only enemy bot', () => {
     const dims = [4, 3];
     const state = {
       BASE_URL: {
@@ -163,22 +165,76 @@ describe('Unit Tests on services', () => {
     expect(arena.length).toEqual(dims[1]);
     expect(arena[0].length).toEqual(dims[0]);
     assertType<Object>(arena[0][0]);
+    expect(arena[0][0]).not.toBeNull();
     assertType<Object>(arena[0][3]);
+    expect(arena[0][3]).not.toBeNull();
     expect(arena[0][1]).toBeNull();
   });
 
-  test('checkIndexInRange should correctly check if the index provided is within range', () => {
+  test('scanArena should correctly scan the arena and identify the locations of all bots', () => {
+    const dims = [6, 5];
+    const state = {
+      BASE_URL: {
+        x: 4,
+        y: 1,
+        direction: 'E',
+        wasHit: true,
+        score: 0
+      },
+      ENEMY_BOT_URL: {
+        x: 0,
+        y: 1,
+        direction: 'E',
+        wasHit: false,
+        score: 0
+      },
+      ENEMY_BOT_URL_1: {
+        x: 5,
+        y: 1,
+        direction: 'W',
+        wasHit: false,
+        score: 0
+      }
+    };
+    const arena = scanArena(dims, state);
+    console.log({ arena });
+    assertType<Array>(arena);
+    assertType<Array>(arena[0]);
+    expect(arena.length).toEqual(dims[1]);
+    expect(arena[0].length).toEqual(dims[0]);
+    assertType<Object>(arena[1][4]);
+    expect(arena[1][4]).not.toBeNull();
+    assertType<Object>(arena[1][0]);
+    expect(arena[1][0]).not.toBeNull();
+    assertType<Object>(arena[1][5]);
+    expect(arena[1][5]).not.toBeNull();
+    expect(arena[0][0]).toBeNull();
+  });
+});
+
+describe('checkIndexInRange should correctly check if the index provided is within range', () => {
+  test('checkIndexInRange should correctly return a boolean to indicate the provided index is in range', () => {
     const dims = [4, 3];
+    assertType<Boolean>(checkIndexInRange(0, dims[0]));
     expect(checkIndexInRange(0, dims[0])).toBeTruthy();
+    assertType<Boolean>(checkIndexInRange(0, dims[1]));
     expect(checkIndexInRange(0, dims[1])).toBeTruthy();
+    assertType<Boolean>(checkIndexInRange(4, dims[0]));
     expect(checkIndexInRange(4, dims[0])).toBeFalsy();
+    assertType<Boolean>(checkIndexInRange(4, dims[1]));
     expect(checkIndexInRange(4, dims[1])).toBeFalsy();
+    assertType<Boolean>(checkIndexInRange(3, dims[0]));
     expect(checkIndexInRange(3, dims[0])).toBeTruthy();
+    assertType<Boolean>(checkIndexInRange(3, dims[1]));
     expect(checkIndexInRange(3, dims[1])).toBeFalsy();
+    assertType<Boolean>(checkIndexInRange(-1, dims[0]));
     expect(checkIndexInRange(-1, dims[0])).toBeFalsy();
+    assertType<Boolean>(checkIndexInRange(-1, dims[1]));
     expect(checkIndexInRange(-1, dims[1])).toBeFalsy();
   });
+});
 
+describe('getDimAndIndex should return the correct dimension axis and the index from the absolute and relative directions provided', () => {
   test('getDimAndIndex should return x dimension and 0 index for E and front', () => {
     const direction = 'E';
     const relativeDirection = 'front';
@@ -282,7 +338,9 @@ describe('Unit Tests on services', () => {
     expect(dimAndIndex.dim).toEqual('x');
     expect(dimAndIndex.index).toEqual(0);
   });
+});
 
+describe('getMultiplier should return the correct multiplier of either 1 or -1 from the absolute and relative directions provided', () => {
   test('getMultiplier should return 1 as multiplier value for E and front', () => {
     const direction = 'E';
     const relativeDirection = 'front';
@@ -346,7 +404,9 @@ describe('Unit Tests on services', () => {
     assertType<Number>(multiplier);
     expect(multiplier).toEqual(1);
   });
+});
 
+describe('getForwardState should return a state with the correct coordinates and direction', () => {
   test('getForwardState should return a state at (1, 0) towards E', () => {
     const dims = [4, 3];
     const state = {
@@ -498,7 +558,9 @@ describe('Unit Tests on services', () => {
     assertType<Boolean>(forwardState);
     expect(forwardState).toEqual(false);
   });
+});
 
+describe('getThreatLevel should return an integer value of 1, 0 or -1 from the absolute directions and relative direction provided', () => {
   test('getThreatLevel should return -1 for E vs E in the front', () => {
     const ownDirection = 'E';
     const enemyDirection = 'E';
@@ -606,7 +668,9 @@ describe('Unit Tests on services', () => {
     assertType<Number>(threatLevel);
     expect(threatLevel).toEqual(1);
   });
+});
 
+describe('evaluateOverallThreat should return an integer value to indicate the overall threat', () => {
   test('evaluateOverallThreat should return 0 for threat levels 0, 0, 0', () => {
     const threatLevels = [0, 0, 0];
     const overallThreat = evaluateOverallThreat(...threatLevels);
@@ -676,6 +740,10 @@ describe('Unit Tests on services', () => {
     assertType<Number>(overallThreat);
     expect(overallThreat).toEqual(3);
   });
+});
+
+describe('scanSurroundings should return an object with the keys of 4 relative directions and the values of either an enemy, a wall or null', () => {
+  const relativeDirections = ['front', 'back', 'left', 'right'];
 
   test('scanSurroundings should locate enemy in the front', () => {
     const dims = [4, 3];
@@ -864,7 +932,9 @@ describe('Unit Tests on services', () => {
     expect(surroundings.right.obstacle).toEqual('wall');
     expect(surroundings.right.distance).toEqual(4);
   });
+});
 
+describe('checkEnemyInRange should return a boolean to indicate an enemy is in range with a provided relative direction', () => {
   test('checkEnemyInRange should identify enemy in range', () => {
     const dims = [4, 3];
     let state = {
@@ -954,7 +1024,9 @@ describe('Unit Tests on services', () => {
     surroundings = scanSurroundings(ownState, arena, dims);
     expect(checkEnemyInRange(surroundings.front)).toBeFalsy();
   });
+});
 
+describe('hasEnemy and hasWall should return a boolean to indicate if a provided relative direction has an enemy or a wall', () => {
   test('hasEnemy should detect enemy in no relative direction while hasWall should detect wall in none', () => {
     const dims = [20, 20];
     const state = {
@@ -1264,7 +1336,9 @@ describe('Unit Tests on services', () => {
     expect(leftHasWall).toEqual(false);
     expect(rightHasWall).toEqual(false);
   });
+});
 
+describe('escape should return a relative direction in a given surroundings', () => {
   test('escape should return F when being hit from the left while forward is available', () => {
     const dims = [4, 3];
     const state = {
@@ -1569,7 +1643,9 @@ describe('Unit Tests on services', () => {
     expect(action.length).toEqual(1);
     expect(['L', 'R'].includes(action)).toBeTruthy();
   });
+});
 
+describe('hunt should return a relative direction in a given surroundings', () => {
   test('hunt should return L when enemy is on the left', () => {
     const dims = [4, 3];
     const state = {
@@ -1843,7 +1919,9 @@ describe('Unit Tests on services', () => {
     expect(action.length).toEqual(1);
     expect(action).equal('F');
   });
+});
 
+describe('decideAction should return a relative direction given the state of being hit, the surroundings and the forward surroundings', () => {
   test('decideAction should return L when being hit from the left and forward has a wall', () => {
     const dims = [6, 5];
     const state = {
