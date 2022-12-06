@@ -451,6 +451,27 @@ export function escape(surroundings, targetLocation = null) {
   }
 }
 
+function turnToHighScorer(surroundings) {
+  const { left, right } = surroundings;
+
+  if (
+    // both left and right have enemies
+    hasEnemy(left) &&
+    hasEnemy(right)
+  ) {
+    // turn to the enemy with higher score
+    return left.obstacle.score > right.obstacle.score ? 'L' : 'R';
+  }
+
+  // only left has an enemy
+  if (hasEnemy(left)) {
+    return 'L';
+  }
+
+  // right or back has an enemy
+  return 'R';
+}
+
 export function escapeNew(surroundings, targetLocation = null) {
   const { front, back, left, right } = surroundings;
   const threatAnalysis = analyzeThreats(surroundings);
@@ -467,22 +488,7 @@ export function escapeNew(surroundings, targetLocation = null) {
       return 'T';
     }
 
-    if (
-      // both left and right have enemies
-      hasEnemy(left) &&
-      hasEnemy(right)
-    ) {
-      // turn to the enemy with higher score
-      return left.obstacle.score > right.obstacle.score ? 'L' : 'R';
-    }
-
-    // only left has an enemy
-    if (hasEnemy(left)) {
-      return 'L';
-    }
-
-    // right or back has an enemy
-    return 'R';
+    return turnToHighScorer(surroundings);
   }
 
   if (
@@ -590,22 +596,7 @@ export function escapeNew(surroundings, targetLocation = null) {
     left.distance > 1 &&
     right.distance > 1
   ) {
-    if (
-      // both left and right have enemies
-      hasEnemy(left) &&
-      hasEnemy(right)
-    ) {
-      // turn to the enemy with higher score
-      return left.obstacle.score > right.obstacle.score ? 'L' : 'R';
-    }
-
-    // only left has an enemy
-    if (hasEnemy(left)) {
-      return 'L';
-    }
-
-    // right or back has an enemy
-    return 'R';
+    return turnToHighScorer(surroundings);
   }
 
   if (
@@ -653,22 +644,7 @@ export function escapeNew(surroundings, targetLocation = null) {
     left.distance > 1 &&
     right.distance > 1
   ) {
-    if (
-      // both left and right have enemies
-      hasEnemy(left) &&
-      hasEnemy(right)
-    ) {
-      // turn to the enemy with higher score
-      return left.obstacle.score > right.obstacle.score ? 'L' : 'R';
-    }
-
-    // only left has an enemy
-    if (hasEnemy(left)) {
-      return 'L';
-    }
-
-    // right or back has an enemy
-    return 'R';
+    return turnToHighScorer(surroundings);
   }
 
   if (
@@ -680,22 +656,7 @@ export function escapeNew(surroundings, targetLocation = null) {
   }
 
   // turn otherwise
-  if (
-    // both left and right have enemies
-    hasEnemy(left) &&
-    hasEnemy(right)
-  ) {
-    // turn to the enemy with higher score
-    return left.obstacle.score > right.obstacle.score ? 'L' : 'R';
-  }
-
-  // only left has an enemy
-  if (hasEnemy(left)) {
-    return 'L';
-  }
-
-  // right or back has an enemy
-  return 'R';
+  return turnToHighScorer(surroundings);
 }
 
 export function hunt(surroundings, forwardSurroundings = false, targetLocation = null) {
