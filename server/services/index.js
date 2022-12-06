@@ -124,12 +124,6 @@ export function getThreatLevel(ownDirection, enemyDirection, relativeDirection) 
   }
 }
 
-export function evaluateOverallThreat(...threatLevels) {
-  return threatLevels.reduce((overallThreat, threatLevel) => {
-    return threatLevel > 0 ? overallThreat + threatLevel : overallThreat
-  }, 0);
-}
-
 export function analyzeThreats(surroundings) {
   const { front, back, left, right } = surroundings;
 
@@ -574,15 +568,15 @@ export function hunt(surroundings, forwardSurroundings = false, targetLocation =
     hasEnemy(left) && left.distance < 4 &&
     hasEnemy(right) && right.distance < 4
   ) {
-    const overallThreat = evaluateOverallThreat(front.obstacle.threatLevel, left.obstacle.threatLevel, right.obstacle.threatLevel);
+    const threatAnalysis = analyzeThreats(surroundings);
     if (
       // at least 2 enemy are considered threats
-      overallThreat > 1
+      threatAnalysis.overall > 1
     ) {
       return 'F';
     } else if (
       // only 1 enemy is considered a threat
-      overallThreat === 1
+      threatAnalysis.overall === 1
     ) {
       if (
         // left or right enemy is a threat

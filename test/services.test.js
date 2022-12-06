@@ -8,7 +8,6 @@ import {
   getMultiplier,
   getForwardState,
   getThreatLevel,
-  evaluateOverallThreat,
   analyzeThreats,
   scanSurroundings,
   checkEnemyInRange,
@@ -668,78 +667,6 @@ describe('getThreatLevel should return an integer value of 1, 0 or -1 from the a
     const threatLevel = getThreatLevel(ownDirection, enemyDirection, relativeDirection);
     assertType<Number>(threatLevel);
     expect(threatLevel).toEqual(1);
-  });
-});
-
-describe('evaluateOverallThreat should return an integer value to indicate the overall threat', () => {
-  test('evaluateOverallThreat should return 0 for threat levels 0, 0, 0', () => {
-    const threatLevels = [0, 0, 0];
-    const overallThreat = evaluateOverallThreat(...threatLevels);
-    assertType<Number>(overallThreat);
-    expect(overallThreat).toEqual(0);
-  });
-
-  test('evaluateOverallThreat should return 0 for threat levels -1, 0, 0', () => {
-    const threatLevels = [-1, 0, 0];
-    const overallThreat = evaluateOverallThreat(...threatLevels);
-    assertType<Number>(overallThreat);
-    expect(overallThreat).toEqual(0);
-  });
-
-  test('evaluateOverallThreat should return 0 for threat levels -1, 0, -1', () => {
-    const threatLevels = [-1, 0, -1];
-    const overallThreat = evaluateOverallThreat(...threatLevels);
-    assertType<Number>(overallThreat);
-    expect(overallThreat).toEqual(0);
-  });
-
-  test('evaluateOverallThreat should return 0 for threat levels -1, -1, -1', () => {
-    const threatLevels = [-1, -1, -1];
-    const overallThreat = evaluateOverallThreat(...threatLevels);
-    assertType<Number>(overallThreat);
-    expect(overallThreat).toEqual(0);
-  });
-
-  test('evaluateOverallThreat should return 1 for threat levels 0, 0, 1', () => {
-    const threatLevels = [0, 0, 1];
-    const overallThreat = evaluateOverallThreat(...threatLevels);
-    assertType<Number>(overallThreat);
-    expect(overallThreat).toEqual(1);
-  });
-
-  test('evaluateOverallThreat should return 1 for threat levels -1, 0, 1', () => {
-    const threatLevels = [-1, 0, 1];
-    const overallThreat = evaluateOverallThreat(...threatLevels);
-    assertType<Number>(overallThreat);
-    expect(overallThreat).toEqual(1);
-  });
-
-  test('evaluateOverallThreat should return 1 for threat levels 1, -1, -1', () => {
-    const threatLevels = [1, -1, -1];
-    const overallThreat = evaluateOverallThreat(...threatLevels);
-    assertType<Number>(overallThreat);
-    expect(overallThreat).toEqual(1);
-  });
-
-  test('evaluateOverallThreat should return 2 for threat levels 1, 1, 0', () => {
-    const threatLevels = [1, 1, 0];
-    const overallThreat = evaluateOverallThreat(...threatLevels);
-    assertType<Number>(overallThreat);
-    expect(overallThreat).toEqual(2);
-  });
-
-  test('evaluateOverallThreat should return 2 for threat levels 1, 1, -1', () => {
-    const threatLevels = [1, 1, -1];
-    const overallThreat = evaluateOverallThreat(...threatLevels);
-    assertType<Number>(overallThreat);
-    expect(overallThreat).toEqual(2);
-  });
-
-  test('evaluateOverallThreat should return 3 for threat levels 1, 1, 1', () => {
-    const threatLevels = [1, 1, 1];
-    const overallThreat = evaluateOverallThreat(...threatLevels);
-    assertType<Number>(overallThreat);
-    expect(overallThreat).toEqual(3);
   });
 });
 
