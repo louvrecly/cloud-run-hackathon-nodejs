@@ -186,16 +186,16 @@ export function scanSurroundings(ownState, arena, dims, visibility = 5) {
   return surroundings;
 }
 
-export function checkEnemyInRange({ obstacle, distance }) {
-  return typeof obstacle === 'object' && obstacle !== null && distance < 4;
-}
-
 export function hasEnemy({ obstacle }) {
-  return !!obstacle && obstacle !== 'wall';
+  return typeof obstacle === 'object' && obstacle !== null;
 }
 
 export function hasWall({ obstacle }) {
   return obstacle === 'wall';
+}
+
+export function checkEnemyInRange({ obstacle, distance }) {
+  return hasEnemy({ obstacle }) && distance < 4;
 }
 
 export function escape(surroundings, targetLocation = null) {

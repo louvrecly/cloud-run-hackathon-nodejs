@@ -10,9 +10,9 @@ import {
   getThreatLevel,
   analyzeThreats,
   scanSurroundings,
-  checkEnemyInRange,
   hasEnemy,
   hasWall,
+  checkEnemyInRange,
   escape,
   escapeNew,
   hunt,
@@ -1196,98 +1196,6 @@ describe('scanSurroundings should return an object with the keys of 4 relative d
   });
 });
 
-describe('checkEnemyInRange should return a boolean to indicate an enemy is in range with a provided relative direction', () => {
-  test('checkEnemyInRange should identify enemy in range', () => {
-    const dims = [4, 3];
-    let state = {
-      BASE_URL: {
-        x: 0,
-        y: 0,
-        direction: 'E',
-        wasHit: false,
-        score: 0
-      },
-      ENEMY_BOT_URL: {
-        x: 3,
-        y: 0,
-        direction: 'N',
-        wasHit: false,
-        score: 0
-      }
-    };
-    let ownState = state.BASE_URL;
-    let arena = scanArena(dims, state);
-    let surroundings = scanSurroundings(ownState, arena, dims);
-    expect(checkEnemyInRange(surroundings.front)).toBeTruthy();
-
-    state = {
-      BASE_URL: {
-        x: 3,
-        y: 2,
-        direction: 'N',
-        wasHit: false,
-        score: 0
-      },
-      ENEMY_BOT_URL: {
-        x: 3,
-        y: 0,
-        direction: 'N',
-        wasHit: false,
-        score: 0
-      }
-    };
-    ownState = state.BASE_URL;
-    arena = scanArena(dims, state);
-    surroundings = scanSurroundings(ownState, arena, dims);
-    expect(checkEnemyInRange(surroundings.front)).toBeTruthy();
-  });
-
-  test('checkEnemyInRange should identify enemy is not in range', () => {
-    const dims = [4, 3];
-    let state = {
-      BASE_URL: {
-        x: 0,
-        y: 0,
-        direction: 'S',
-        wasHit: false,
-        score: 0
-      },
-      ENEMY_BOT_URL: {
-        x: 3,
-        y: 0,
-        direction: 'N',
-        wasHit: false,
-        score: 0
-      }
-    };
-    let ownState = state.BASE_URL;
-    let arena = scanArena(dims, state);
-    let surroundings = scanSurroundings(ownState, arena, dims);
-    expect(checkEnemyInRange(surroundings.front)).toBeFalsy();
-
-    state = {
-      BASE_URL: {
-        x: 3,
-        y: 2,
-        direction: 'W',
-        wasHit: false,
-        score: 0
-      },
-      ENEMY_BOT_URL: {
-        x: 3,
-        y: 0,
-        direction: 'N',
-        wasHit: false,
-        score: 0
-      }
-    };
-    ownState = state.BASE_URL;
-    arena = scanArena(dims, state);
-    surroundings = scanSurroundings(ownState, arena, dims);
-    expect(checkEnemyInRange(surroundings.front)).toBeFalsy();
-  });
-});
-
 describe('hasEnemy and hasWall should return a boolean to indicate if a provided relative direction has an enemy or a wall', () => {
   test('hasEnemy should detect enemy in no relative direction while hasWall should detect wall in none', () => {
     const dims = [20, 20];
@@ -1597,6 +1505,98 @@ describe('hasEnemy and hasWall should return a boolean to indicate if a provided
     expect(backHasWall).toEqual(false);
     expect(leftHasWall).toEqual(false);
     expect(rightHasWall).toEqual(false);
+  });
+});
+
+describe('checkEnemyInRange should return a boolean to indicate an enemy is in range with a provided relative direction', () => {
+  test('checkEnemyInRange should identify enemy in range', () => {
+    const dims = [4, 3];
+    let state = {
+      BASE_URL: {
+        x: 0,
+        y: 0,
+        direction: 'E',
+        wasHit: false,
+        score: 0
+      },
+      ENEMY_BOT_URL: {
+        x: 3,
+        y: 0,
+        direction: 'N',
+        wasHit: false,
+        score: 0
+      }
+    };
+    let ownState = state.BASE_URL;
+    let arena = scanArena(dims, state);
+    let surroundings = scanSurroundings(ownState, arena, dims);
+    expect(checkEnemyInRange(surroundings.front)).toBeTruthy();
+
+    state = {
+      BASE_URL: {
+        x: 3,
+        y: 2,
+        direction: 'N',
+        wasHit: false,
+        score: 0
+      },
+      ENEMY_BOT_URL: {
+        x: 3,
+        y: 0,
+        direction: 'N',
+        wasHit: false,
+        score: 0
+      }
+    };
+    ownState = state.BASE_URL;
+    arena = scanArena(dims, state);
+    surroundings = scanSurroundings(ownState, arena, dims);
+    expect(checkEnemyInRange(surroundings.front)).toBeTruthy();
+  });
+
+  test('checkEnemyInRange should identify enemy is not in range', () => {
+    const dims = [4, 3];
+    let state = {
+      BASE_URL: {
+        x: 0,
+        y: 0,
+        direction: 'S',
+        wasHit: false,
+        score: 0
+      },
+      ENEMY_BOT_URL: {
+        x: 3,
+        y: 0,
+        direction: 'N',
+        wasHit: false,
+        score: 0
+      }
+    };
+    let ownState = state.BASE_URL;
+    let arena = scanArena(dims, state);
+    let surroundings = scanSurroundings(ownState, arena, dims);
+    expect(checkEnemyInRange(surroundings.front)).toBeFalsy();
+
+    state = {
+      BASE_URL: {
+        x: 3,
+        y: 2,
+        direction: 'W',
+        wasHit: false,
+        score: 0
+      },
+      ENEMY_BOT_URL: {
+        x: 3,
+        y: 0,
+        direction: 'N',
+        wasHit: false,
+        score: 0
+      }
+    };
+    ownState = state.BASE_URL;
+    arena = scanArena(dims, state);
+    surroundings = scanSurroundings(ownState, arena, dims);
+    expect(checkEnemyInRange(surroundings.front)).toBeFalsy();
   });
 });
 
