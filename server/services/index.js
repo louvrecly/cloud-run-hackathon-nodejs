@@ -536,6 +536,16 @@ export function escapeNew(surroundings, targetLocation = null) {
   }
 
   if (
+    // only back has room to escape
+    front.distance === 1 &&
+    back.distance > 1 &&
+    left.distance === 1 &&
+    right.distance === 1
+  ) {
+    return turnPreference;
+  }
+
+  if (
     // left and right have no room to escape
     front.distance > 1 &&
     back.distance > 1 &&

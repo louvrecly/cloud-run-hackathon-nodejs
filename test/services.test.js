@@ -2443,6 +2443,204 @@ describe('escapeNew should return a rational decision of a relative direction wh
     expect(action).toHaveLength(1);
     expect(action).toBe('R');
   });
+
+  test('escapeNew should return L when blocked from the front, left and right with the left enemy has a higher score', () => {
+    const surroundings = {
+      front: {
+        distance: 1,
+        obstacle: {
+          x: 3,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 2,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'E',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 1,
+        obstacle: {
+          x: 2,
+          y: 1,
+          direction: 'E',
+          wasHit: false,
+          score: 1,
+          threatLevel: 0,
+        },
+      },
+      right: {
+        distance: 1,
+        obstacle: {
+          x: 2,
+          y: 3,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 0,
+        },
+      },
+    };
+    const action = escapeNew(surroundings);
+    assertType<String>(action);
+    expect(action).toHaveLength(1);
+    expect(action).toBe('L');
+  });
+
+  test('escapeNew should return R when blocked from the front, left and right with the right enemy has a higher score', () => {
+    const surroundings = {
+      front: {
+        distance: 1,
+        obstacle: {
+          x: 3,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 2,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'E',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 1,
+        obstacle: {
+          x: 2,
+          y: 1,
+          direction: 'E',
+          wasHit: false,
+          score: 1,
+          threatLevel: 0,
+        },
+      },
+      right: {
+        distance: 1,
+        obstacle: {
+          x: 2,
+          y: 3,
+          direction: 'W',
+          wasHit: false,
+          score: 2,
+          threatLevel: 0,
+        },
+      },
+    };
+    const action = escapeNew(surroundings);
+    assertType<String>(action);
+    expect(action).toHaveLength(1);
+    expect(action).toBe('R');
+  });
+
+  test('escapeNew should return L when blocked from the front, left and right while only left has an enemy', () => {
+    const surroundings = {
+      front: {
+        distance: 1,
+        obstacle: {
+          x: 3,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 2,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'E',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 1,
+        obstacle: {
+          x: 2,
+          y: 1,
+          direction: 'E',
+          wasHit: false,
+          score: 1,
+          threatLevel: 0,
+        },
+      },
+      right: {
+        distance: 1,
+        obstacle: 'wall',
+      },
+    };
+    const action = escapeNew(surroundings);
+    assertType<String>(action);
+    expect(action).toHaveLength(1);
+    expect(action).toBe('L');
+  });
+
+  test('escapeNew should return R when blocked from the front, left and right while only right has an enemy', () => {
+    const surroundings = {
+      front: {
+        distance: 1,
+        obstacle: {
+          x: 3,
+          y: 1,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 2,
+        obstacle: {
+          x: 0,
+          y: 1,
+          direction: 'E',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 1,
+        obstacle: 'wall',
+      },
+      right: {
+        distance: 1,
+        obstacle: {
+          x: 2,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 2,
+          threatLevel: 0,
+        },
+      },
+    };
+    const action = escapeNew(surroundings);
+    assertType<String>(action);
+    expect(action).toHaveLength(1);
+    expect(action).toBe('R');
+  });
 });
 
 describe('escapeNew should return a rational decision of a relative direction when blocked in 2 relative directions', () => {
