@@ -491,14 +491,16 @@ export function escapeNew(surroundings, targetLocation = null) {
   const turnPreference = turnToHighScorer(surroundings);
 
   if (
-    // blocked in all directions
+    // front, left and right have no room to escape
     front.distance === 1 &&
-    back.distance === 1 &&
     left.distance === 1 &&
     right.distance === 1
   ) {
-    // front has an enemy
-    if (hasEnemy(front)) {
+    if (
+      // back has no room to escape and front has an enemy
+      back.distance === 1 &&
+      hasEnemy(front)
+    ) {
       return 'T';
     }
 
@@ -508,7 +510,6 @@ export function escapeNew(surroundings, targetLocation = null) {
   if (
     // only front has room to escape
     front.distance > 1 &&
-    back.distance === 1 &&
     left.distance === 1 &&
     right.distance === 1
   ) {
@@ -518,7 +519,6 @@ export function escapeNew(surroundings, targetLocation = null) {
   if (
     // only left has room to escape
     front.distance === 1 &&
-    back.distance === 1 &&
     left.distance > 1 &&
     right.distance === 1
   ) {
@@ -528,7 +528,6 @@ export function escapeNew(surroundings, targetLocation = null) {
   if (
     // only right has room to escape
     front.distance === 1 &&
-    back.distance === 1 &&
     left.distance === 1 &&
     right.distance > 1
   ) {
@@ -536,49 +535,8 @@ export function escapeNew(surroundings, targetLocation = null) {
   }
 
   if (
-    // only back has room to escape
-    front.distance === 1 &&
-    back.distance > 1 &&
-    left.distance === 1 &&
-    right.distance === 1
-  ) {
-    return turnPreference;
-  }
-
-  if (
-    // left and right have no room to escape
+    // left has no room to escape
     front.distance > 1 &&
-    back.distance > 1 &&
-    left.distance === 1 &&
-    right.distance === 1
-  ) {
-    return 'F';
-  }
-
-  if (
-    // front and left have no room to escape
-    front.distance === 1 &&
-    back.distance > 1 &&
-    left.distance === 1 &&
-    right.distance > 1
-  ) {
-    return 'R';
-  }
-
-  if (
-    // front and right have no room to escape
-    front.distance === 1 &&
-    back.distance > 1 &&
-    left.distance > 1 &&
-    right.distance === 1
-  ) {
-    return 'L';
-  }
-
-  if (
-    // left and back have no room to escape
-    front.distance > 1 &&
-    back.distance === 1 &&
     left.distance === 1 &&
     right.distance > 1
   ) {
@@ -586,9 +544,8 @@ export function escapeNew(surroundings, targetLocation = null) {
   }
 
   if (
-    // right and back have no room to escape
+    // right has no room to escape
     front.distance > 1 &&
-    back.distance === 1 &&
     left.distance > 1 &&
     right.distance === 1
   ) {
@@ -596,39 +553,8 @@ export function escapeNew(surroundings, targetLocation = null) {
   }
 
   if (
-    // front and back have no room to escape
+    // front has no room to escape
     front.distance === 1 &&
-    back.distance === 1 &&
-    left.distance > 1 &&
-    right.distance > 1
-  ) {
-    return turnPreference;
-  }
-
-  if (
-    // only left has no room to escape
-    front.distance > 1 &&
-    back.distance > 1 &&
-    left.distance === 1 &&
-    right.distance > 1
-  ) {
-    return decideForwardOrTurn(threatAnalysis, 'R');
-  }
-
-  if (
-    // only right has no room to escape
-    front.distance > 1 &&
-    back.distance > 1 &&
-    left.distance > 1 &&
-    right.distance === 1
-  ) {
-    return decideForwardOrTurn(threatAnalysis, 'L');
-  }
-
-  if (
-    // only front has no room to escape
-    front.distance === 1 &&
-    back.distance > 1 &&
     left.distance > 1 &&
     right.distance > 1
   ) {
