@@ -125,7 +125,28 @@ export function getThreatLevel(ownDirection, enemyDirection, relativeDirection) 
 }
 
 export function evaluateOverallThreat(...threatLevels) {
-  return threatLevels.reduce((overallThreat, threatLevel) => threatLevel > 0 ? overallThreat + threatLevel : overallThreat, 0);
+  return threatLevels.reduce((overallThreat, threatLevel) => {
+    return threatLevel > 0 ? overallThreat + threatLevel : overallThreat
+  }, 0);
+}
+
+export function analyzeThreats(surroundings) {
+  const { front, back, left, right } = surroundings;
+
+  const longitudinal = [front, back].reduce((threatCount, relativeDirection) => {
+    return relativeDirection.obstacle?.threatLevel && relativeDirection.obstacle.threatLevel > 0
+      ? threatCount + relativeDirection.obstacle.threatLevel
+      : threatCount;
+  }, 0);
+
+  const transverse = [left, right].reduce((threatCount, relativeDirection) => {
+    return relativeDirection.obstacle?.threatLevel && relativeDirection.obstacle.threatLevel > 0
+      ? threatCount + relativeDirection.obstacle.threatLevel
+      : threatCount;
+    }, 0);
+
+  const overall = longitudinal + transverse;
+  return { longitudinal, transverse, overall };
 }
 
 export function scanSurroundings(ownState, arena, dims, visibility = 5) {
@@ -341,8 +362,8 @@ export function escape(surroundings, targetLocation = null) {
       }
     }
   } else if (
-    // front has enemy within range of throw
-    hasEnemy(front) && front.distance < 4
+      // front has enemy within range of throw
+      hasEnemy(front) && front.distance < 4
     ) {
     if (
       // left or right has enemy
@@ -428,6 +449,253 @@ export function escape(surroundings, targetLocation = null) {
       }
     }
   }
+}
+
+export function escapeNew(surroundings, targetLocation = null) {
+  const { front, back, left, right } = surroundings;
+  const threatAnalysis = analyzeThreats(surroundings);
+
+  if (
+    // blocked in all directions
+    front.distance === 1 &&
+    back.distance === 1 &&
+    left.distance === 1 &&
+    right.distance === 1
+  ) {
+    // front has an enemy
+    if (hasEnemy(front)) {
+      return 'T';
+    }
+
+    if (
+      // both left and right have enemies
+      hasEnemy(left) &&
+      hasEnemy(right)
+    ) {
+      // turn to the enemy with higher score
+      return left.obstacle.score > right.obstacle.score ? 'L' : 'R';
+    }
+
+    // only left has an enemy
+    if (hasEnemy(left)) {
+      return 'L';
+    }
+
+    // right or back has an enemy
+    return 'R';
+  }
+
+  if (
+    // only front has room to escape
+    front.distance > 1 &&
+    back.distance === 1 &&
+    left.distance === 1 &&
+    right.distance === 1
+  ) {
+    return 'F';
+  }
+
+  if (
+    // only left has room to escape
+    front.distance === 1 &&
+    back.distance === 1 &&
+    left.distance > 1 &&
+    right.distance === 1
+  ) {
+    return 'L';
+  }
+
+  if (
+    // only right has room to escape
+    front.distance === 1 &&
+    back.distance === 1 &&
+    left.distance === 1 &&
+    right.distance > 1
+  ) {
+    return 'R';
+  }
+
+  if (
+    // left and right have no room to escape
+    front.distance > 1 &&
+    back.distance > 1 &&
+    left.distance === 1 &&
+    right.distance === 1
+  ) {
+    return 'F';
+  }
+
+  if (
+    // front and left have no room to escape
+    front.distance === 1 &&
+    back.distance > 1 &&
+    left.distance === 1 &&
+    right.distance > 1
+  ) {
+    return 'R';
+  }
+
+  if (
+    // front and right have no room to escape
+    front.distance === 1 &&
+    back.distance > 1 &&
+    left.distance > 1 &&
+    right.distance === 1
+  ) {
+    return 'L';
+  }
+
+  if (
+    // left and back have no room to escape
+    front.distance > 1 &&
+    back.distance === 1 &&
+    left.distance === 1 &&
+    right.distance > 1
+  ) {
+    if (
+      // at least 1 enemy is facing this way from the left or right or no enemy is facing this way from the front or back
+      threatAnalysis.transverse > 0 ||
+      threatAnalysis.longitudinal <= 0
+    ) {
+      return 'F';
+    }
+
+    // turn otherwise
+    return 'R';
+  }
+
+  if (
+    // right and back have no room to escape
+    front.distance > 1 &&
+    back.distance === 1 &&
+    left.distance > 1 &&
+    right.distance === 1
+  ) {
+    if (
+      // at least 1 enemy is facing this way from the left or right or no enemy is facing this way from the front or back
+      threatAnalysis.transverse > 0 ||
+      threatAnalysis.longitudinal <= 0
+    ) {
+      return 'F';
+    }
+
+    // turn otherwise
+    return 'L';
+  }
+
+  if (
+    // front and back have no room to escape
+    front.distance === 1 &&
+    back.distance === 1 &&
+    left.distance > 1 &&
+    right.distance > 1
+  ) {
+    if (
+      // both left and right have enemies
+      hasEnemy(left) &&
+      hasEnemy(right)
+    ) {
+      // turn to the enemy with higher score
+      return left.obstacle.score > right.obstacle.score ? 'L' : 'R';
+    }
+
+    // only left has an enemy
+    if (hasEnemy(left)) {
+      return 'L';
+    }
+
+    // right or back has an enemy
+    return 'R';
+  }
+
+  if (
+    // only left has no room to escape
+    front.distance > 1 &&
+    back.distance > 1 &&
+    left.distance === 1 &&
+    right.distance > 1
+  ) {
+    if (
+      // at least 1 enemy is facing this way from the left or right or no enemy is facing this way from the front or back
+      threatAnalysis.transverse > 0 ||
+      threatAnalysis.longitudinal <= 0
+    ) {
+      return 'F';
+    }
+
+    // turn otherwise
+    return 'R';
+  }
+
+  if (
+    // only right has no room to escape
+    front.distance > 1 &&
+    back.distance > 1 &&
+    left.distance > 1 &&
+    right.distance === 1
+  ) {
+    if (
+      // at least 1 enemy is facing this way from the left or right or no enemy is facing this way from the front or back
+      threatAnalysis.transverse > 0 ||
+      threatAnalysis.longitudinal <= 0
+    ) {
+      return 'F';
+    }
+
+    // turn otherwise
+    return 'L';
+  }
+
+  if (
+    // only front has no room to escape
+    front.distance === 1 &&
+    back.distance > 1 &&
+    left.distance > 1 &&
+    right.distance > 1
+  ) {
+    if (
+      // both left and right have enemies
+      hasEnemy(left) &&
+      hasEnemy(right)
+    ) {
+      // turn to the enemy with higher score
+      return left.obstacle.score > right.obstacle.score ? 'L' : 'R';
+    }
+
+    // only left has an enemy
+    if (hasEnemy(left)) {
+      return 'L';
+    }
+
+    // right or back has an enemy
+    return 'R';
+  }
+
+  if (
+    // at least 1 enemy is facing this way from the left or right or no enemy is facing this way from the front or back
+    threatAnalysis.transverse > 0 ||
+    threatAnalysis.longitudinal <= 0
+  ) {
+    return 'F';
+  }
+
+  // turn otherwise
+  if (
+    // both left and right have enemies
+    hasEnemy(left) &&
+    hasEnemy(right)
+  ) {
+    // turn to the enemy with higher score
+    return left.obstacle.score > right.obstacle.score ? 'L' : 'R';
+  }
+
+  // only left has an enemy
+  if (hasEnemy(left)) {
+    return 'L';
+  }
+
+  // right or back has an enemy
+  return 'R';
 }
 
 export function hunt(surroundings, forwardSurroundings = false, targetLocation = null) {
