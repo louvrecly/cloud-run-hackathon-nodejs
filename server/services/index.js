@@ -472,6 +472,19 @@ function turnToHighScorer(surroundings) {
   return 'R';
 }
 
+function decideForwardOrTurn(threatAnalysis, turn) {
+  if (
+    // at least 1 enemy is facing this way from the left or right or no enemy is facing this way from the front or back
+    threatAnalysis.transverse > 0 ||
+    threatAnalysis.longitudinal <= 0
+  ) {
+    return 'F';
+  }
+
+  // turn otherwise
+  return turn;
+}
+
 export function escapeNew(surroundings, targetLocation = null) {
   const { front, back, left, right } = surroundings;
   const threatAnalysis = analyzeThreats(surroundings);
@@ -558,16 +571,7 @@ export function escapeNew(surroundings, targetLocation = null) {
     left.distance === 1 &&
     right.distance > 1
   ) {
-    if (
-      // at least 1 enemy is facing this way from the left or right or no enemy is facing this way from the front or back
-      threatAnalysis.transverse > 0 ||
-      threatAnalysis.longitudinal <= 0
-    ) {
-      return 'F';
-    }
-
-    // turn otherwise
-    return 'R';
+    return decideForwardOrTurn(threatAnalysis, 'R');
   }
 
   if (
@@ -577,16 +581,7 @@ export function escapeNew(surroundings, targetLocation = null) {
     left.distance > 1 &&
     right.distance === 1
   ) {
-    if (
-      // at least 1 enemy is facing this way from the left or right or no enemy is facing this way from the front or back
-      threatAnalysis.transverse > 0 ||
-      threatAnalysis.longitudinal <= 0
-    ) {
-      return 'F';
-    }
-
-    // turn otherwise
-    return 'L';
+    return decideForwardOrTurn(threatAnalysis, 'L');
   }
 
   if (
@@ -606,16 +601,7 @@ export function escapeNew(surroundings, targetLocation = null) {
     left.distance === 1 &&
     right.distance > 1
   ) {
-    if (
-      // at least 1 enemy is facing this way from the left or right or no enemy is facing this way from the front or back
-      threatAnalysis.transverse > 0 ||
-      threatAnalysis.longitudinal <= 0
-    ) {
-      return 'F';
-    }
-
-    // turn otherwise
-    return 'R';
+    return decideForwardOrTurn(threatAnalysis, 'R');
   }
 
   if (
@@ -625,16 +611,7 @@ export function escapeNew(surroundings, targetLocation = null) {
     left.distance > 1 &&
     right.distance === 1
   ) {
-    if (
-      // at least 1 enemy is facing this way from the left or right or no enemy is facing this way from the front or back
-      threatAnalysis.transverse > 0 ||
-      threatAnalysis.longitudinal <= 0
-    ) {
-      return 'F';
-    }
-
-    // turn otherwise
-    return 'L';
+    return decideForwardOrTurn(threatAnalysis, 'L');
   }
 
   if (
@@ -647,16 +624,7 @@ export function escapeNew(surroundings, targetLocation = null) {
     return turnToHighScorer(surroundings);
   }
 
-  if (
-    // at least 1 enemy is facing this way from the left or right or no enemy is facing this way from the front or back
-    threatAnalysis.transverse > 0 ||
-    threatAnalysis.longitudinal <= 0
-  ) {
-    return 'F';
-  }
-
-  // turn otherwise
-  return turnToHighScorer(surroundings);
+  return decideForwardOrTurn(threatAnalysis, turnToHighScorer(surroundings));
 }
 
 export function hunt(surroundings, forwardSurroundings = false, targetLocation = null) {
