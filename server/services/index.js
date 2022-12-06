@@ -488,6 +488,7 @@ function decideForwardOrTurn(threatAnalysis, turn) {
 export function escapeNew(surroundings, targetLocation = null) {
   const { front, back, left, right } = surroundings;
   const threatAnalysis = analyzeThreats(surroundings);
+  const turnPreference = turnToHighScorer(surroundings);
 
   if (
     // blocked in all directions
@@ -501,7 +502,7 @@ export function escapeNew(surroundings, targetLocation = null) {
       return 'T';
     }
 
-    return turnToHighScorer(surroundings);
+    return turnPreference;
   }
 
   if (
@@ -591,7 +592,7 @@ export function escapeNew(surroundings, targetLocation = null) {
     left.distance > 1 &&
     right.distance > 1
   ) {
-    return turnToHighScorer(surroundings);
+    return turnPreference;
   }
 
   if (
@@ -621,10 +622,10 @@ export function escapeNew(surroundings, targetLocation = null) {
     left.distance > 1 &&
     right.distance > 1
   ) {
-    return turnToHighScorer(surroundings);
+    return turnPreference;
   }
 
-  return decideForwardOrTurn(threatAnalysis, turnToHighScorer(surroundings));
+  return decideForwardOrTurn(threatAnalysis, turnPreference);
 }
 
 export function hunt(surroundings, forwardSurroundings = false, targetLocation = null) {
