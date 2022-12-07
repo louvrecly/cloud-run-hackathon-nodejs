@@ -981,8 +981,6 @@ export function huntNew(surroundings, forwardSurroundings = false, targetLocator
 export function decideAction(wasHit, surroundings, forwardSurroundings = false, targetLocator = null) {
   // escape if under attack
   if (wasHit) return escapeNew(surroundings, targetLocator);
-  // throw if enemy within range of throw
-  else if (checkEnemyInRange(surroundings.front)) return 'T';
   // hunt otherwise
-  else return hunt(surroundings, forwardSurroundings, targetLocator);
+  else return huntNew(surroundings, forwardSurroundings, targetLocator);
 }
