@@ -7,6 +7,7 @@ import {
   getDimAndIndex,
   getMultiplier,
   getForwardState,
+  getTurnState,
   getThreatLevel,
   analyzeThreats,
   scanSurroundings,
@@ -16,6 +17,7 @@ import {
   escape,
   escapeNew,
   hunt,
+  huntNew,
   decideAction
 } from '../server/services';
 
@@ -406,7 +408,7 @@ describe('getMultiplier should return the correct multiplier of either 1 or -1 f
   });
 });
 
-describe('getForwardState should return a state with the correct coordinates and direction', () => {
+describe('getForwardState should return the state after the forward action with the correct coordinates and direction', () => {
   test('getForwardState should return a state at (1, 0) towards E', () => {
     const dims = [4, 3];
     const state = {
@@ -557,6 +559,128 @@ describe('getForwardState should return a state with the correct coordinates and
     let forwardState = getForwardState(ownState, dims);
     assertType<Boolean>(forwardState);
     expect(forwardState).toEqual(false);
+  });
+});
+
+describe('getTurnState should return the state after the turn action with the correct coordinates and direction', () => {
+  test('getTurnState should return a left state towards N and a right state towards S from a current direction of E', () => {
+    const ownState = {
+      x: 0,
+      y: 0,
+      direction: 'E',
+      wasHit: false,
+      score: 0,
+    };
+    const leftState = getTurnState(ownState, 'L');
+    const rightState = getTurnState(ownState, 'R');
+    assertType<Object>(leftState);
+    expect(leftState).toHaveProperty('x');
+    expect(leftState).toHaveProperty('y');
+    expect(leftState).toHaveProperty('direction');
+    expect(leftState).toHaveProperty('wasHit');
+    expect(leftState).toHaveProperty('score');
+    expect(leftState.x).toBe(0);
+    expect(leftState.y).toBe(0);
+    expect(leftState.direction).toBe('N');
+    assertType<Object>(rightState);
+    expect(rightState).toHaveProperty('x');
+    expect(rightState).toHaveProperty('y');
+    expect(rightState).toHaveProperty('direction');
+    expect(rightState).toHaveProperty('wasHit');
+    expect(rightState).toHaveProperty('score');
+    expect(rightState.x).toBe(0);
+    expect(rightState.y).toBe(0);
+    expect(rightState.direction).toBe('S');
+  });
+
+  test('getTurnState should return a left state towards E and a right state towards W from a current direction of S', () => {
+    const ownState = {
+      x: 0,
+      y: 0,
+      direction: 'S',
+      wasHit: false,
+      score: 0,
+    };
+    const leftState = getTurnState(ownState, 'L');
+    const rightState = getTurnState(ownState, 'R');
+    assertType<Object>(leftState);
+    expect(leftState).toHaveProperty('x');
+    expect(leftState).toHaveProperty('y');
+    expect(leftState).toHaveProperty('direction');
+    expect(leftState).toHaveProperty('wasHit');
+    expect(leftState).toHaveProperty('score');
+    expect(leftState.x).toBe(0);
+    expect(leftState.y).toBe(0);
+    expect(leftState.direction).toBe('E');
+    assertType<Object>(rightState);
+    expect(rightState).toHaveProperty('x');
+    expect(rightState).toHaveProperty('y');
+    expect(rightState).toHaveProperty('direction');
+    expect(rightState).toHaveProperty('wasHit');
+    expect(rightState).toHaveProperty('score');
+    expect(rightState.x).toBe(0);
+    expect(rightState.y).toBe(0);
+    expect(rightState.direction).toBe('W');
+  });
+
+  test('getTurnState should return a left state towards S and a right state towards N from a current direction of W', () => {
+    const ownState = {
+      x: 0,
+      y: 0,
+      direction: 'W',
+      wasHit: false,
+      score: 0,
+    };
+    const leftState = getTurnState(ownState, 'L');
+    const rightState = getTurnState(ownState, 'R');
+    assertType<Object>(leftState);
+    expect(leftState).toHaveProperty('x');
+    expect(leftState).toHaveProperty('y');
+    expect(leftState).toHaveProperty('direction');
+    expect(leftState).toHaveProperty('wasHit');
+    expect(leftState).toHaveProperty('score');
+    expect(leftState.x).toBe(0);
+    expect(leftState.y).toBe(0);
+    expect(leftState.direction).toBe('S');
+    assertType<Object>(rightState);
+    expect(rightState).toHaveProperty('x');
+    expect(rightState).toHaveProperty('y');
+    expect(rightState).toHaveProperty('direction');
+    expect(rightState).toHaveProperty('wasHit');
+    expect(rightState).toHaveProperty('score');
+    expect(rightState.x).toBe(0);
+    expect(rightState.y).toBe(0);
+    expect(rightState.direction).toBe('N');
+  });
+
+  test('getTurnState should return a left state towards W and a right state towards E from a current direction of N', () => {
+    const ownState = {
+      x: 0,
+      y: 0,
+      direction: 'N',
+      wasHit: false,
+      score: 0,
+    };
+    const leftState = getTurnState(ownState, 'L');
+    const rightState = getTurnState(ownState, 'R');
+    assertType<Object>(leftState);
+    expect(leftState).toHaveProperty('x');
+    expect(leftState).toHaveProperty('y');
+    expect(leftState).toHaveProperty('direction');
+    expect(leftState).toHaveProperty('wasHit');
+    expect(leftState).toHaveProperty('score');
+    expect(leftState.x).toBe(0);
+    expect(leftState.y).toBe(0);
+    expect(leftState.direction).toBe('W');
+    assertType<Object>(rightState);
+    expect(rightState).toHaveProperty('x');
+    expect(rightState).toHaveProperty('y');
+    expect(rightState).toHaveProperty('direction');
+    expect(rightState).toHaveProperty('wasHit');
+    expect(rightState).toHaveProperty('score');
+    expect(rightState.x).toBe(0);
+    expect(rightState.y).toBe(0);
+    expect(rightState.direction).toBe('E');
   });
 });
 
@@ -1509,94 +1633,140 @@ describe('hasEnemy and hasWall should return a boolean to indicate if a provided
 });
 
 describe('checkEnemyInRange should return a boolean to indicate an enemy is in range with a provided relative direction', () => {
-  test('checkEnemyInRange should identify enemy in range', () => {
-    const dims = [4, 3];
-    let state = {
-      BASE_URL: {
-        x: 0,
-        y: 0,
-        direction: 'E',
-        wasHit: false,
-        score: 0
+  test('checkEnemyInRange should correctly identify enemies in range from the front and back but not left and right', () => {
+    const surroundings = {
+      front: {
+        distance: 1,
+        obstacle: {
+          x: 5,
+          y: 4,
+          direction: 'N',
+          wasHit: false,
+          threatLevel: 0,
+        },
       },
-      ENEMY_BOT_URL: {
-        x: 3,
-        y: 0,
-        direction: 'N',
-        wasHit: false,
-        score: 0
-      }
-    };
-    let ownState = state.BASE_URL;
-    let arena = scanArena(dims, state);
-    let surroundings = scanSurroundings(ownState, arena, dims);
-    expect(checkEnemyInRange(surroundings.front)).toBeTruthy();
-
-    state = {
-      BASE_URL: {
-        x: 3,
-        y: 2,
-        direction: 'N',
-        wasHit: false,
-        score: 0
+      back: {
+        distance: 3,
+        obstacle: {
+          x: 1,
+          y: 4,
+          direction: 'N',
+          wasHit: false,
+          threatLevel: 0,
+        },
       },
-      ENEMY_BOT_URL: {
-        x: 3,
-        y: 0,
-        direction: 'N',
-        wasHit: false,
-        score: 0
-      }
+      left: {
+        distance: 4,
+        obstacle: {
+          x: 0,
+          y: 4,
+          direction: 'N',
+          wasHit: false,
+          threatLevel: -1,
+        },
+      },
+      right: {
+        distance: 5,
+        obstacle: null,
+      },
     };
-    ownState = state.BASE_URL;
-    arena = scanArena(dims, state);
-    surroundings = scanSurroundings(ownState, arena, dims);
-    expect(checkEnemyInRange(surroundings.front)).toBeTruthy();
+    expect(checkEnemyInRange(surroundings.front)).toBe(true);
+    expect(checkEnemyInRange(surroundings.back)).toBe(true);
+    expect(checkEnemyInRange(surroundings.left)).toBe(false);
+    expect(checkEnemyInRange(surroundings.right)).toBe(false);
   });
 
-  test('checkEnemyInRange should identify enemy is not in range', () => {
-    const dims = [4, 3];
-    let state = {
-      BASE_URL: {
-        x: 0,
-        y: 0,
-        direction: 'S',
-        wasHit: false,
-        score: 0
+  test('checkEnemyInRange should correctly identify no enemy in range', () => {
+    const surroundings = {
+      front: {
+        distance: 4,
+        obstacle: 'wall',
       },
-      ENEMY_BOT_URL: {
-        x: 3,
-        y: 0,
-        direction: 'N',
-        wasHit: false,
-        score: 0
-      }
+      back: {
+        distance: 3,
+        obstacle: 'wall',
+      },
+      left: {
+        distance: 1,
+        obstacle: 'wall',
+      },
+      right: {
+        distance: 5,
+        obstacle: null,
+      },
     };
-    let ownState = state.BASE_URL;
-    let arena = scanArena(dims, state);
-    let surroundings = scanSurroundings(ownState, arena, dims);
-    expect(checkEnemyInRange(surroundings.front)).toBeFalsy();
+    expect(checkEnemyInRange(surroundings.front)).toBe(false);
+    expect(checkEnemyInRange(surroundings.back)).toBe(false);
+    expect(checkEnemyInRange(surroundings.left)).toBe(false);
+    expect(checkEnemyInRange(surroundings.right)).toBe(false);
+  });
 
-    state = {
-      BASE_URL: {
-        x: 3,
-        y: 2,
-        direction: 'W',
-        wasHit: false,
-        score: 0
+  test('checkEnemyInRange should correctly identify enemies in range from the front, left and back but not right with offset -1', () => {
+    const surroundings = {
+      front: {
+        distance: 1,
+        obstacle: {
+          x: 5,
+          y: 4,
+          direction: 'N',
+          wasHit: false,
+          threatLevel: 0,
+        },
       },
-      ENEMY_BOT_URL: {
-        x: 3,
-        y: 0,
-        direction: 'N',
-        wasHit: false,
-        score: 0
-      }
+      back: {
+        distance: 3,
+        obstacle: {
+          x: 1,
+          y: 4,
+          direction: 'N',
+          wasHit: false,
+          threatLevel: 0,
+        },
+      },
+      left: {
+        distance: 4,
+        obstacle: {
+          x: 0,
+          y: 4,
+          direction: 'N',
+          wasHit: false,
+          threatLevel: -1,
+        },
+      },
+      right: {
+        distance: 5,
+        obstacle: null,
+      },
     };
-    ownState = state.BASE_URL;
-    arena = scanArena(dims, state);
-    surroundings = scanSurroundings(ownState, arena, dims);
-    expect(checkEnemyInRange(surroundings.front)).toBeFalsy();
+    expect(checkEnemyInRange(surroundings.front, -1)).toBe(true);
+    expect(checkEnemyInRange(surroundings.back, -1)).toBe(true);
+    expect(checkEnemyInRange(surroundings.left, -1)).toBe(true);
+    expect(checkEnemyInRange(surroundings.right, -1)).toBe(false);
+  });
+
+  test('checkEnemyInRange should correctly identify no enemy in range with offset -1', () => {
+    const surroundings = {
+      front: {
+        distance: 4,
+        obstacle: 'wall',
+      },
+      back: {
+        distance: 3,
+        obstacle: 'wall',
+      },
+      left: {
+        distance: 1,
+        obstacle: 'wall',
+      },
+      right: {
+        distance: 5,
+        obstacle: null,
+      },
+    };
+    expect(checkEnemyInRange(surroundings.front, -1)).toBe(false);
+    expect(checkEnemyInRange(surroundings.back, -1)).toBe(false);
+    expect(checkEnemyInRange(surroundings.left, -1)).toBe(false);
+    expect(checkEnemyInRange(surroundings.right, -1)).toBe(false);
   });
 });
 
@@ -4323,6 +4493,2453 @@ describe('hunt should return a relative direction in a given surroundings', () =
     assertType<String>(action);
     expect(action.length).toEqual(1);
     expect(action).equal('F');
+  });
+});
+
+describe('huntNew should return a rational decision of a relative direction when front has an immediate target', () => {
+  test('huntNew should return T when front has an immediate target', () => {
+    const surroundings = {
+      front: {
+        distance: 1,
+        obstacle: {
+          x: 3,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 2,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'E',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 2,
+        obstacle: {
+          x: 2,
+          y: 0,
+          direction: 'E',
+          wasHit: false,
+          score: 1,
+          threatLevel: 0,
+        },
+      },
+      right: {
+        distance: 2,
+        obstacle: {
+          x: 2,
+          y: 4,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 0,
+        },
+      },
+    };
+    const action = huntNew(surroundings);
+    assertType<String>(action);
+    expect(action).toHaveLength(1);
+    expect(action).toBe('T');
+  });
+});
+
+describe('huntNew should return a rational decision of a relative direction when front has no room to move', () => {
+  test('huntNew should return L when blocked from the front with the left enemy has a higher score', () => {
+    const surroundings = {
+      front: {
+        distance: 1,
+        obstacle: 'wall',
+      },
+      back: {
+        distance: 2,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'E',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 2,
+        obstacle: {
+          x: 2,
+          y: 0,
+          direction: 'E',
+          wasHit: false,
+          score: 1,
+          threatLevel: 0,
+        },
+      },
+      right: {
+        distance: 2,
+        obstacle: {
+          x: 2,
+          y: 4,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 0,
+        },
+      },
+    };
+    const action = huntNew(surroundings);
+    assertType<String>(action);
+    expect(action).toHaveLength(1);
+    expect(action).toBe('L');
+  });
+
+  test('huntNew should return R when blocked from the front with the right enemy has a higher score', () => {
+    const surroundings = {
+      front: {
+        distance: 1,
+        obstacle: 'wall',
+      },
+      back: {
+        distance: 2,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'E',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 2,
+        obstacle: {
+          x: 2,
+          y: 0,
+          direction: 'E',
+          wasHit: false,
+          score: 1,
+          threatLevel: 0,
+        },
+      },
+      right: {
+        distance: 2,
+        obstacle: {
+          x: 2,
+          y: 4,
+          direction: 'W',
+          wasHit: false,
+          score: 2,
+          threatLevel: 0,
+        },
+      },
+    };
+    const action = huntNew(surroundings);
+    assertType<String>(action);
+    expect(action).toHaveLength(1);
+    expect(action).toBe('R');
+  });
+
+  test('huntNew should return L when blocked from the front while only left has an enemy', () => {
+    const surroundings = {
+      front: {
+        distance: 1,
+        obstacle: 'wall',
+      },
+      back: {
+        distance: 2,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'E',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 2,
+        obstacle: {
+          x: 2,
+          y: 0,
+          direction: 'E',
+          wasHit: false,
+          score: 1,
+          threatLevel: 0,
+        },
+      },
+      right: {
+        distance: 2,
+        obstacle: 'wall',
+      },
+    };
+    const action = huntNew(surroundings);
+    assertType<String>(action);
+    expect(action).toHaveLength(1);
+    expect(action).toBe('L');
+  });
+
+  test('huntNew should return R when blocked from the front while only right has an enemy', () => {
+    const surroundings = {
+      front: {
+        distance: 1,
+        obstacle: 'wall',
+      },
+      back: {
+        distance: 2,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'E',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 2,
+        obstacle: 'wall',
+      },
+      right: {
+        distance: 2,
+        obstacle: {
+          x: 2,
+          y: 4,
+          direction: 'W',
+          wasHit: false,
+          score: 2,
+          threatLevel: 0,
+        },
+      },
+    };
+    const action = huntNew(surroundings);
+    assertType<String>(action);
+    expect(action).toHaveLength(1);
+    expect(action).toBe('R');
+  });
+});
+
+describe('huntNew should return a rational decision of a relative direction when front has an enemy just out of reach', () => {
+  test('huntNew should return F when front has an enemy just out of reach while left and right have no enemy', () => {
+    const surroundings = {
+      front: {
+        distance: 4,
+        obstacle: {
+          x: 6,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 2,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'E',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 2,
+        obstacle: 'wall',
+      },
+      right: {
+        distance: 2,
+        obstacle: 'wall',
+      },
+    };
+    const forwardSurroundings = {
+      front: {
+        distance: 3,
+        obstacle: {
+          x: 6,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 3,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'E',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 2,
+        obstacle: 'wall',
+      },
+      right: {
+        distance: 2,
+        obstacle: 'wall',
+      },
+    };
+    const action = huntNew(surroundings, forwardSurroundings);
+    assertType<String>(action);
+    expect(action).toHaveLength(1);
+    expect(action).toBe('F');
+  });
+
+  test('huntNew should return F when front has an enemy just out of reach while right has an enemy within range of throw with at least 1 enemy facing this way from the left or right', () => {
+    const surroundings = {
+      front: {
+        distance: 4,
+        obstacle: {
+          x: 6,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 2,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: -1,
+        },
+      },
+      left: {
+        distance: 3,
+        obstacle: 'wall',
+      },
+      right: {
+        distance: 2,
+        obstacle: {
+          x: 2,
+          y: 4,
+          direction: 'N',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+    };
+    const forwardSurroundings = {
+      front: {
+        distance: 3,
+        obstacle: {
+          x: 6,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 3,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: -1,
+        },
+      },
+      left: {
+        distance: 3,
+        obstacle: 'wall',
+      },
+      right: {
+        distance: 3,
+        obstacle: 'wall',
+      },
+    };
+    const action = huntNew(surroundings, forwardSurroundings);
+    assertType<String>(action);
+    expect(action).toHaveLength(1);
+    expect(action).toBe('F');
+  });
+
+  test('huntNew should return F when front has an enemy just out of reach while right has an enemy within range of throw with no enemy facing this way from the front or back', () => {
+    const surroundings = {
+      front: {
+        distance: 4,
+        obstacle: {
+          x: 6,
+          y: 2,
+          direction: 'N',
+          wasHit: false,
+          score: 0,
+          threatLevel: 0,
+        },
+      },
+      back: {
+        distance: 2,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: -1,
+        },
+      },
+      left: {
+        distance: 3,
+        obstacle: 'wall',
+      },
+      right: {
+        distance: 2,
+        obstacle: {
+          x: 2,
+          y: 4,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 0,
+        },
+      },
+    };
+    const forwardSurroundings = {
+      front: {
+        distance: 3,
+        obstacle: {
+          x: 6,
+          y: 2,
+          direction: 'N',
+          wasHit: false,
+          score: 0,
+          threatLevel: 0,
+        },
+      },
+      back: {
+        distance: 3,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: -1,
+        },
+      },
+      left: {
+        distance: 3,
+        obstacle: 'wall',
+      },
+      right: {
+        distance: 3,
+        obstacle: 'wall',
+      },
+    };
+    const action = huntNew(surroundings, forwardSurroundings);
+    assertType<String>(action);
+    expect(action).toHaveLength(1);
+    expect(action).toBe('F');
+  });
+
+  test('huntNew should return R when front has an enemy just out of reach while right has an enemy within range of throw with some enemies facing this way only from the front or back', () => {
+    const surroundings = {
+      front: {
+        distance: 4,
+        obstacle: {
+          x: 6,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 2,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: -1,
+        },
+      },
+      left: {
+        distance: 3,
+        obstacle: 'wall',
+      },
+      right: {
+        distance: 2,
+        obstacle: {
+          x: 2,
+          y: 4,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 0,
+        },
+      },
+    };
+    const forwardSurroundings = {
+      front: {
+        distance: 3,
+        obstacle: {
+          x: 6,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 3,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: -1,
+        },
+      },
+      left: {
+        distance: 3,
+        obstacle: 'wall',
+      },
+      right: {
+        distance: 3,
+        obstacle: 'wall',
+      },
+    };
+    const action = huntNew(surroundings, forwardSurroundings);
+    assertType<String>(action);
+    expect(action).toHaveLength(1);
+    expect(action).toBe('R');
+  });
+
+  test('huntNew should return F when front has an enemy just out of reach while left has an enemy within range of throw with at least 1 enemy facing this way from the left or right', () => {
+    const surroundings = {
+      front: {
+        distance: 4,
+        obstacle: {
+          x: 6,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 2,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: -1,
+        },
+      },
+      left: {
+        distance: 2,
+        obstacle: {
+          x: 2,
+          y: 0,
+          direction: 'S',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      right: {
+        distance: 3,
+        obstacle: 'wall',
+      },
+    };
+    const forwardSurroundings = {
+      front: {
+        distance: 3,
+        obstacle: {
+          x: 6,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 3,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: -1,
+        },
+      },
+      left: {
+        distance: 3,
+        obstacle: 'wall',
+      },
+      right: {
+        distance: 3,
+        obstacle: 'wall',
+      },
+    };
+    const action = huntNew(surroundings, forwardSurroundings);
+    assertType<String>(action);
+    expect(action).toHaveLength(1);
+    expect(action).toBe('F');
+  });
+
+  test('huntNew should return F when front has an enemy just out of reach while left has an enemy within range of throw with no enemy facing this way from the front or back', () => {
+    const surroundings = {
+      front: {
+        distance: 4,
+        obstacle: {
+          x: 6,
+          y: 2,
+          direction: 'N',
+          wasHit: false,
+          score: 0,
+          threatLevel: 0,
+        },
+      },
+      back: {
+        distance: 2,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: -1,
+        },
+      },
+      left: {
+        distance: 2,
+        obstacle: {
+          x: 2,
+          y: 0,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 0,
+        },
+      },
+      right: {
+        distance: 3,
+        obstacle: 'wall',
+      },
+    };
+    const forwardSurroundings = {
+      front: {
+        distance: 3,
+        obstacle: {
+          x: 6,
+          y: 2,
+          direction: 'N',
+          wasHit: false,
+          score: 0,
+          threatLevel: 0,
+        },
+      },
+      back: {
+        distance: 3,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: -1,
+        },
+      },
+      left: {
+        distance: 3,
+        obstacle: 'wall',
+      },
+      right: {
+        distance: 3,
+        obstacle: 'wall',
+      },
+    };
+    const action = huntNew(surroundings, forwardSurroundings);
+    assertType<String>(action);
+    expect(action).toHaveLength(1);
+    expect(action).toBe('F');
+  });
+
+  test('huntNew should return L when front has an enemy just out of reach while left has an enemy within range of throw with some enemies facing this way only from the front or back', () => {
+    const surroundings = {
+      front: {
+        distance: 4,
+        obstacle: {
+          x: 6,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 2,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: -1,
+        },
+      },
+      left: {
+        distance: 2,
+        obstacle: {
+          x: 2,
+          y: 0,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 0,
+        },
+      },
+      right: {
+        distance: 3,
+        obstacle: 'wall',
+      },
+    };
+    const forwardSurroundings = {
+      front: {
+        distance: 3,
+        obstacle: {
+          x: 6,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 3,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: -1,
+        },
+      },
+      left: {
+        distance: 3,
+        obstacle: 'wall',
+      },
+      right: {
+        distance: 3,
+        obstacle: 'wall',
+      },
+    };
+    const action = huntNew(surroundings, forwardSurroundings);
+    assertType<String>(action);
+    expect(action).toHaveLength(1);
+    expect(action).toBe('L');
+  });
+
+  test('huntNew should return F when front has an enemy just out of reach and left and right have enemies within range of throw with at least 1 enemy facing this way from the left or right', () => {
+    const surroundings = {
+      front: {
+        distance: 4,
+        obstacle: {
+          x: 6,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 2,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: -1,
+        },
+      },
+      left: {
+        distance: 2,
+        obstacle: {
+          x: 2,
+          y: 0,
+          direction: 'S',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      right: {
+        distance: 2,
+        obstacle: {
+          x: 2,
+          y: 4,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 0,
+        },
+      },
+    };
+    const forwardSurroundings = {
+      front: {
+        distance: 3,
+        obstacle: {
+          x: 6,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 3,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: -1,
+        },
+      },
+      left: {
+        distance: 3,
+        obstacle: 'wall',
+      },
+      right: {
+        distance: 3,
+        obstacle: 'wall',
+      },
+    };
+    const action = huntNew(surroundings, forwardSurroundings);
+    assertType<String>(action);
+    expect(action).toHaveLength(1);
+    expect(action).toBe('F');
+  });
+
+  test('huntNew should return F when front has an enemy just out of reach and left and right have enemies within range of throw with no enemy facing this way from the front or back', () => {
+    const surroundings = {
+      front: {
+        distance: 4,
+        obstacle: {
+          x: 6,
+          y: 2,
+          direction: 'N',
+          wasHit: false,
+          score: 0,
+          threatLevel: 0,
+        },
+      },
+      back: {
+        distance: 2,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: -1,
+        },
+      },
+      left: {
+        distance: 2,
+        obstacle: {
+          x: 2,
+          y: 0,
+          direction: 'N',
+          wasHit: false,
+          score: 0,
+          threatLevel: -1,
+        },
+      },
+      right: {
+        distance: 2,
+        obstacle: {
+          x: 2,
+          y: 4,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 0,
+        },
+      },
+    };
+    const forwardSurroundings = {
+      front: {
+        distance: 3,
+        obstacle: {
+          x: 6,
+          y: 2,
+          direction: 'N',
+          wasHit: false,
+          score: 0,
+          threatLevel: 0,
+        },
+      },
+      back: {
+        distance: 3,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: -1,
+        },
+      },
+      left: {
+        distance: 3,
+        obstacle: 'wall',
+      },
+      right: {
+        distance: 3,
+        obstacle: 'wall',
+      },
+    };
+    const action = huntNew(surroundings, forwardSurroundings);
+    assertType<String>(action);
+    expect(action).toHaveLength(1);
+    expect(action).toBe('F');
+  });
+
+  test('huntNew should return L when front has an enemy just out of reach and left and right have enemies within range of throw with some enemies facing this way only from the front or back while the left enemy has a higher score', () => {
+    const surroundings = {
+      front: {
+        distance: 4,
+        obstacle: {
+          x: 6,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 2,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'E',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 2,
+        obstacle: {
+          x: 2,
+          y: 0,
+          direction: 'E',
+          wasHit: false,
+          score: 1,
+          threatLevel: 0,
+        },
+      },
+      right: {
+        distance: 2,
+        obstacle: {
+          x: 2,
+          y: 4,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 0,
+        },
+      },
+    };
+    const forwardSurroundings = {
+      front: {
+        distance: 3,
+        obstacle: {
+          x: 6,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 3,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'E',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 3,
+        obstacle: 'wall',
+      },
+      right: {
+        distance: 3,
+        obstacle: 'wall',
+      },
+    };
+    const action = huntNew(surroundings, forwardSurroundings);
+    assertType<String>(action);
+    expect(action).toHaveLength(1);
+    expect(action).toBe('L');
+  });
+
+  test('huntNew should return R when front has an enemy just out of reach and left and right have enemies within range of throw with some enemies facing this way only from the front or back while the right enemy has a higher score', () => {
+    const surroundings = {
+      front: {
+        distance: 4,
+        obstacle: {
+          x: 6,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 2,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'E',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 2,
+        obstacle: {
+          x: 2,
+          y: 0,
+          direction: 'E',
+          wasHit: false,
+          score: 1,
+          threatLevel: 0,
+        },
+      },
+      right: {
+        distance: 2,
+        obstacle: {
+          x: 2,
+          y: 4,
+          direction: 'W',
+          wasHit: false,
+          score: 2,
+          threatLevel: 0,
+        },
+      },
+    };
+    const forwardSurroundings = {
+      front: {
+        distance: 3,
+        obstacle: {
+          x: 6,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 3,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'E',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 3,
+        obstacle: 'wall',
+      },
+      right: {
+        distance: 3,
+        obstacle: 'wall',
+      },
+    };
+    const action = huntNew(surroundings, forwardSurroundings);
+    assertType<String>(action);
+    expect(action).toHaveLength(1);
+    expect(action).toBe('R');
+  });
+});
+
+describe('huntNew should return a rational decision of a relative direction when no enemy reachable at cost 1', () => {
+  test('huntNew should return F when front has fewer enemies facing this way from left and right than those at the current location', () => {
+    const surroundings = {
+      front: {
+        distance: 5,
+        obstacle: {
+          x: 9,
+          y: 4,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 2,
+        obstacle: {
+          x: 2,
+          y: 4,
+          direction: 'E',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 5,
+        obstacle: 'wall',
+      },
+      right: {
+        distance: 4,
+        obstacle: {
+          x: 4,
+          y: 8,
+          direction: 'N',
+          wasHit: false,
+          score: 2,
+          threatLevel: 1,
+        },
+      },
+    };
+    const forwardSurroundings = {
+      front: {
+        distance: 4,
+        obstacle: {
+          x: 9,
+          y: 4,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 3,
+        obstacle: {
+          x: 2,
+          y: 4,
+          direction: 'E',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 5,
+        obstacle: 'wall',
+      },
+      right: {
+        distance: 5,
+        obstacle: 'wall',
+      },
+    };
+    const action = huntNew(surroundings, forwardSurroundings);
+    assertType<String>(action);
+    expect(action).toHaveLength(1);
+    expect(action).toBe('F');
+  });
+
+  test('huntNew should return L when front has more enemies facing this way from left and right than those at the current location with the left enemy has a higher score', () => {
+    const surroundings = {
+      front: {
+        distance: 5,
+        obstacle: {
+          x: 9,
+          y: 4,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 2,
+        obstacle: {
+          x: 2,
+          y: 4,
+          direction: 'E',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 4,
+        obstacle: {
+          x: 4,
+          y: 0,
+          direction: 'E',
+          wasHit: false,
+          score: 2,
+          threatLevel: 0,
+        },
+      },
+      right: {
+        distance: 4,
+        obstacle: {
+          x: 4,
+          y: 8,
+          direction: 'N',
+          wasHit: false,
+          score: 1,
+          threatLevel: 1,
+        },
+      },
+    };
+    const forwardSurroundings = {
+      front: {
+        distance: 4,
+        obstacle: {
+          x: 7,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 3,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'E',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 3,
+        obstacle: {
+          x: 3,
+          y: 1,
+          direction: 'S',
+          wasHit: false,
+          score: 2,
+          threatLevel: 1,
+        },
+      },
+      right: {
+        distance: 3,
+        obstacle: {
+          x: 3,
+          y: 7,
+          direction: 'N',
+          wasHit: false,
+          score: 2,
+          threatLevel: 1,
+        },
+      },
+    };
+    const action = huntNew(surroundings, forwardSurroundings);
+    assertType<String>(action);
+    expect(action).toHaveLength(1);
+    expect(action).toBe('L');
+  });
+
+  test('huntNew should return R when front has more enemies facing this way from left and right than those at the current location with the right enemy has a higher score', () => {
+    const surroundings = {
+      front: {
+        distance: 5,
+        obstacle: {
+          x: 9,
+          y: 4,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 2,
+        obstacle: {
+          x: 2,
+          y: 4,
+          direction: 'E',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 4,
+        obstacle: {
+          x: 4,
+          y: 0,
+          direction: 'E',
+          wasHit: false,
+          score: 2,
+          threatLevel: 0,
+        },
+      },
+      right: {
+        distance: 4,
+        obstacle: {
+          x: 4,
+          y: 8,
+          direction: 'N',
+          wasHit: false,
+          score: 4,
+          threatLevel: 1,
+        },
+      },
+    };
+    const forwardSurroundings = {
+      front: {
+        distance: 4,
+        obstacle: {
+          x: 7,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 3,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'E',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 3,
+        obstacle: {
+          x: 3,
+          y: 1,
+          direction: 'S',
+          wasHit: false,
+          score: 2,
+          threatLevel: 1,
+        },
+      },
+      right: {
+        distance: 3,
+        obstacle: {
+          x: 3,
+          y: 7,
+          direction: 'N',
+          wasHit: false,
+          score: 2,
+          threatLevel: 1,
+        },
+      },
+    };
+    const action = huntNew(surroundings, forwardSurroundings);
+    assertType<String>(action);
+    expect(action).toHaveLength(1);
+    expect(action).toBe('R');
+  });
+
+  test('huntNew should return L when front has more enemies facing this way from left and right than those at the current location while left but right has an enemy', () => {
+    const surroundings = {
+      front: {
+        distance: 5,
+        obstacle: {
+          x: 9,
+          y: 4,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 2,
+        obstacle: {
+          x: 2,
+          y: 4,
+          direction: 'E',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 4,
+        obstacle: {
+          x: 4,
+          y: 0,
+          direction: 'S',
+          wasHit: false,
+          score: 2,
+          threatLevel: 1,
+        },
+      },
+      right: {
+        distance: 4,
+        obstacle: 'wall',
+      },
+    };
+    const forwardSurroundings = {
+      front: {
+        distance: 4,
+        obstacle: {
+          x: 7,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 3,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'E',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 3,
+        obstacle: {
+          x: 3,
+          y: 1,
+          direction: 'S',
+          wasHit: false,
+          score: 2,
+          threatLevel: 1,
+        },
+      },
+      right: {
+        distance: 3,
+        obstacle: {
+          x: 3,
+          y: 7,
+          direction: 'N',
+          wasHit: false,
+          score: 2,
+          threatLevel: 1,
+        },
+      },
+    };
+    const action = huntNew(surroundings, forwardSurroundings);
+    assertType<String>(action);
+    expect(action).toHaveLength(1);
+    expect(action).toBe('L');
+  });
+
+  test('huntNew should return R when front has more enemies facing this way from left and right than those at the current location while right but left has an enemy', () => {
+    const surroundings = {
+      front: {
+        distance: 5,
+        obstacle: {
+          x: 9,
+          y: 4,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 2,
+        obstacle: {
+          x: 2,
+          y: 4,
+          direction: 'E',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 4,
+        obstacle: 'wall',
+      },
+      right: {
+        distance: 4,
+        obstacle: {
+          x: 4,
+          y: 8,
+          direction: 'N',
+          wasHit: false,
+          score: 2,
+          threatLevel: 1,
+        },
+      },
+    };
+    const forwardSurroundings = {
+      front: {
+        distance: 4,
+        obstacle: {
+          x: 7,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 3,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'E',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 3,
+        obstacle: {
+          x: 3,
+          y: 1,
+          direction: 'S',
+          wasHit: false,
+          score: 2,
+          threatLevel: 1,
+        },
+      },
+      right: {
+        distance: 3,
+        obstacle: {
+          x: 3,
+          y: 7,
+          direction: 'N',
+          wasHit: false,
+          score: 2,
+          threatLevel: 1,
+        },
+      },
+    };
+    const action = huntNew(surroundings, forwardSurroundings);
+    assertType<String>(action);
+    expect(action).toHaveLength(1);
+    expect(action).toBe('R');
+  });
+
+  test('huntNew should return F when front and current location have equal number of enemies facing this way from left and right with the front enemy has a highest score among all potential targets at cost 2', () => {
+    const surroundings = {
+      front: {
+        distance: 5,
+        obstacle: {
+          x: 9,
+          y: 4,
+          direction: 'W',
+          wasHit: false,
+          score: 3,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 2,
+        obstacle: {
+          x: 2,
+          y: 4,
+          direction: 'E',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 4,
+        obstacle: {
+          x: 4,
+          y: 0,
+          direction: 'E',
+          wasHit: false,
+          score: 2,
+          threatLevel: 0,
+        },
+      },
+      right: {
+        distance: 4,
+        obstacle: {
+          x: 4,
+          y: 8,
+          direction: 'N',
+          wasHit: false,
+          score: 1,
+          threatLevel: 1,
+        },
+      },
+    };
+    const forwardSurroundings = {
+      front: {
+        distance: 4,
+        obstacle: {
+          x: 7,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 3,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 3,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'E',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 3,
+        obstacle: {
+          x: 3,
+          y: 1,
+          direction: 'S',
+          wasHit: false,
+          score: 2,
+          threatLevel: 1,
+        },
+      },
+      right: {
+        distance: 3,
+        obstacle: {
+          x: 3,
+          y: 7,
+          direction: 'S',
+          wasHit: false,
+          score: 2,
+          threatLevel: -1,
+        },
+      },
+    };
+    const action = huntNew(surroundings, forwardSurroundings);
+    assertType<String>(action);
+    expect(action).toHaveLength(1);
+    expect(action).toBe('F');
+  });
+
+  test('huntNew should return F when front and current location have equal number of enemies facing this way from left and right with the front, left enemy has a highest score among all potential targets at cost 2', () => {
+    const surroundings = {
+      front: {
+        distance: 5,
+        obstacle: {
+          x: 9,
+          y: 4,
+          direction: 'W',
+          wasHit: false,
+          score: 2,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 2,
+        obstacle: {
+          x: 2,
+          y: 4,
+          direction: 'E',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 4,
+        obstacle: {
+          x: 4,
+          y: 0,
+          direction: 'E',
+          wasHit: false,
+          score: 2,
+          threatLevel: 0,
+        },
+      },
+      right: {
+        distance: 4,
+        obstacle: {
+          x: 4,
+          y: 8,
+          direction: 'N',
+          wasHit: false,
+          score: 1,
+          threatLevel: 1,
+        },
+      },
+    };
+    const forwardSurroundings = {
+      front: {
+        distance: 4,
+        obstacle: {
+          x: 7,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 2,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 3,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'E',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 3,
+        obstacle: {
+          x: 3,
+          y: 1,
+          direction: 'S',
+          wasHit: false,
+          score: 3,
+          threatLevel: 1,
+        },
+      },
+      right: {
+        distance: 3,
+        obstacle: {
+          x: 3,
+          y: 7,
+          direction: 'S',
+          wasHit: false,
+          score: 2,
+          threatLevel: -1,
+        },
+      },
+    };
+    const action = huntNew(surroundings, forwardSurroundings);
+    assertType<String>(action);
+    expect(action).toHaveLength(1);
+    expect(action).toBe('F');
+  });
+
+  test('huntNew should return F when front and current location have equal number of enemies facing this way from left and right with the front, right enemy has a highest score among all potential targets at cost 2', () => {
+    const surroundings = {
+      front: {
+        distance: 5,
+        obstacle: {
+          x: 9,
+          y: 4,
+          direction: 'W',
+          wasHit: false,
+          score: 2,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 2,
+        obstacle: {
+          x: 2,
+          y: 4,
+          direction: 'E',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 4,
+        obstacle: {
+          x: 4,
+          y: 0,
+          direction: 'E',
+          wasHit: false,
+          score: 2,
+          threatLevel: 0,
+        },
+      },
+      right: {
+        distance: 4,
+        obstacle: {
+          x: 4,
+          y: 8,
+          direction: 'N',
+          wasHit: false,
+          score: 1,
+          threatLevel: 1,
+        },
+      },
+    };
+    const forwardSurroundings = {
+      front: {
+        distance: 4,
+        obstacle: {
+          x: 7,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 2,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 3,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'E',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 3,
+        obstacle: {
+          x: 3,
+          y: 1,
+          direction: 'S',
+          wasHit: false,
+          score: 2,
+          threatLevel: 1,
+        },
+      },
+      right: {
+        distance: 3,
+        obstacle: {
+          x: 3,
+          y: 7,
+          direction: 'S',
+          wasHit: false,
+          score: 3,
+          threatLevel: -1,
+        },
+      },
+    };
+    const action = huntNew(surroundings, forwardSurroundings);
+    assertType<String>(action);
+    expect(action).toHaveLength(1);
+    expect(action).toBe('F');
+  });
+
+  test('huntNew should return L when front and current location have equal number of enemies facing this way from left and right with the left enemy has a highest score among all potential targets at cost 2', () => {
+    const surroundings = {
+      front: {
+        distance: 5,
+        obstacle: {
+          x: 9,
+          y: 4,
+          direction: 'W',
+          wasHit: false,
+          score: 2,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 2,
+        obstacle: {
+          x: 2,
+          y: 4,
+          direction: 'E',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 4,
+        obstacle: {
+          x: 4,
+          y: 0,
+          direction: 'E',
+          wasHit: false,
+          score: 3,
+          threatLevel: 0,
+        },
+      },
+      right: {
+        distance: 4,
+        obstacle: {
+          x: 4,
+          y: 8,
+          direction: 'N',
+          wasHit: false,
+          score: 1,
+          threatLevel: 1,
+        },
+      },
+    };
+    const forwardSurroundings = {
+      front: {
+        distance: 4,
+        obstacle: {
+          x: 7,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 2,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 3,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'E',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 3,
+        obstacle: {
+          x: 3,
+          y: 1,
+          direction: 'S',
+          wasHit: false,
+          score: 2,
+          threatLevel: 1,
+        },
+      },
+      right: {
+        distance: 3,
+        obstacle: {
+          x: 3,
+          y: 7,
+          direction: 'S',
+          wasHit: false,
+          score: 2,
+          threatLevel: -1,
+        },
+      },
+    };
+    const action = huntNew(surroundings, forwardSurroundings);
+    assertType<String>(action);
+    expect(action).toHaveLength(1);
+    expect(action).toBe('L');
+  });
+
+  test('huntNew should return R when front and current location have equal number of enemies facing this way from left and right with the right enemy has a highest score among all potential targets at cost 2', () => {
+    const surroundings = {
+      front: {
+        distance: 5,
+        obstacle: {
+          x: 9,
+          y: 4,
+          direction: 'W',
+          wasHit: false,
+          score: 2,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 2,
+        obstacle: {
+          x: 2,
+          y: 4,
+          direction: 'E',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 4,
+        obstacle: {
+          x: 4,
+          y: 0,
+          direction: 'E',
+          wasHit: false,
+          score: 1,
+          threatLevel: 0,
+        },
+      },
+      right: {
+        distance: 4,
+        obstacle: {
+          x: 4,
+          y: 8,
+          direction: 'N',
+          wasHit: false,
+          score: 3,
+          threatLevel: 1,
+        },
+      },
+    };
+    const forwardSurroundings = {
+      front: {
+        distance: 4,
+        obstacle: {
+          x: 7,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 2,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 3,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'E',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 3,
+        obstacle: {
+          x: 3,
+          y: 1,
+          direction: 'S',
+          wasHit: false,
+          score: 2,
+          threatLevel: 1,
+        },
+      },
+      right: {
+        distance: 3,
+        obstacle: {
+          x: 3,
+          y: 7,
+          direction: 'S',
+          wasHit: false,
+          score: 2,
+          threatLevel: -1,
+        },
+      },
+    };
+    const action = huntNew(surroundings, forwardSurroundings);
+    assertType<String>(action);
+    expect(action).toHaveLength(1);
+    expect(action).toBe('R');
+  });
+
+  test('huntNew should return L when front and current location have equal number of enemies facing this way from left and right with the back enemy has a highest score among all potential targets at cost 2 while the left one has a higher score than the right one', () => {
+    const surroundings = {
+      front: {
+        distance: 5,
+        obstacle: {
+          x: 9,
+          y: 4,
+          direction: 'W',
+          wasHit: false,
+          score: 2,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 2,
+        obstacle: {
+          x: 2,
+          y: 4,
+          direction: 'E',
+          wasHit: false,
+          score: 5,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 4,
+        obstacle: {
+          x: 4,
+          y: 0,
+          direction: 'E',
+          wasHit: false,
+          score: 3,
+          threatLevel: 0,
+        },
+      },
+      right: {
+        distance: 4,
+        obstacle: {
+          x: 4,
+          y: 8,
+          direction: 'N',
+          wasHit: false,
+          score: 1,
+          threatLevel: 1,
+        },
+      },
+    };
+    const forwardSurroundings = {
+      front: {
+        distance: 4,
+        obstacle: {
+          x: 7,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 2,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 3,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'E',
+          wasHit: false,
+          score: 5,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 3,
+        obstacle: {
+          x: 3,
+          y: 1,
+          direction: 'S',
+          wasHit: false,
+          score: 2,
+          threatLevel: 1,
+        },
+      },
+      right: {
+        distance: 3,
+        obstacle: {
+          x: 3,
+          y: 7,
+          direction: 'S',
+          wasHit: false,
+          score: 2,
+          threatLevel: -1,
+        },
+      },
+    };
+    const action = huntNew(surroundings, forwardSurroundings);
+    assertType<String>(action);
+    expect(action).toHaveLength(1);
+    expect(action).toBe('L');
+  });
+
+  test('huntNew should return R when front and current location have equal number of enemies facing this way from left and right with the back enemy has a highest score among all potential targets at cost 2 while the right one has a higher score than the left one', () => {
+    const surroundings = {
+      front: {
+        distance: 5,
+        obstacle: {
+          x: 9,
+          y: 4,
+          direction: 'W',
+          wasHit: false,
+          score: 2,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 2,
+        obstacle: {
+          x: 2,
+          y: 4,
+          direction: 'E',
+          wasHit: false,
+          score: 5,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 4,
+        obstacle: {
+          x: 4,
+          y: 0,
+          direction: 'E',
+          wasHit: false,
+          score: 1,
+          threatLevel: 0,
+        },
+      },
+      right: {
+        distance: 4,
+        obstacle: {
+          x: 4,
+          y: 8,
+          direction: 'N',
+          wasHit: false,
+          score: 3,
+          threatLevel: 1,
+        },
+      },
+    };
+    const forwardSurroundings = {
+      front: {
+        distance: 4,
+        obstacle: {
+          x: 7,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 2,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 3,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'E',
+          wasHit: false,
+          score: 5,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 3,
+        obstacle: {
+          x: 3,
+          y: 1,
+          direction: 'S',
+          wasHit: false,
+          score: 2,
+          threatLevel: 1,
+        },
+      },
+      right: {
+        distance: 3,
+        obstacle: {
+          x: 3,
+          y: 7,
+          direction: 'S',
+          wasHit: false,
+          score: 2,
+          threatLevel: -1,
+        },
+      },
+    };
+    const action = huntNew(surroundings, forwardSurroundings);
+    assertType<String>(action);
+    expect(action).toHaveLength(1);
+    expect(action).toBe('R');
+  });
+
+  test('huntNew should return L when front and current location have equal number of enemies facing this way from left and right with the back enemy has a highest score among all potential targets at cost 2 while left but right has an enemy', () => {
+    const surroundings = {
+      front: {
+        distance: 5,
+        obstacle: {
+          x: 9,
+          y: 4,
+          direction: 'W',
+          wasHit: false,
+          score: 2,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 2,
+        obstacle: {
+          x: 2,
+          y: 4,
+          direction: 'E',
+          wasHit: false,
+          score: 5,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 4,
+        obstacle: {
+          x: 4,
+          y: 0,
+          direction: 'E',
+          wasHit: false,
+          score: 3,
+          threatLevel: 0,
+        },
+      },
+      right: {
+        distance: 5,
+        obstacle: null,
+      },
+    };
+    const forwardSurroundings = {
+      front: {
+        distance: 4,
+        obstacle: {
+          x: 7,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 2,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 3,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'E',
+          wasHit: false,
+          score: 5,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 3,
+        obstacle: {
+          x: 3,
+          y: 1,
+          direction: 'S',
+          wasHit: false,
+          score: 2,
+          threatLevel: 1,
+        },
+      },
+      right: {
+        distance: 3,
+        obstacle: {
+          x: 3,
+          y: 7,
+          direction: 'S',
+          wasHit: false,
+          score: 2,
+          threatLevel: -1,
+        },
+      },
+    };
+    const action = huntNew(surroundings, forwardSurroundings);
+    assertType<String>(action);
+    expect(action).toHaveLength(1);
+    expect(action).toBe('L');
+  });
+
+  test('huntNew should return R when front and current location have equal number of enemies facing this way from left and right with the back enemy has a highest score among all potential targets at cost 2 while right but left has an enemy', () => {
+    const surroundings = {
+      front: {
+        distance: 5,
+        obstacle: {
+          x: 9,
+          y: 4,
+          direction: 'W',
+          wasHit: false,
+          score: 2,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 2,
+        obstacle: {
+          x: 2,
+          y: 4,
+          direction: 'E',
+          wasHit: false,
+          score: 5,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 5,
+        obstacle: null,
+      },
+      right: {
+        distance: 4,
+        obstacle: {
+          x: 4,
+          y: 8,
+          direction: 'N',
+          wasHit: false,
+          score: 3,
+          threatLevel: 1,
+        },
+      },
+    };
+    const forwardSurroundings = {
+      front: {
+        distance: 4,
+        obstacle: {
+          x: 7,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 2,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 3,
+        obstacle: {
+          x: 0,
+          y: 2,
+          direction: 'E',
+          wasHit: false,
+          score: 5,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 3,
+        obstacle: {
+          x: 3,
+          y: 1,
+          direction: 'S',
+          wasHit: false,
+          score: 2,
+          threatLevel: 1,
+        },
+      },
+      right: {
+        distance: 3,
+        obstacle: {
+          x: 3,
+          y: 7,
+          direction: 'S',
+          wasHit: false,
+          score: 2,
+          threatLevel: -1,
+        },
+      },
+    };
+    const action = huntNew(surroundings, forwardSurroundings);
+    assertType<String>(action);
+    expect(action).toHaveLength(1);
+    expect(action).toBe('R');
   });
 });
 

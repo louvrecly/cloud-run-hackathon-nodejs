@@ -2,7 +2,14 @@ const directionAngle = {
   N: 0,
   E: 90,
   S: 180,
-  W: 270
+  W: 270,
+};
+
+const angleDirection = {
+  0: 'N',
+  90: 'E',
+  180: 'S',
+  270: 'W',
 };
 
 export function compareDirections(directionA, directionB) {
@@ -99,6 +106,19 @@ export function getForwardState(ownState, dims) {
   return false
 }
 
+export function getTurnState(ownState, turn) {
+  const multiplier = turn === 'L' ? -1 : 1;
+  let rotatedAngle = (directionAngle[ownState.direction] + 90 * multiplier) % 360;
+
+  if (rotatedAngle < 0) {
+    rotatedAngle += 360;
+  }
+
+  const direction = angleDirection[rotatedAngle];
+
+  return { ...ownState, direction };
+}
+
 export function getThreatLevel(ownDirection, enemyDirection, relativeDirection) {
   const compareValue = compareDirections(enemyDirection, ownDirection);
 
@@ -158,7 +178,7 @@ export function scanSurroundings(ownState, arena, dims, visibility = 5) {
       const multiplier = getMultiplier(direction, relativeDirection);
       const { dim, index } = getDimAndIndex(direction, relativeDirection);
 
-      for (let i = 1; i < visibility; i++) {
+      for (let i = 1; i <= visibility; i++) {
         if (!checkIndexInRange(ownState[dim] + i * multiplier, dims[index])) {
           surroundings[relativeDirection].obstacle = 'wall';
           surroundings[relativeDirection].distance = i;
@@ -194,11 +214,11 @@ export function hasWall({ obstacle }) {
   return obstacle === 'wall';
 }
 
-export function checkEnemyInRange({ obstacle, distance }) {
-  return hasEnemy({ obstacle }) && distance < 4;
+export function checkEnemyInRange({ obstacle, distance }, offset = 0) {
+  return hasEnemy({ obstacle }) && distance + offset < 4;
 }
 
-export function escape(surroundings, targetLocation = null) {
+export function escape(surroundings, targetLocator = null) {
   const { front, back, left, right } = surroundings;
 
   if (
@@ -337,15 +357,15 @@ export function escape(surroundings, targetLocation = null) {
           return 'L';
         } else {
           // no wall on both left and right within distance 2
-          if (targetLocation) {
+          if (targetLocator) {
             if (
               // target on the left
-              targetLocation.transverse < 0
+              targetLocator.transverse < 0
             ) {
               return 'L';
             } else if (
               // target on the right
-              targetLocation.transverse > 0
+              targetLocator.transverse > 0
             ) {
               return 'R';
             }
@@ -379,15 +399,15 @@ export function escape(surroundings, targetLocation = null) {
         return 'L';
       } else {
         // no wall on both left and right within distance 2
-        if (targetLocation) {
+        if (targetLocator) {
           if (
             // target on the left
-            targetLocation.transverse < 0
+            targetLocator.transverse < 0
           ) {
             return 'L';
           } else if (
             // target on the right
-            targetLocation.transverse > 0
+            targetLocator.transverse > 0
           ) {
             return 'R';
           }
@@ -424,15 +444,15 @@ export function escape(surroundings, targetLocation = null) {
           return 'L';
         } else {
           // no wall on both left and right within distance 2
-          if (targetLocation) {
+          if (targetLocator) {
             if (
               // target on the left
-              targetLocation.transverse < 0
+              targetLocator.transverse < 0
             ) {
               return 'L';
             } else if (
               // target on the right
-              targetLocation.transverse > 0
+              targetLocator.transverse > 0
             ) {
               return 'R';
             }
@@ -479,7 +499,7 @@ function decideForwardOrTurn(threatAnalysis, turn) {
   return turn;
 }
 
-export function escapeNew(surroundings, targetLocation = null) {
+export function escapeNew(surroundings, targetLocator = null) {
   const { front, back, left, right } = surroundings;
   const threatAnalysis = analyzeThreats(surroundings);
   const turnPreference = turnToHighScorer(surroundings);
@@ -558,7 +578,7 @@ export function escapeNew(surroundings, targetLocation = null) {
   return decideForwardOrTurn(threatAnalysis, turnPreference);
 }
 
-export function hunt(surroundings, forwardSurroundings = false, targetLocation = null) {
+export function hunt(surroundings, forwardSurroundings = false, targetLocator = null) {
   const { front, back, left, right } = surroundings;
 
   // look for potential target at cost 1
@@ -745,15 +765,15 @@ export function hunt(surroundings, forwardSurroundings = false, targetLocation =
       return 'L';
     } else {
       // no wall on both left and right within distance 2
-      if (targetLocation) {
+      if (targetLocator) {
         if (
           // target on the left
-          targetLocation.transverse < 0
+          targetLocator.transverse < 0
         ) {
           return 'L';
         } else if (
           // target on the right
-          targetLocation.transverse > 0
+          targetLocator.transverse > 0
         ) {
           return 'R';
         }
@@ -833,11 +853,124 @@ export function hunt(surroundings, forwardSurroundings = false, targetLocation =
   }
 }
 
-export function decideAction(wasHit, surroundings, forwardSurroundings = false, targetLocation = null) {
+export function huntNew(surroundings, forwardSurroundings = false, targetLocator = null) {
+  const { front, back, left, right } = surroundings;
+  const threatAnalysis = analyzeThreats(surroundings);
+  const turnPreference = turnToHighScorer(surroundings);
+
+  // look for potential target at cost 0
+  if (checkEnemyInRange(front)) {
+    return 'T';
+  }
+
+  // look for potential target at cost 1
+  // front has no room to move
+  if (front.distance === 1) {
+    return turnPreference;
+  }
+
+  if (
+    // front has an enemy just out of reach while left and right have no enemy
+    checkEnemyInRange(front, -1) &&
+    !checkEnemyInRange(left) &&
+    !checkEnemyInRange(right)
+  ) {
+    return 'F';
+  }
+
+  if (
+    // front has an enemy just out of reach and left has an enemy within range of throw
+    checkEnemyInRange(front, -1) &&
+    checkEnemyInRange(left) &&
+    !checkEnemyInRange(right)
+  ) {
+    return decideForwardOrTurn(threatAnalysis, 'L');
+  }
+
+  if (
+    // front has an enemy just out of reach and right has an enemy within range of throw
+    checkEnemyInRange(front, -1) &&
+    !checkEnemyInRange(left) &&
+    checkEnemyInRange(right)
+  ) {
+    return decideForwardOrTurn(threatAnalysis, 'R');
+  }
+
+  if (
+    // front has an enemy just out of reach while left and right have enemies within range of throw
+    checkEnemyInRange(front, -1) &&
+    checkEnemyInRange(left) &&
+    checkEnemyInRange(right)
+  ) {
+    return decideForwardOrTurn(threatAnalysis, turnPreference);
+  }
+
+  // look for potential target at cost 2
+  const forwardThreatAnalysis = analyzeThreats(forwardSurroundings);
+
+  // front has fewer enemies facing this way from left and right than those at the current location
+  if (threatAnalysis.transverse > forwardThreatAnalysis.transverse) {
+    return 'F';
+  }
+
+  // front has more enemies facing this way from left and right than those at the current location
+  if (threatAnalysis.transverse < forwardThreatAnalysis.transverse) {
+    return turnPreference;
+  }
+
+  // iterate through all possible actions to locate potential targets at cost 2
+  const potentialTargetLocators = [];
+
+  if (checkEnemyInRange(front, -2)) {
+    potentialTargetLocators.push({ actions: 'FF', score: front.obstacle.score });
+  }
+
+  if (checkEnemyInRange(forwardSurroundings.left)) {
+    potentialTargetLocators.push({ actions: 'FL', score: forwardSurroundings.left.obstacle.score });
+  }
+
+  if (checkEnemyInRange(forwardSurroundings.right)) {
+    potentialTargetLocators.push({ actions: 'FR', score: forwardSurroundings.right.obstacle.score });
+  }
+
+  if (checkEnemyInRange(left, -1)) {
+    potentialTargetLocators.push({ actions: 'LF', score: left.obstacle.score });
+  }
+
+  if (checkEnemyInRange(right, -1)) {
+    potentialTargetLocators.push({ actions: 'RF', score: right.obstacle.score });
+  }
+
+  if (checkEnemyInRange(back)) {
+    potentialTargetLocators.push({ actions: turnPreference + turnPreference, score: back.obstacle.score });
+  }
+
+  // at least 1 potential target located
+  if (potentialTargetLocators.length) {
+    potentialTargetLocators.sort((locatorA, locatorB) => locatorB.score - locatorA.score);
+    const { actions } = potentialTargetLocators[0];
+
+    return actions[0];
+  }
+
+  // target on the left
+  if (targetLocator && targetLocator.transverse < 0) {
+    return 'L';
+  }
+
+  // target on the right
+  if (targetLocator && targetLocator.transverse > 0) {
+    return 'R';
+  }
+
+  return ['L', 'R'][Math.floor(Math.random()) * 2];
+}
+
+export function decideAction(wasHit, surroundings, forwardSurroundings = false, targetLocator = null) {
   // escape if under attack
-  if (wasHit) return escapeNew(surroundings, targetLocation);
+  if (wasHit) return escapeNew(surroundings, targetLocator);
   // throw if enemy within range of throw
   else if (checkEnemyInRange(surroundings.front)) return 'T';
   // hunt otherwise
-  else return hunt(surroundings, forwardSurroundings, targetLocation);
+  else return hunt(surroundings, forwardSurroundings, targetLocator);
 }
