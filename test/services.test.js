@@ -6,6 +6,7 @@ import {
   checkIndexInRange,
   getDimAndIndex,
   getMultiplier,
+  locateLeadingEnemy,
   getForwardState,
   getTurnState,
   getThreatLevel,
@@ -405,6 +406,488 @@ describe('getMultiplier should return the correct multiplier of either 1 or -1 f
     const multiplier = getMultiplier(direction, relativeDirection);
     assertType<Number>(multiplier);
     expect(multiplier).toEqual(1);
+  });
+});
+
+describe('locateLeadingEnemy should return an object indicating the relative location of the leading enemy', () => {
+  test('locateLeadingEnemy should return 3 for longitudinal and 0 for transverse when the leading enemy is in the front', () => {
+    const ownState = {
+      x: 4,
+      y: 4,
+      direction: 'E',
+      wasHit: false,
+      score: 0,
+    };
+    const enemyState = {
+      ENEMY_BOT_URL_N: {
+        x: 4,
+        y: 2,
+        direction: 'N',
+        wasHit: false,
+        score: 2,
+      },
+      ENEMY_BOT_URL_S: {
+        x: 4,
+        y: 6,
+        direction: 'S',
+        wasHit: false,
+        score: 1,
+      },
+      ENEMY_BOT_URL_E: {
+        x: 7,
+        y: 4,
+        direction: 'E',
+        wasHit: false,
+        score: 5,
+      },
+      ENEMY_BOT_URL_W: {
+        x: 2,
+        y: 4,
+        direction: 'W',
+        wasHit: false,
+        score: 3,
+      },
+    };
+    const targetLocator = locateLeadingEnemy({ ownState, enemyState });
+    assertType<Object>(targetLocator);
+    expect(targetLocator).toHaveProperty('longitudinal');
+    expect(targetLocator.longitudinal).toBe(3);
+    expect(targetLocator).toHaveProperty('transverse');
+    expect(targetLocator.transverse).toBe(0);
+  });
+
+  test('locateLeadingEnemy should return -2 for longitudinal and 0 for transverse when the leading enemy is in the back', () => {
+    const ownState = {
+      x: 4,
+      y: 4,
+      direction: 'E',
+      wasHit: false,
+      score: 0,
+    };
+    const enemyState = {
+      ENEMY_BOT_URL_N: {
+        x: 4,
+        y: 2,
+        direction: 'N',
+        wasHit: false,
+        score: 2,
+      },
+      ENEMY_BOT_URL_S: {
+        x: 4,
+        y: 6,
+        direction: 'S',
+        wasHit: false,
+        score: 1,
+      },
+      ENEMY_BOT_URL_E: {
+        x: 7,
+        y: 4,
+        direction: 'E',
+        wasHit: false,
+        score: 0,
+      },
+      ENEMY_BOT_URL_W: {
+        x: 2,
+        y: 4,
+        direction: 'W',
+        wasHit: false,
+        score: 5,
+      },
+    };
+    const targetLocator = locateLeadingEnemy({ ownState, enemyState });
+    assertType<Object>(targetLocator);
+    expect(targetLocator).toHaveProperty('longitudinal');
+    expect(targetLocator.longitudinal).toBe(-2);
+    expect(targetLocator).toHaveProperty('transverse');
+    expect(targetLocator.transverse).toBe(0);
+  });
+
+  test('locateLeadingEnemy should return 0 for longitudinal and -2 for transverse when the leading enemy is on the left', () => {
+    const ownState = {
+      x: 4,
+      y: 4,
+      direction: 'E',
+      wasHit: false,
+      score: 0,
+    };
+    const enemyState = {
+      ENEMY_BOT_URL_N: {
+        x: 4,
+        y: 2,
+        direction: 'N',
+        wasHit: false,
+        score: 5,
+      },
+      ENEMY_BOT_URL_S: {
+        x: 4,
+        y: 6,
+        direction: 'S',
+        wasHit: false,
+        score: 1,
+      },
+      ENEMY_BOT_URL_E: {
+        x: 7,
+        y: 4,
+        direction: 'E',
+        wasHit: false,
+        score: 0,
+      },
+      ENEMY_BOT_URL_W: {
+        x: 2,
+        y: 4,
+        direction: 'W',
+        wasHit: false,
+        score: 3,
+      },
+    };
+    const targetLocator = locateLeadingEnemy({ ownState, enemyState });
+    assertType<Object>(targetLocator);
+    expect(targetLocator).toHaveProperty('longitudinal');
+    expect(targetLocator.longitudinal).toBe(0);
+    expect(targetLocator).toHaveProperty('transverse');
+    expect(targetLocator.transverse).toBe(-2);
+  });
+
+  test('locateLeadingEnemy should return 0 for longitudinal and 2 for transverse when the leading enemy is on the right', () => {
+    const ownState = {
+      x: 4,
+      y: 4,
+      direction: 'E',
+      wasHit: false,
+      score: 0,
+    };
+    const enemyState = {
+      ENEMY_BOT_URL_N: {
+        x: 4,
+        y: 2,
+        direction: 'N',
+        wasHit: false,
+        score: 2,
+      },
+      ENEMY_BOT_URL_S: {
+        x: 4,
+        y: 6,
+        direction: 'S',
+        wasHit: false,
+        score: 5,
+      },
+      ENEMY_BOT_URL_E: {
+        x: 7,
+        y: 4,
+        direction: 'E',
+        wasHit: false,
+        score: 0,
+      },
+      ENEMY_BOT_URL_W: {
+        x: 2,
+        y: 4,
+        direction: 'W',
+        wasHit: false,
+        score: 3,
+      },
+    };
+    const targetLocator = locateLeadingEnemy({ ownState, enemyState });
+    assertType<Object>(targetLocator);
+    expect(targetLocator).toHaveProperty('longitudinal');
+    expect(targetLocator.longitudinal).toBe(0);
+    expect(targetLocator).toHaveProperty('transverse');
+    expect(targetLocator.transverse).toBe(2);
+  });
+
+  test('locateLeadingEnemy should return 1 for longitudinal and -2 for transverse when the leading enemy is in the front-left', () => {
+    const ownState = {
+      x: 4,
+      y: 4,
+      direction: 'E',
+      wasHit: false,
+      score: 0,
+    };
+    const enemyState = {
+      ENEMY_BOT_URL_N: {
+        x: 4,
+        y: 2,
+        direction: 'N',
+        wasHit: false,
+        score: 2,
+      },
+      ENEMY_BOT_URL_S: {
+        x: 4,
+        y: 6,
+        direction: 'S',
+        wasHit: false,
+        score: 1,
+      },
+      ENEMY_BOT_URL_E: {
+        x: 7,
+        y: 4,
+        direction: 'E',
+        wasHit: false,
+        score: 0,
+      },
+      ENEMY_BOT_URL_W: {
+        x: 2,
+        y: 4,
+        direction: 'W',
+        wasHit: false,
+        score: 3,
+      },
+      ENEMY_BOT_URL_NE: {
+        x: 5,
+        y: 2,
+        direction: 'N',
+        wasHit: false,
+        score: 5,
+      },
+      ENEMY_BOT_URL_NW: {
+        x: 2,
+        y: 0,
+        direction: 'W',
+        wasHit: false,
+        score: 3,
+      },
+      ENEMY_BOT_URL_SE: {
+        x: 7,
+        y: 6,
+        direction: 'E',
+        wasHit: false,
+        score: 0,
+      },
+      ENEMY_BOT_URL_SW: {
+        x: 0,
+        y: 6,
+        direction: 'S',
+        wasHit: false,
+        score: 1,
+      },
+    };
+    const targetLocator = locateLeadingEnemy({ ownState, enemyState });
+    assertType<Object>(targetLocator);
+    expect(targetLocator).toHaveProperty('longitudinal');
+    expect(targetLocator.longitudinal).toBe(1);
+    expect(targetLocator).toHaveProperty('transverse');
+    expect(targetLocator.transverse).toBe(-2);
+  });
+
+  test('locateLeadingEnemy should return 3 for longitudinal and 2 for transverse when the leading enemy is in the front-right', () => {
+    const ownState = {
+      x: 4,
+      y: 4,
+      direction: 'E',
+      wasHit: false,
+      score: 0,
+    };
+    const enemyState = {
+      ENEMY_BOT_URL_N: {
+        x: 4,
+        y: 2,
+        direction: 'N',
+        wasHit: false,
+        score: 2,
+      },
+      ENEMY_BOT_URL_S: {
+        x: 4,
+        y: 6,
+        direction: 'S',
+        wasHit: false,
+        score: 1,
+      },
+      ENEMY_BOT_URL_E: {
+        x: 7,
+        y: 4,
+        direction: 'E',
+        wasHit: false,
+        score: 0,
+      },
+      ENEMY_BOT_URL_W: {
+        x: 2,
+        y: 4,
+        direction: 'W',
+        wasHit: false,
+        score: 3,
+      },
+      ENEMY_BOT_URL_NE: {
+        x: 5,
+        y: 2,
+        direction: 'N',
+        wasHit: false,
+        score: 2,
+      },
+      ENEMY_BOT_URL_NW: {
+        x: 2,
+        y: 0,
+        direction: 'W',
+        wasHit: false,
+        score: 3,
+      },
+      ENEMY_BOT_URL_SE: {
+        x: 7,
+        y: 6,
+        direction: 'E',
+        wasHit: false,
+        score: 5,
+      },
+      ENEMY_BOT_URL_SW: {
+        x: 0,
+        y: 6,
+        direction: 'S',
+        wasHit: false,
+        score: 1,
+      },
+    };
+    const targetLocator = locateLeadingEnemy({ ownState, enemyState });
+    assertType<Object>(targetLocator);
+    expect(targetLocator).toHaveProperty('longitudinal');
+    expect(targetLocator.longitudinal).toBe(3);
+    expect(targetLocator).toHaveProperty('transverse');
+    expect(targetLocator.transverse).toBe(2);
+  });
+
+  test('locateLeadingEnemy should return -2 for longitudinal and -4 for transverse when the leading enemy is in the back-left', () => {
+    const ownState = {
+      x: 4,
+      y: 4,
+      direction: 'E',
+      wasHit: false,
+      score: 0,
+    };
+    const enemyState = {
+      ENEMY_BOT_URL_N: {
+        x: 4,
+        y: 2,
+        direction: 'N',
+        wasHit: false,
+        score: 2,
+      },
+      ENEMY_BOT_URL_S: {
+        x: 4,
+        y: 6,
+        direction: 'S',
+        wasHit: false,
+        score: 1,
+      },
+      ENEMY_BOT_URL_E: {
+        x: 7,
+        y: 4,
+        direction: 'E',
+        wasHit: false,
+        score: 0,
+      },
+      ENEMY_BOT_URL_W: {
+        x: 2,
+        y: 4,
+        direction: 'W',
+        wasHit: false,
+        score: 3,
+      },
+      ENEMY_BOT_URL_NE: {
+        x: 5,
+        y: 2,
+        direction: 'N',
+        wasHit: false,
+        score: 2,
+      },
+      ENEMY_BOT_URL_NW: {
+        x: 2,
+        y: 0,
+        direction: 'W',
+        wasHit: false,
+        score: 5,
+      },
+      ENEMY_BOT_URL_SE: {
+        x: 7,
+        y: 6,
+        direction: 'E',
+        wasHit: false,
+        score: 0,
+      },
+      ENEMY_BOT_URL_SW: {
+        x: 0,
+        y: 6,
+        direction: 'S',
+        wasHit: false,
+        score: 1,
+      },
+    };
+    const targetLocator = locateLeadingEnemy({ ownState, enemyState });
+    assertType<Object>(targetLocator);
+    expect(targetLocator).toHaveProperty('longitudinal');
+    expect(targetLocator.longitudinal).toBe(-2);
+    expect(targetLocator).toHaveProperty('transverse');
+    expect(targetLocator.transverse).toBe(-4);
+  });
+
+  test('locateLeadingEnemy should return -4 for longitudinal and 2 for transverse when the leading enemy is in the back-right', () => {
+    const ownState = {
+      x: 4,
+      y: 4,
+      direction: 'E',
+      wasHit: false,
+      score: 0,
+    };
+    const enemyState = {
+      ENEMY_BOT_URL_N: {
+        x: 4,
+        y: 2,
+        direction: 'N',
+        wasHit: false,
+        score: 2,
+      },
+      ENEMY_BOT_URL_S: {
+        x: 4,
+        y: 6,
+        direction: 'S',
+        wasHit: false,
+        score: 1,
+      },
+      ENEMY_BOT_URL_E: {
+        x: 7,
+        y: 4,
+        direction: 'E',
+        wasHit: false,
+        score: 0,
+      },
+      ENEMY_BOT_URL_W: {
+        x: 2,
+        y: 4,
+        direction: 'W',
+        wasHit: false,
+        score: 3,
+      },
+      ENEMY_BOT_URL_NE: {
+        x: 5,
+        y: 2,
+        direction: 'N',
+        wasHit: false,
+        score: 2,
+      },
+      ENEMY_BOT_URL_NW: {
+        x: 2,
+        y: 0,
+        direction: 'W',
+        wasHit: false,
+        score: 3,
+      },
+      ENEMY_BOT_URL_SE: {
+        x: 7,
+        y: 6,
+        direction: 'E',
+        wasHit: false,
+        score: 0,
+      },
+      ENEMY_BOT_URL_SW: {
+        x: 0,
+        y: 6,
+        direction: 'S',
+        wasHit: false,
+        score: 5,
+      },
+    };
+    const targetLocator = locateLeadingEnemy({ ownState, enemyState });
+    assertType<Object>(targetLocator);
+    expect(targetLocator).toHaveProperty('longitudinal');
+    expect(targetLocator.longitudinal).toBe(-4);
+    expect(targetLocator).toHaveProperty('transverse');
+    expect(targetLocator.transverse).toBe(2);
   });
 });
 
