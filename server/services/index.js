@@ -853,6 +853,47 @@ export function hunt(surroundings, forwardSurroundings = false, targetLocator = 
   }
 }
 
+function approachHighestScoringPotentialTarget(surroundings, forwardSurroundings, turnPreference) {
+  const { front, back, left, right } = surroundings;
+
+  // iterate through all possible actions to locate potential targets at cost 2
+  const potentialTargetLocators = [];
+
+  if (checkEnemyInRange(front, -2)) {
+    potentialTargetLocators.push({ actions: 'FF', score: front.obstacle.score });
+  }
+
+  if (checkEnemyInRange(forwardSurroundings.left)) {
+    potentialTargetLocators.push({ actions: 'FL', score: forwardSurroundings.left.obstacle.score });
+  }
+
+  if (checkEnemyInRange(forwardSurroundings.right)) {
+    potentialTargetLocators.push({ actions: 'FR', score: forwardSurroundings.right.obstacle.score });
+  }
+
+  if (checkEnemyInRange(left, -1)) {
+    potentialTargetLocators.push({ actions: 'LF', score: left.obstacle.score });
+  }
+
+  if (checkEnemyInRange(right, -1)) {
+    potentialTargetLocators.push({ actions: 'RF', score: right.obstacle.score });
+  }
+
+  if (checkEnemyInRange(back)) {
+    potentialTargetLocators.push({ actions: turnPreference + turnPreference, score: back.obstacle.score });
+  }
+
+  // at least 1 potential target located
+  if (potentialTargetLocators.length) {
+    potentialTargetLocators.sort((locatorA, locatorB) => locatorB.score - locatorA.score);
+    const { actions } = potentialTargetLocators[0];
+
+    return actions[0];
+  }
+
+  return '';
+}
+
 export function huntNew(surroundings, forwardSurroundings = false, targetLocator = null) {
   const { front, back, left, right } = surroundings;
   const threatAnalysis = analyzeThreats(surroundings);
@@ -918,39 +959,10 @@ export function huntNew(surroundings, forwardSurroundings = false, targetLocator
     return turnPreference;
   }
 
-  // iterate through all possible actions to locate potential targets at cost 2
-  const potentialTargetLocators = [];
+  const action = approachHighestScoringPotentialTarget(surroundings, forwardSurroundings, turnPreference);
 
-  if (checkEnemyInRange(front, -2)) {
-    potentialTargetLocators.push({ actions: 'FF', score: front.obstacle.score });
-  }
-
-  if (checkEnemyInRange(forwardSurroundings.left)) {
-    potentialTargetLocators.push({ actions: 'FL', score: forwardSurroundings.left.obstacle.score });
-  }
-
-  if (checkEnemyInRange(forwardSurroundings.right)) {
-    potentialTargetLocators.push({ actions: 'FR', score: forwardSurroundings.right.obstacle.score });
-  }
-
-  if (checkEnemyInRange(left, -1)) {
-    potentialTargetLocators.push({ actions: 'LF', score: left.obstacle.score });
-  }
-
-  if (checkEnemyInRange(right, -1)) {
-    potentialTargetLocators.push({ actions: 'RF', score: right.obstacle.score });
-  }
-
-  if (checkEnemyInRange(back)) {
-    potentialTargetLocators.push({ actions: turnPreference + turnPreference, score: back.obstacle.score });
-  }
-
-  // at least 1 potential target located
-  if (potentialTargetLocators.length) {
-    potentialTargetLocators.sort((locatorA, locatorB) => locatorB.score - locatorA.score);
-    const { actions } = potentialTargetLocators[0];
-
-    return actions[0];
+  if (action) {
+    return action;
   }
 
   // target on the left
