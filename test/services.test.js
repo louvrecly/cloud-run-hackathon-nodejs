@@ -7426,6 +7426,278 @@ describe('huntNew should return a rational decision of a relative direction when
   });
 });
 
+describe('huntNew should return a rational decision of a relative direction when no enemy reachable at cost 2', () => {
+  test('huntNew should return L when no enemy reachable at cost 2 and the target is on the left', () => {
+    const surroundings = {
+      front: {
+        distance: 5,
+        obstacle: null,
+      },
+      back: {
+        distance: 5,
+        obstacle: null,
+      },
+      left: {
+        distance: 5,
+        obstacle: null,
+      },
+      right: {
+        distance: 5,
+        obstacle: null,
+      },
+    };
+    const forwardSurroundings = {
+      front: {
+        distance: 5,
+        obstacle: null,
+      },
+      back: {
+        distance: 5,
+        obstacle: null,
+      },
+      left: {
+        distance: 5,
+        obstacle: null,
+      },
+      right: {
+        distance: 5,
+        obstacle: null,
+      },
+    };
+    const targetLocator = {
+      longitudinal: 0,
+      transverse: -6,
+    };
+    const action = huntNew(surroundings, forwardSurroundings, targetLocator);
+    expect(action).toBe('L');
+  });
+
+  test('huntNew should return L when no enemy reachable at cost 2 and the target is on the front-left', () => {
+    const surroundings = {
+      front: {
+        distance: 5,
+        obstacle: null,
+      },
+      back: {
+        distance: 5,
+        obstacle: null,
+      },
+      left: {
+        distance: 5,
+        obstacle: null,
+      },
+      right: {
+        distance: 5,
+        obstacle: null,
+      },
+    };
+    const forwardSurroundings = {
+      front: {
+        distance: 5,
+        obstacle: null,
+      },
+      back: {
+        distance: 5,
+        obstacle: null,
+      },
+      left: {
+        distance: 5,
+        obstacle: null,
+      },
+      right: {
+        distance: 5,
+        obstacle: null,
+      },
+    };
+    const targetLocator = {
+      longitudinal: 2,
+      transverse: -6,
+    };
+    const action = huntNew(surroundings, forwardSurroundings, targetLocator);
+    expect(action).toBe('L');
+  });
+
+  test('huntNew should return L when no enemy reachable at cost 2 and the target is on the back-left', () => {
+    const surroundings = {
+      front: {
+        distance: 5,
+        obstacle: null,
+      },
+      back: {
+        distance: 5,
+        obstacle: null,
+      },
+      left: {
+        distance: 5,
+        obstacle: null,
+      },
+      right: {
+        distance: 5,
+        obstacle: null,
+      },
+    };
+    const forwardSurroundings = {
+      front: {
+        distance: 5,
+        obstacle: null,
+      },
+      back: {
+        distance: 5,
+        obstacle: null,
+      },
+      left: {
+        distance: 5,
+        obstacle: null,
+      },
+      right: {
+        distance: 5,
+        obstacle: null,
+      },
+    };
+    const targetLocator = {
+      longitudinal: -8,
+      transverse: -6,
+    };
+    const action = huntNew(surroundings, forwardSurroundings, targetLocator);
+    expect(action).toBe('L');
+  });
+
+  test('huntNew should return R when no enemy reachable at cost 2 and the target is on the right', () => {
+    const surroundings = {
+      front: {
+        distance: 5,
+        obstacle: null,
+      },
+      back: {
+        distance: 5,
+        obstacle: null,
+      },
+      left: {
+        distance: 5,
+        obstacle: null,
+      },
+      right: {
+        distance: 5,
+        obstacle: null,
+      },
+    };
+    const forwardSurroundings = {
+      front: {
+        distance: 5,
+        obstacle: null,
+      },
+      back: {
+        distance: 5,
+        obstacle: null,
+      },
+      left: {
+        distance: 5,
+        obstacle: null,
+      },
+      right: {
+        distance: 5,
+        obstacle: null,
+      },
+    };
+    const targetLocator = {
+      longitudinal: 0,
+      transverse: 6,
+    };
+    const action = huntNew(surroundings, forwardSurroundings, targetLocator);
+    expect(action).toBe('R');
+  });
+
+  test('huntNew should return R when no enemy reachable at cost 2 and the target is on the front-right', () => {
+    const surroundings = {
+      front: {
+        distance: 5,
+        obstacle: null,
+      },
+      back: {
+        distance: 5,
+        obstacle: null,
+      },
+      left: {
+        distance: 5,
+        obstacle: null,
+      },
+      right: {
+        distance: 5,
+        obstacle: null,
+      },
+    };
+    const forwardSurroundings = {
+      front: {
+        distance: 5,
+        obstacle: null,
+      },
+      back: {
+        distance: 5,
+        obstacle: null,
+      },
+      left: {
+        distance: 5,
+        obstacle: null,
+      },
+      right: {
+        distance: 5,
+        obstacle: null,
+      },
+    };
+    const targetLocator = {
+      longitudinal: 2,
+      transverse: 6,
+    };
+    const action = huntNew(surroundings, forwardSurroundings, targetLocator);
+    expect(action).toBe('R');
+  });
+
+  test('huntNew should return R when no enemy reachable at cost 2 and the target is on the back-right', () => {
+    const surroundings = {
+      front: {
+        distance: 5,
+        obstacle: null,
+      },
+      back: {
+        distance: 5,
+        obstacle: null,
+      },
+      left: {
+        distance: 5,
+        obstacle: null,
+      },
+      right: {
+        distance: 5,
+        obstacle: null,
+      },
+    };
+    const forwardSurroundings = {
+      front: {
+        distance: 5,
+        obstacle: null,
+      },
+      back: {
+        distance: 5,
+        obstacle: null,
+      },
+      left: {
+        distance: 5,
+        obstacle: null,
+      },
+      right: {
+        distance: 5,
+        obstacle: null,
+      },
+    };
+    const targetLocator = {
+      longitudinal: -8,
+      transverse: 6,
+    };
+    const action = huntNew(surroundings, forwardSurroundings, targetLocator);
+    expect(action).toBe('R');
+  });
+});
+
 describe('decideAction should return a relative direction given the state of being hit, the surroundings and the forward surroundings', () => {
   test('decideAction should return L when being hit from the left and forward has a wall', () => {
     const dims = [6, 5];
