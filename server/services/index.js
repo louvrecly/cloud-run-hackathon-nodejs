@@ -627,7 +627,7 @@ export function escapeNew(surroundings, targetLocator = null) {
 export function hunt(surroundings, forwardSurroundings = false, targetLocator = null) {
   const { front, back, left, right } = surroundings;
 
-  // look for potential target at cost 1
+  // look for proximal target at cost 1
   if (
     // both left and right have enemy within range of throw and front has enemy at distance 4
     checkEnemyInRange(front) &&
@@ -753,7 +753,7 @@ export function hunt(surroundings, forwardSurroundings = false, targetLocator = 
     return 'F';
   }
 
-  // look for potential target at cost 2
+  // look for proximal target at cost 2
   if (
     // back has enemy within range of throw and both left and right have enemy at distance 4
     !checkEnemyInRange(left) && checkEnemyInRange(left, -1) &&
@@ -888,7 +888,7 @@ export function hunt(surroundings, forwardSurroundings = false, targetLocator = 
     }
   }
 
-  // no potential target under cost 2
+  // no proximal target under cost 2
   if (
     // front has no wall within distance 2
     front.distance > 2
@@ -899,7 +899,7 @@ export function hunt(surroundings, forwardSurroundings = false, targetLocator = 
   }
 }
 
-function approachPotentialTargetAtCost1(surroundings, threatAnalysis, turnPreference) {
+function approachProximalTargetAtCost1(surroundings, threatAnalysis, turnPreference) {
   const { front, left, right } = surroundings;
 
   // front has no room to move
@@ -946,40 +946,40 @@ function approachPotentialTargetAtCost1(surroundings, threatAnalysis, turnPrefer
   return '';
 }
 
-function approachHighestScoringPotentialTarget(surroundings, forwardSurroundings, turnPreference) {
+function chooseProximalTarget(surroundings, forwardSurroundings, turnPreference) {
   const { front, back, left, right } = surroundings;
 
-  // iterate through all possible actions to locate potential targets at cost 2
-  const potentialTargetLocators = [];
+  // iterate through all possible actions to locate proximal targets at cost 2
+  const proximalTargetLocators = [];
 
   if (checkEnemyInRange(front, -2)) {
-    potentialTargetLocators.push({ actions: 'FF', score: front.obstacle.score });
+    proximalTargetLocators.push({ actions: 'FF', score: front.obstacle.score });
   }
 
   if (checkEnemyInRange(forwardSurroundings.left)) {
-    potentialTargetLocators.push({ actions: 'FL', score: forwardSurroundings.left.obstacle.score });
+    proximalTargetLocators.push({ actions: 'FL', score: forwardSurroundings.left.obstacle.score });
   }
 
   if (checkEnemyInRange(forwardSurroundings.right)) {
-    potentialTargetLocators.push({ actions: 'FR', score: forwardSurroundings.right.obstacle.score });
+    proximalTargetLocators.push({ actions: 'FR', score: forwardSurroundings.right.obstacle.score });
   }
 
   if (checkEnemyInRange(left, -1)) {
-    potentialTargetLocators.push({ actions: 'LF', score: left.obstacle.score });
+    proximalTargetLocators.push({ actions: 'LF', score: left.obstacle.score });
   }
 
   if (checkEnemyInRange(right, -1)) {
-    potentialTargetLocators.push({ actions: 'RF', score: right.obstacle.score });
+    proximalTargetLocators.push({ actions: 'RF', score: right.obstacle.score });
   }
 
   if (checkEnemyInRange(back)) {
-    potentialTargetLocators.push({ actions: turnPreference + turnPreference, score: back.obstacle.score });
+    proximalTargetLocators.push({ actions: turnPreference + turnPreference, score: back.obstacle.score });
   }
 
-  // at least 1 potential target located
-  if (potentialTargetLocators.length) {
-    potentialTargetLocators.sort((locatorA, locatorB) => locatorB.score - locatorA.score);
-    const { actions } = potentialTargetLocators[0];
+  // at least 1 proximal target located
+  if (proximalTargetLocators.length) {
+    proximalTargetLocators.sort((locatorA, locatorB) => locatorB.score - locatorA.score);
+    const { actions } = proximalTargetLocators[0];
 
     return actions[0];
   }
@@ -987,7 +987,7 @@ function approachHighestScoringPotentialTarget(surroundings, forwardSurroundings
   return '';
 }
 
-function approachPotentialTargetAtCost2(surroundings, forwardSurroundings, threatAnalysis, turnPreference) {
+function approachProximalTargetAtCost2(surroundings, forwardSurroundings, threatAnalysis, turnPreference) {
   const forwardThreatAnalysis = analyzeThreats(forwardSurroundings);
 
   // front has fewer enemies facing this way from left and right than those at the current location
@@ -1000,10 +1000,10 @@ function approachPotentialTargetAtCost2(surroundings, forwardSurroundings, threa
     return turnPreference;
   }
 
-  return approachHighestScoringPotentialTarget(surroundings, forwardSurroundings, turnPreference);
+  return chooseProximalTarget(surroundings, forwardSurroundings, turnPreference);
 }
 
-function approachTarget(targetLocator) {
+function approachDistalTarget(targetLocator) {
   const { longitudinal, transverse } = targetLocator;
 
   // target is not in the front
@@ -1041,24 +1041,23 @@ function approachTarget(targetLocator) {
 }
 
 export function huntNew(surroundings, forwardSurroundings = false, targetLocator = null) {
-  const { front, back, left, right } = surroundings;
   const threatAnalysis = analyzeThreats(surroundings);
   const turnPreference = turnToHighScorer(surroundings);
 
-  // look for potential target at cost 0
-  if (checkEnemyInRange(front)) {
+  // look for proximal target at cost 0
+  if (checkEnemyInRange(surroundings.front)) {
     return 'T';
   }
 
-  // look for potential target at cost 1
-  const actionAtCost1 = approachPotentialTargetAtCost1(surroundings, threatAnalysis, turnPreference);
+  // look for proximal target at cost 1
+  const actionAtCost1 = approachProximalTargetAtCost1(surroundings, threatAnalysis, turnPreference);
 
   if (actionAtCost1) {
     return actionAtCost1;
   }
 
-  // look for potential target at cost 2
-  const actionAtCost2 = approachPotentialTargetAtCost2(surroundings, forwardSurroundings, threatAnalysis, turnPreference);
+  // look for proximal target at cost 2
+  const actionAtCost2 = approachProximalTargetAtCost2(surroundings, forwardSurroundings, threatAnalysis, turnPreference);
 
   if (actionAtCost2) {
     return actionAtCost2;
@@ -1066,7 +1065,7 @@ export function huntNew(surroundings, forwardSurroundings = false, targetLocator
 
   // target available
   if (targetLocator) {
-    return approachTarget(targetLocator);
+    return approachDistalTarget(targetLocator);
   }
 
   return ['L', 'R'][Math.floor(Math.random()) * 2];
