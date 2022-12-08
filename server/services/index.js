@@ -517,7 +517,7 @@ export function escape(surroundings, targetLocator = null) {
   }
 }
 
-function turnToHighScorer(surroundings) {
+function turnToHighScorer(surroundings, defaultTurn = '') {
   const { left, right } = surroundings;
 
   if (
@@ -534,8 +534,17 @@ function turnToHighScorer(surroundings) {
     return 'L';
   }
 
-  // right or back has an enemy
-  return 'R';
+  // only right has an enemy
+  if (hasEnemy(right)) {
+    return 'R';
+  }
+
+  // turn by default preference
+  if (defaultTurn) {
+    return defaultTurn;
+  }
+
+  return getRandomAction(['L', 'R']);
 }
 
 function decideForwardOrTurn(threatAnalysis, turn) {
@@ -642,7 +651,12 @@ function escapeFromOneSideBlockingSituation(surroundings, threatAnalysis, turnPr
 
 export function escapeNew(surroundings, targetLocator = null) {
   const threatAnalysis = analyzeThreats(surroundings);
-  const turnPreference = turnToHighScorer(surroundings);
+  const defaultTurn = !targetLocator || targetLocator.transverse === 0
+    ? ''
+    : targetLocator.transverse < 0
+    ? 'L'
+    : 'R';
+  const turnPreference = turnToHighScorer(surroundings, defaultTurn);
 
   // check if at least 3 sides are blocked
   const actionOn3SideBlocking = escapeFromThreeSideBlockingSituation(surroundings, turnPreference);
