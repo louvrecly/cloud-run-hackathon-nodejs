@@ -943,7 +943,7 @@ export function hunt(surroundings, forwardSurroundings = false, targetLocator = 
   }
 }
 
-function approachProximalTargetAtCost1(surroundings, threatAnalysis, turnPreference) {
+function approachProximalTargetAtCostOne(surroundings, threatAnalysis, turnPreference) {
   const { front, left, right } = surroundings;
 
   // front has no room to move
@@ -1031,7 +1031,7 @@ function chooseProximalTarget(surroundings, forwardSurroundings, turnPreference)
   return '';
 }
 
-function approachProximalTargetAtCost2(surroundings, forwardSurroundings, threatAnalysis, turnPreference) {
+function approachProximalTargetAtCostTwo(surroundings, forwardSurroundings, threatAnalysis, turnPreference) {
   const forwardThreatAnalysis = analyzeThreats(forwardSurroundings);
 
   // front has fewer enemies facing this way from left and right than those at the current location
@@ -1094,14 +1094,14 @@ export function huntNew(surroundings, forwardSurroundings = false, targetLocator
   }
 
   // look for proximal target at cost 1
-  const actionAtCost1 = approachProximalTargetAtCost1(surroundings, threatAnalysis, turnPreference);
+  const actionAtCost1 = approachProximalTargetAtCostOne(surroundings, threatAnalysis, turnPreference);
 
   if (actionAtCost1) {
     return actionAtCost1;
   }
 
   // look for proximal target at cost 2
-  const actionAtCost2 = approachProximalTargetAtCost2(surroundings, forwardSurroundings, threatAnalysis, turnPreference);
+  const actionAtCost2 = approachProximalTargetAtCostTwo(surroundings, forwardSurroundings, threatAnalysis, turnPreference);
 
   if (actionAtCost2) {
     return actionAtCost2;
