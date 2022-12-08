@@ -1038,7 +1038,7 @@ describe('getForwardState should return the state after the forward action with 
     expect(forwardState.direction).toEqual('N');
   });
 
-  test('getForwardState should return false when wall is in the front', () => {
+  test('getForwardState should return null when wall is in the front', () => {
     let dims = [4, 3];
     let state = {
       BASE_URL: {
@@ -1059,7 +1059,7 @@ describe('getForwardState should return the state after the forward action with 
     let ownState = state.BASE_URL;
     let forwardState = getForwardState(ownState, dims);
     assertType<Boolean>(forwardState);
-    expect(forwardState).toEqual(false);
+    expect(forwardState).toBeNull();
   });
 });
 
@@ -5693,7 +5693,7 @@ describe('hunt should return a relative direction in a given surroundings', () =
     const ownState = state.BASE_URL;
     const arena = scanArena(dims, state);
     const surroundings = scanSurroundings(ownState, arena, dims);
-    const forwardState = surroundings.front.distance > 1 ? getForwardState(ownState, dims) : false;
+    const forwardState = surroundings.front.distance > 1 ? getForwardState(ownState, dims) : null;
     const forwardSurroundings = forwardState && scanSurroundings(forwardState, arena, dims);
     const action = hunt(surroundings, forwardSurroundings);
     assertType<String>(action);
@@ -5722,7 +5722,7 @@ describe('hunt should return a relative direction in a given surroundings', () =
     const ownState = state.BASE_URL;
     const arena = scanArena(dims, state);
     const surroundings = scanSurroundings(ownState, arena, dims);
-    const forwardState = surroundings.front.distance > 1 ? getForwardState(ownState, dims) : false;
+    const forwardState = surroundings.front.distance > 1 ? getForwardState(ownState, dims) : null;
     const forwardSurroundings = forwardState && scanSurroundings(forwardState, arena, dims);
     const action = hunt(surroundings, forwardSurroundings);
     assertType<String>(action);
@@ -8544,7 +8544,7 @@ describe('decideAction should return a relative direction given the state of bei
     const ownState = state.BASE_URL;
     const arena = scanArena(dims, state);
     const surroundings = scanSurroundings(ownState, arena, dims);
-    const forwardState = surroundings.front.distance > 1 ? getForwardState(ownState, dims) : false;
+    const forwardState = surroundings.front.distance > 1 ? getForwardState(ownState, dims) : null;
     const forwardSurroundings = forwardState && scanSurroundings(forwardState, arena, dims);
     const action = decideAction(ownState.wasHit, surroundings, forwardSurroundings);
     assertType<String>(action);
@@ -8573,7 +8573,7 @@ describe('decideAction should return a relative direction given the state of bei
     const ownState = state.BASE_URL;
     const arena = scanArena(dims, state);
     const surroundings = scanSurroundings(ownState, arena, dims);
-    const forwardState = surroundings.front.distance > 1 ? getForwardState(ownState, dims) : false;
+    const forwardState = surroundings.front.distance > 1 ? getForwardState(ownState, dims) : null;
     const forwardSurroundings = forwardState && scanSurroundings(forwardState, arena, dims);
     const action = decideAction(ownState.wasHit, surroundings, forwardSurroundings);
     assertType<String>(action);
@@ -8609,7 +8609,7 @@ describe('decideAction should return a relative direction given the state of bei
     const ownState = state.BASE_URL;
     const arena = scanArena(dims, state);
     const surroundings = scanSurroundings(ownState, arena, dims);
-    const forwardState = surroundings.front.distance > 1 ? getForwardState(ownState, dims) : false;
+    const forwardState = surroundings.front.distance > 1 ? getForwardState(ownState, dims) : null;
     const forwardSurroundings = forwardState && scanSurroundings(forwardState, arena, dims);
     const action = decideAction(ownState.wasHit, surroundings, forwardSurroundings);
     assertType<String>(action);
@@ -8645,7 +8645,7 @@ describe('decideAction should return a relative direction given the state of bei
     const ownState = state.BASE_URL;
     const arena = scanArena(dims, state);
     const surroundings = scanSurroundings(ownState, arena, dims);
-    const forwardState = surroundings.front.distance > 1 ? getForwardState(ownState, dims) : false;
+    const forwardState = surroundings.front.distance > 1 ? getForwardState(ownState, dims) : null;
     const forwardSurroundings = forwardState && scanSurroundings(forwardState, arena, dims);
     const action = decideAction(ownState.wasHit, surroundings, forwardSurroundings);
     assertType<String>(action);
@@ -8674,7 +8674,7 @@ describe('decideAction should return a relative direction given the state of bei
     const ownState = state.BASE_URL;
     const arena = scanArena(dims, state);
     const surroundings = scanSurroundings(ownState, arena, dims);
-    const forwardState = surroundings.front.distance > 1 ? getForwardState(ownState, dims) : false;
+    const forwardState = surroundings.front.distance > 1 ? getForwardState(ownState, dims) : null;
     const forwardSurroundings = forwardState && scanSurroundings(forwardState, arena, dims);
     const action = decideAction(ownState.wasHit, surroundings, forwardSurroundings);
     assertType<String>(action);
@@ -8703,7 +8703,7 @@ describe('decideAction should return a relative direction given the state of bei
     const ownState = state.BASE_URL;
     const arena = scanArena(dims, state);
     const surroundings = scanSurroundings(ownState, arena, dims);
-    const forwardState = surroundings.front.distance > 1 ? getForwardState(ownState, dims) : false;
+    const forwardState = surroundings.front.distance > 1 ? getForwardState(ownState, dims) : null;
     const forwardSurroundings = forwardState && scanSurroundings(forwardState, arena, dims);
     const action = decideAction(ownState.wasHit, surroundings, forwardSurroundings);
     assertType<String>(action);

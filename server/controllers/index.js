@@ -15,7 +15,7 @@ function action(req, res) {
   const { ownState, enemyState } = parsedState;
   const surroundings = scanSurroundings(ownState, arena, dims);
   const targetLocator = locateTarget({ ownState, enemyState });
-  const forwardState = surroundings.front.distance > 1 ? getForwardState(ownState, dims) : false;
+  const forwardState = surroundings.front.distance > 1 ? getForwardState(ownState, dims) : null;
   const forwardSurroundings = forwardState && scanSurroundings(forwardState, arena, dims);
 
   return res.send(decideAction(ownState.wasHit, surroundings, forwardSurroundings, targetLocator));

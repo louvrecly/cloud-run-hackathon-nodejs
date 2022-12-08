@@ -107,7 +107,7 @@ export function getForwardState(ownState, dims) {
     return forwardState;
   }
 
-  return false
+  return null
 }
 
 export function getTurnState(ownState, turn) {
@@ -693,7 +693,7 @@ export function escapeNew(surroundings, threatAnalysis, turnPreference) {
   return decideForwardOrTurn(threatAnalysis, turnPreference);
 }
 
-export function hunt(surroundings, forwardSurroundings = false, targetLocator = null) {
+export function hunt(surroundings, forwardSurroundings = null, targetLocator = null) {
   const { front, back, left, right } = surroundings;
 
   // look for proximal target at cost 1
@@ -1109,7 +1109,7 @@ function approachDistalTarget(targetLocator) {
   return 'F';
 }
 
-export function huntNew(surroundings, threatAnalysis, turnPreference, forwardSurroundings = false, targetLocator = null) {
+export function huntNew(surroundings, threatAnalysis, turnPreference, forwardSurroundings = null, targetLocator = null) {
   // look for proximal target at cost 0
   if (checkEnemyInRange(surroundings.front)) {
     return 'T';
@@ -1137,7 +1137,7 @@ export function huntNew(surroundings, threatAnalysis, turnPreference, forwardSur
   return getRandomAction(['L', 'R']);
 }
 
-export function decideAction(wasHit, surroundings, forwardSurroundings = false, targetLocator = null) {
+export function decideAction(wasHit, surroundings, forwardSurroundings = null, targetLocator = null) {
   const threatAnalysis = analyzeThreats(surroundings);
   const defaultTurn = !targetLocator || targetLocator.transverse === 0
     ? ''
