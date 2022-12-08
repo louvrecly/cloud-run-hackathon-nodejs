@@ -97,13 +97,14 @@ export function locateLeadingEnemy({ ownState, enemyState }) {
 }
 
 export function getForwardState(ownState, dims) {
-  const { direction } = ownState;
+  const forwardState = { ...ownState };
+  const { direction } = forwardState;
   const { dim, index } = getDimAndIndex(direction, 'front');
   const multiplier = getMultiplier(direction, 'front');
 
-  if (checkIndexInRange(ownState[dim] + multiplier, dims[index])) {
-    ownState[dim] += multiplier;
-    return ownState;
+  if (checkIndexInRange(forwardState[dim] + multiplier, dims[index])) {
+    forwardState[dim] += multiplier;
+    return forwardState;
   }
 
   return false
@@ -249,6 +250,18 @@ export function evaluateDelta(surroundings) {
   }, 0);
 
   return benefit - cost;
+}
+
+export function getNextState(ownState, move, dims = [0, 0]) {
+  switch (move) {
+    case 'F':
+      return getForwardState(ownState, dims);
+    case 'L':
+    case 'R':
+      return getTurnState(ownState, move);
+    default:
+      return ownState;
+  }
 }
 
 export function escape(surroundings, targetLocator = null) {

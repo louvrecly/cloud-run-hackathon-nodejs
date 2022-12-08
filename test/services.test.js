@@ -17,6 +17,7 @@ import {
   checkEnemyInRange,
   getMoves,
   evaluateDelta,
+  getNextState,
   escape,
   escapeNew,
   hunt,
@@ -2585,6 +2586,125 @@ describe('evaluateDelta should return an expected value of delta with a given su
     const delta = evaluateDelta(surroundings);
     assertType<Number>(delta);
     expect(delta).toBe(0);
+  });
+});
+
+describe('getNextState should return the next state with the move and dimensions provided', () => {
+  test('getNextState should return the current state when the move is T', () => {
+    const ownState = {
+      x: 4,
+      y: 4,
+      direction: 'E',
+      wasHit: false,
+      score: 0,
+    };
+    const move = 'T';
+    const dims = [9, 9];
+    const nextState = getNextState(ownState, move, dims);
+    assertType<Object>(nextState);
+    expect(nextState).toEqual(ownState);
+  });
+
+  test('getNextState should return a state facing N when the current direction is N and the move is L', () => {
+    const ownState = {
+      x: 4,
+      y: 4,
+      direction: 'E',
+      wasHit: false,
+      score: 0,
+    };
+    const move = 'L';
+    const dims = [9, 9];
+    const nextState = getNextState(ownState, move, dims);
+    assertType<Object>(nextState);
+    expect(nextState.x).toBe(ownState.x);
+    expect(nextState.y).toBe(ownState.y);
+    expect(nextState.direction).toBe('N');
+  });
+
+  test('getNextState should return a state facing S when the current direction is N and the move is R', () => {
+    const ownState = {
+      x: 4,
+      y: 4,
+      direction: 'E',
+      wasHit: false,
+      score: 0,
+    };
+    const move = 'R';
+    const dims = [9, 9];
+    const nextState = getNextState(ownState, move, dims);
+    assertType<Object>(nextState);
+    expect(nextState.x).toBe(ownState.x);
+    expect(nextState.y).toBe(ownState.y);
+    expect(nextState.direction).toBe('S');
+  });
+
+  test('getNextState should return a state at (5, 4) when the current location is (4, 4) while facing E and the move is F', () => {
+    const ownState = {
+      x: 4,
+      y: 4,
+      direction: 'E',
+      wasHit: false,
+      score: 0,
+    };
+    const move = 'F';
+    const dims = [9, 9];
+    const nextState = getNextState(ownState, move, dims);
+    assertType<Object>(nextState);
+    expect(nextState.x).toBe(ownState.x + 1);
+    expect(nextState.y).toBe(ownState.y);
+    expect(nextState.direction).toBe('E');
+  });
+
+  test('getNextState should return a state at (4, 5) when the current location is (4, 4) while facing S and the move is F', () => {
+    const ownState = {
+      x: 4,
+      y: 4,
+      direction: 'S',
+      wasHit: false,
+      score: 0,
+    };
+    const move = 'F';
+    const dims = [9, 9];
+    const nextState = getNextState(ownState, move, dims);
+    assertType<Object>(nextState);
+    expect(nextState.x).toBe(ownState.x);
+    expect(nextState.y).toBe(ownState.y + 1);
+    expect(nextState.direction).toBe('S');
+  });
+
+  test('getNextState should return a state at (3, 4) when the current location is (4, 4) while facing W and the move is F', () => {
+    const ownState = {
+      x: 4,
+      y: 4,
+      direction: 'W',
+      wasHit: false,
+      score: 0,
+    };
+    const move = 'F';
+    const dims = [9, 9];
+    const nextState = getNextState(ownState, move, dims);
+    assertType<Object>(nextState);
+    expect(nextState.x).toBe(ownState.x - 1);
+    expect(nextState.y).toBe(ownState.y);
+    expect(nextState.direction).toBe('W');
+  });
+
+  test('getNextState should return a state at (4, 3) when the current location is (4, 4) while facing N and the move is F', () => {
+    const ownState = {
+      x: 4,
+      y: 4,
+      direction: 'N',
+      wasHit: false,
+      score: 0,
+    };
+    const move = 'F';
+    const dims = [9, 9];
+    const nextState = getNextState(ownState, move, dims);
+    assertType<Object>(nextState);
+    expect(nextState.x).toBe(ownState.x);
+    expect(nextState.y).toBe(ownState.y - 1);
+    expect(nextState.direction).toBe('N');
   });
 });
 
