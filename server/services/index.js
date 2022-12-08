@@ -78,7 +78,7 @@ export function getMultiplier(direction, relativeDirection) {
   }
 }
 
-export function locateLeadingEnemy({ ownState, enemyState }) {
+export function locateTarget({ ownState, enemyState }) {
   const { direction } = ownState;
   const rankedIds = rankEnemies(enemyState);
 

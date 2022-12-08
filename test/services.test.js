@@ -6,7 +6,7 @@ import {
   checkIndexInRange,
   getDimAndIndex,
   getMultiplier,
-  locateLeadingEnemy,
+  locateTarget,
   getForwardState,
   getTurnState,
   getThreatLevel,
@@ -412,8 +412,8 @@ describe('getMultiplier should return the correct multiplier of either 1 or -1 f
   });
 });
 
-describe('locateLeadingEnemy should return an object indicating the relative location of the leading enemy', () => {
-  test('locateLeadingEnemy should return null when there is no enemy', () => {
+describe('locateTarget should return an object indicating the relative location of the target', () => {
+  test('locateTarget should return null when there is no enemy', () => {
     const ownState = {
       x: 4,
       y: 4,
@@ -422,12 +422,12 @@ describe('locateLeadingEnemy should return an object indicating the relative loc
       score: 0,
     };
     const enemyState = {};
-    const targetLocator = locateLeadingEnemy({ ownState, enemyState });
+    const targetLocator = locateTarget({ ownState, enemyState });
     assertType<Object>(targetLocator);
     expect(targetLocator).toBeNull();
   });
 
-  test('locateLeadingEnemy should return 3 for longitudinal and 0 for transverse when the leading enemy is in the front', () => {
+  test('locateTarget should return 3 for longitudinal and 0 for transverse when the target is in the front', () => {
     const ownState = {
       x: 4,
       y: 4,
@@ -465,7 +465,7 @@ describe('locateLeadingEnemy should return an object indicating the relative loc
         score: 3,
       },
     };
-    const targetLocator = locateLeadingEnemy({ ownState, enemyState });
+    const targetLocator = locateTarget({ ownState, enemyState });
     assertType<Object>(targetLocator);
     expect(targetLocator).toHaveProperty('longitudinal');
     expect(targetLocator.longitudinal).toBe(3);
@@ -473,7 +473,7 @@ describe('locateLeadingEnemy should return an object indicating the relative loc
     expect(targetLocator.transverse).toBe(0);
   });
 
-  test('locateLeadingEnemy should return -2 for longitudinal and 0 for transverse when the leading enemy is in the back', () => {
+  test('locateTarget should return -2 for longitudinal and 0 for transverse when the target is in the back', () => {
     const ownState = {
       x: 4,
       y: 4,
@@ -511,7 +511,7 @@ describe('locateLeadingEnemy should return an object indicating the relative loc
         score: 5,
       },
     };
-    const targetLocator = locateLeadingEnemy({ ownState, enemyState });
+    const targetLocator = locateTarget({ ownState, enemyState });
     assertType<Object>(targetLocator);
     expect(targetLocator).toHaveProperty('longitudinal');
     expect(targetLocator.longitudinal).toBe(-2);
@@ -519,7 +519,7 @@ describe('locateLeadingEnemy should return an object indicating the relative loc
     expect(targetLocator.transverse).toBe(0);
   });
 
-  test('locateLeadingEnemy should return 0 for longitudinal and -2 for transverse when the leading enemy is on the left', () => {
+  test('locateTarget should return 0 for longitudinal and -2 for transverse when the target is on the left', () => {
     const ownState = {
       x: 4,
       y: 4,
@@ -557,7 +557,7 @@ describe('locateLeadingEnemy should return an object indicating the relative loc
         score: 3,
       },
     };
-    const targetLocator = locateLeadingEnemy({ ownState, enemyState });
+    const targetLocator = locateTarget({ ownState, enemyState });
     assertType<Object>(targetLocator);
     expect(targetLocator).toHaveProperty('longitudinal');
     expect(targetLocator.longitudinal).toBe(0);
@@ -565,7 +565,7 @@ describe('locateLeadingEnemy should return an object indicating the relative loc
     expect(targetLocator.transverse).toBe(-2);
   });
 
-  test('locateLeadingEnemy should return 0 for longitudinal and 2 for transverse when the leading enemy is on the right', () => {
+  test('locateTarget should return 0 for longitudinal and 2 for transverse when the target is on the right', () => {
     const ownState = {
       x: 4,
       y: 4,
@@ -603,7 +603,7 @@ describe('locateLeadingEnemy should return an object indicating the relative loc
         score: 3,
       },
     };
-    const targetLocator = locateLeadingEnemy({ ownState, enemyState });
+    const targetLocator = locateTarget({ ownState, enemyState });
     assertType<Object>(targetLocator);
     expect(targetLocator).toHaveProperty('longitudinal');
     expect(targetLocator.longitudinal).toBe(0);
@@ -611,7 +611,7 @@ describe('locateLeadingEnemy should return an object indicating the relative loc
     expect(targetLocator.transverse).toBe(2);
   });
 
-  test('locateLeadingEnemy should return 1 for longitudinal and -2 for transverse when the leading enemy is in the front-left', () => {
+  test('locateTarget should return 1 for longitudinal and -2 for transverse when the target is in the front-left', () => {
     const ownState = {
       x: 4,
       y: 4,
@@ -677,7 +677,7 @@ describe('locateLeadingEnemy should return an object indicating the relative loc
         score: 1,
       },
     };
-    const targetLocator = locateLeadingEnemy({ ownState, enemyState });
+    const targetLocator = locateTarget({ ownState, enemyState });
     assertType<Object>(targetLocator);
     expect(targetLocator).toHaveProperty('longitudinal');
     expect(targetLocator.longitudinal).toBe(1);
@@ -685,7 +685,7 @@ describe('locateLeadingEnemy should return an object indicating the relative loc
     expect(targetLocator.transverse).toBe(-2);
   });
 
-  test('locateLeadingEnemy should return 3 for longitudinal and 2 for transverse when the leading enemy is in the front-right', () => {
+  test('locateTarget should return 3 for longitudinal and 2 for transverse when the target is in the front-right', () => {
     const ownState = {
       x: 4,
       y: 4,
@@ -751,7 +751,7 @@ describe('locateLeadingEnemy should return an object indicating the relative loc
         score: 1,
       },
     };
-    const targetLocator = locateLeadingEnemy({ ownState, enemyState });
+    const targetLocator = locateTarget({ ownState, enemyState });
     assertType<Object>(targetLocator);
     expect(targetLocator).toHaveProperty('longitudinal');
     expect(targetLocator.longitudinal).toBe(3);
@@ -759,7 +759,7 @@ describe('locateLeadingEnemy should return an object indicating the relative loc
     expect(targetLocator.transverse).toBe(2);
   });
 
-  test('locateLeadingEnemy should return -2 for longitudinal and -4 for transverse when the leading enemy is in the back-left', () => {
+  test('locateTarget should return -2 for longitudinal and -4 for transverse when the target is in the back-left', () => {
     const ownState = {
       x: 4,
       y: 4,
@@ -825,7 +825,7 @@ describe('locateLeadingEnemy should return an object indicating the relative loc
         score: 1,
       },
     };
-    const targetLocator = locateLeadingEnemy({ ownState, enemyState });
+    const targetLocator = locateTarget({ ownState, enemyState });
     assertType<Object>(targetLocator);
     expect(targetLocator).toHaveProperty('longitudinal');
     expect(targetLocator.longitudinal).toBe(-2);
@@ -833,7 +833,7 @@ describe('locateLeadingEnemy should return an object indicating the relative loc
     expect(targetLocator.transverse).toBe(-4);
   });
 
-  test('locateLeadingEnemy should return -4 for longitudinal and 2 for transverse when the leading enemy is in the back-right', () => {
+  test('locateTarget should return -4 for longitudinal and 2 for transverse when the target is in the back-right', () => {
     const ownState = {
       x: 4,
       y: 4,
@@ -899,7 +899,7 @@ describe('locateLeadingEnemy should return an object indicating the relative loc
         score: 5,
       },
     };
-    const targetLocator = locateLeadingEnemy({ ownState, enemyState });
+    const targetLocator = locateTarget({ ownState, enemyState });
     assertType<Object>(targetLocator);
     expect(targetLocator).toHaveProperty('longitudinal');
     expect(targetLocator.longitudinal).toBe(-4);
