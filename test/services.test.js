@@ -7927,7 +7927,7 @@ describe('huntNew should return a rational decision of a relative direction when
     expect(action).toBe('L');
   });
 
-  test('huntNew should return L when no enemy reachable at cost 2 and the target is on the front-left', () => {
+  test('huntNew should return F or L when no enemy reachable at cost 2 and the target is on the front-left', () => {
     const surroundings = {
       front: {
         distance: 5,
@@ -7969,7 +7969,7 @@ describe('huntNew should return a rational decision of a relative direction when
       transverse: -6,
     };
     const action = huntNew(surroundings, forwardSurroundings, targetLocator);
-    expect(action).toBe('L');
+    expect(['F', 'L']).toContain(action);
   });
 
   test('huntNew should return L when no enemy reachable at cost 2 and the target is on the back-left', () => {
@@ -8062,7 +8062,7 @@ describe('huntNew should return a rational decision of a relative direction when
     expect(action).toBe('R');
   });
 
-  test('huntNew should return R when no enemy reachable at cost 2 and the target is on the front-right', () => {
+  test('huntNew should return F or R when no enemy reachable at cost 2 and the target is on the front-right', () => {
     const surroundings = {
       front: {
         distance: 5,
@@ -8100,11 +8100,11 @@ describe('huntNew should return a rational decision of a relative direction when
       },
     };
     const targetLocator = {
-      longitudinal: 2,
-      transverse: 6,
+      longitudinal: 6,
+      transverse: 2,
     };
     const action = huntNew(surroundings, forwardSurroundings, targetLocator);
-    expect(action).toBe('R');
+    expect(['F', 'R']).toContain(action);
   });
 
   test('huntNew should return R when no enemy reachable at cost 2 and the target is on the back-right', () => {

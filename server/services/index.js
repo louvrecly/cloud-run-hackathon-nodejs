@@ -1011,14 +1011,40 @@ export function huntNew(surroundings, forwardSurroundings = false, targetLocator
     return action;
   }
 
-  // target on the left
-  if (targetLocator && targetLocator.transverse < 0) {
-    return 'L';
-  }
+  // target available
+  if (targetLocator) {
+    // target is not in the front
+    if (targetLocator.longitudinal <= 0) {
+      // target on the left
+      if (targetLocator.transverse < 0) {
+        return 'L';
+      }
 
-  // target on the right
-  if (targetLocator && targetLocator.transverse > 0) {
-    return 'R';
+      // target on the right
+      if (targetLocator.transverse > 0) {
+        return 'R';
+      }
+
+      return ['L', 'R'][Math.floor(Math.random()) * 2];
+    }
+
+    // target in the front
+    if (targetLocator.transverse === 0) {
+      return 'F';
+    }
+
+    // target is closer from the side than from the front
+    if (Math.abs(targetLocator.transverse) < targetLocator.longitudinal) {
+      // target on the front-left
+      if (targetLocator.transverse < 0) {
+        return 'L';
+      }
+
+      // target on the front-right
+      return 'R';
+    }
+
+    return 'F';
   }
 
   return ['L', 'R'][Math.floor(Math.random()) * 2];
