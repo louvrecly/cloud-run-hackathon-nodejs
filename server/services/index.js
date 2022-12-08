@@ -1003,6 +1003,43 @@ function approachPotentialTargetAtCost2(surroundings, forwardSurroundings, threa
   return approachHighestScoringPotentialTarget(surroundings, forwardSurroundings, turnPreference);
 }
 
+function approachTarget(targetLocator) {
+  const { longitudinal, transverse } = targetLocator;
+
+  // target is not in the front
+  if (longitudinal <= 0) {
+    // target on the left
+    if (transverse < 0) {
+      return 'L';
+    }
+
+    // target on the right
+    if (transverse > 0) {
+      return 'R';
+    }
+
+    return ['L', 'R'][Math.floor(Math.random()) * 2];
+  }
+
+  // target in the front
+  if (transverse === 0) {
+    return 'F';
+  }
+
+  // target is closer from the side than from the front
+  if (Math.abs(transverse) < longitudinal) {
+    // target on the front-left
+    if (transverse < 0) {
+      return 'L';
+    }
+
+    // target on the front-right
+    return 'R';
+  }
+
+  return 'F';
+}
+
 export function huntNew(surroundings, forwardSurroundings = false, targetLocator = null) {
   const { front, back, left, right } = surroundings;
   const threatAnalysis = analyzeThreats(surroundings);
@@ -1029,38 +1066,7 @@ export function huntNew(surroundings, forwardSurroundings = false, targetLocator
 
   // target available
   if (targetLocator) {
-    // target is not in the front
-    if (targetLocator.longitudinal <= 0) {
-      // target on the left
-      if (targetLocator.transverse < 0) {
-        return 'L';
-      }
-
-      // target on the right
-      if (targetLocator.transverse > 0) {
-        return 'R';
-      }
-
-      return ['L', 'R'][Math.floor(Math.random()) * 2];
-    }
-
-    // target in the front
-    if (targetLocator.transverse === 0) {
-      return 'F';
-    }
-
-    // target is closer from the side than from the front
-    if (Math.abs(targetLocator.transverse) < targetLocator.longitudinal) {
-      // target on the front-left
-      if (targetLocator.transverse < 0) {
-        return 'L';
-      }
-
-      // target on the front-right
-      return 'R';
-    }
-
-    return 'F';
+    return approachTarget(targetLocator);
   }
 
   return ['L', 'R'][Math.floor(Math.random()) * 2];
