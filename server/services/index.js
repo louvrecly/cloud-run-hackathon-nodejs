@@ -423,12 +423,12 @@ export function escape(surroundings, targetLocator = null) {
     }
   } else if (
       // front has enemy within range of throw
-      hasEnemy(front) && front.distance < 4
+      checkEnemyInRange(front)
     ) {
     if (
       // left or right has enemy
-      (hasEnemy(left) && left.distance < 4) ||
-      (hasEnemy(right) && right.distance < 4)
+      checkEnemyInRange(left) ||
+      checkEnemyInRange(right)
     ) {
       return 'F';
     } else {
@@ -466,8 +466,8 @@ export function escape(surroundings, targetLocator = null) {
     // front has no enemy or wall within distance 1
     if (
       // left or right has enemy
-      (hasEnemy(left) && left.distance < 4) ||
-      (hasEnemy(right) && right.distance < 4)
+      checkEnemyInRange(left) ||
+      checkEnemyInRange(right)
     ) {
       return 'F';
     } else {
@@ -630,9 +630,9 @@ export function hunt(surroundings, forwardSurroundings = false, targetLocator = 
   // look for potential target at cost 1
   if (
     // both left and right have enemy within range of throw and front has enemy at distance 4
-    hasEnemy(front) && front.distance < 4 &&
-    hasEnemy(left) && left.distance < 4 &&
-    hasEnemy(right) && right.distance < 4
+    checkEnemyInRange(front) &&
+    checkEnemyInRange(left) &&
+    checkEnemyInRange(right)
   ) {
     const threatAnalysis = analyzeThreats(surroundings);
     if (
@@ -682,8 +682,8 @@ export function hunt(surroundings, forwardSurroundings = false, targetLocator = 
     }
   } else if (
     // both left and right have enemy within range of throw
-    hasEnemy(left) && left.distance < 4 &&
-    hasEnemy(right) && right.distance < 4
+    checkEnemyInRange(left) &&
+    checkEnemyInRange(right)
   ) {
     if (
       // left enemy has a higher score
@@ -696,8 +696,8 @@ export function hunt(surroundings, forwardSurroundings = false, targetLocator = 
     }
   } else if (
     // left has enemy within range of throw and front has enemy at distance 4
-    hasEnemy(front) && front.distance === 4 &&
-    hasEnemy(left) && left.distance < 4
+    !checkEnemyInRange(front) && checkEnemyInRange(front, -1) &&
+    checkEnemyInRange(left)
   ) {
     if (
       // left enemy is a threat
@@ -717,8 +717,8 @@ export function hunt(surroundings, forwardSurroundings = false, targetLocator = 
     }
   } else if (
     // right has enemy within range of throw and front has enemy at distance 4
-    hasEnemy(front) && front.distance === 4 &&
-    hasEnemy(right) && right.distance < 4
+    !checkEnemyInRange(front) && checkEnemyInRange(front, -1) &&
+    checkEnemyInRange(right)
   ) {
     if (
       // right enemy is a threat
@@ -738,17 +738,17 @@ export function hunt(surroundings, forwardSurroundings = false, targetLocator = 
     }
   } else if (
     // left has enemy within range of throw
-    hasEnemy(left) && left.distance < 4
+    checkEnemyInRange(left)
   ) {
     return 'L';
   } else if (
     // right has enemy within range of throw
-    hasEnemy(right) && right.distance < 4
+    checkEnemyInRange(right)
   ) {
     return 'R';
   } else if (
     // front has enemy at distance 4
-    hasEnemy(front) && front.distance === 4
+    !checkEnemyInRange(front) && checkEnemyInRange(front, -1)
   ) {
     return 'F';
   }
@@ -756,9 +756,9 @@ export function hunt(surroundings, forwardSurroundings = false, targetLocator = 
   // look for potential target at cost 2
   if (
     // back has enemy within range of throw and both left and right have enemy at distance 4
-    hasEnemy(left) && left.distance === 4 &&
-    hasEnemy(right) && right.distance === 4 &&
-    hasEnemy(back) && back.distance < 4
+    !checkEnemyInRange(left) && checkEnemyInRange(left, -1) &&
+    !checkEnemyInRange(right) && checkEnemyInRange(right, -1) &&
+    checkEnemyInRange(back)
   ) {
     if (
       // left enemy has a higher score
@@ -771,8 +771,8 @@ export function hunt(surroundings, forwardSurroundings = false, targetLocator = 
     }
   } else if (
     // both left and right have enemy at distance 4
-    hasEnemy(left) && left.distance === 4 &&
-    hasEnemy(right) && right.distance === 4
+    !checkEnemyInRange(left) && checkEnemyInRange(left, -1) &&
+    !checkEnemyInRange(right) && checkEnemyInRange(right, -1)
   ) {
     if (
       // left enemy has a higher score
@@ -785,19 +785,19 @@ export function hunt(surroundings, forwardSurroundings = false, targetLocator = 
     }
   } else if (
     // back has enemy within range of throw and left has enemy at distance 4
-    hasEnemy(left) && left.distance === 4 &&
-    hasEnemy(back) && back.distance < 4
+    !checkEnemyInRange(left) && checkEnemyInRange(left, -1) &&
+    checkEnemyInRange(back)
   ) {
     return 'L';
   } else if (
     // back has enemy within range of throw and right has enemy at distance 4
-    hasEnemy(right) && right.distance === 4 &&
-    hasEnemy(back) && back.distance < 4
+    !checkEnemyInRange(right) && checkEnemyInRange(right, -1) &&
+    checkEnemyInRange(back)
   ) {
     return 'R';
   } else if (
     // back has enemy within range of throw
-    hasEnemy(back) && back.distance < 4
+    checkEnemyInRange(back)
   ) {
     if (
       // left has a wall within distance 2
@@ -829,17 +829,17 @@ export function hunt(surroundings, forwardSurroundings = false, targetLocator = 
     }
   } else if (
     // left has enemy at distance 4
-    hasEnemy(left) && left.distance === 4
+    !checkEnemyInRange(left) && checkEnemyInRange(left, -1)
   ) {
     return 'L';
   } else if (
     // right has enemy at distance 4
-    hasEnemy(right) && right.distance === 4
+    !checkEnemyInRange(right) && checkEnemyInRange(right, -1)
   ) {
     return 'R';
   } else if (
     // front has enemy at distance 5
-    hasEnemy(front) && front.distance === 5
+    !checkEnemyInRange(front, -1) && checkEnemyInRange(front, -2)
   ) {
     return 'F';
   } else if (
@@ -848,8 +848,8 @@ export function hunt(surroundings, forwardSurroundings = false, targetLocator = 
   ) {
     if (
       // both left and right have enemy within range of throw when stepped forward
-      hasEnemy(forwardSurroundings.left) && forwardSurroundings.left.distance < 4 &&
-      hasEnemy(forwardSurroundings.right) && forwardSurroundings.right.distance < 4
+      checkEnemyInRange(forwardSurroundings.left) &&
+      checkEnemyInRange(forwardSurroundings.right)
     ) {
       if (
         // both left and right enemy are threats when stepped forward
@@ -881,8 +881,8 @@ export function hunt(surroundings, forwardSurroundings = false, targetLocator = 
       }
     } else if (
       // either left or right has enemy within range of throw when stepped forward
-      hasEnemy(forwardSurroundings.left) && forwardSurroundings.left.distance < 4 &&
-      hasEnemy(forwardSurroundings.right) && forwardSurroundings.right.distance < 4
+      checkEnemyInRange(forwardSurroundings.left) &&
+      checkEnemyInRange(forwardSurroundings.right)
     ) {
       return 'F';
     }
