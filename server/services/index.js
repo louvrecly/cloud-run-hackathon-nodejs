@@ -899,6 +899,53 @@ export function hunt(surroundings, forwardSurroundings = false, targetLocator = 
   }
 }
 
+function approachPotentialTargetAtCost1(surroundings, threatAnalysis, turnPreference) {
+  const { front, left, right } = surroundings;
+
+  // front has no room to move
+  if (front.distance === 1) {
+    return turnPreference;
+  }
+
+  if (
+    // front has an enemy just out of reach while left and right have no enemy
+    checkEnemyInRange(front, -1) &&
+    !checkEnemyInRange(left) &&
+    !checkEnemyInRange(right)
+  ) {
+    return 'F';
+  }
+
+  if (
+    // front has an enemy just out of reach and left has an enemy within range of throw
+    checkEnemyInRange(front, -1) &&
+    checkEnemyInRange(left) &&
+    !checkEnemyInRange(right)
+  ) {
+    return decideForwardOrTurn(threatAnalysis, 'L');
+  }
+
+  if (
+    // front has an enemy just out of reach and right has an enemy within range of throw
+    checkEnemyInRange(front, -1) &&
+    !checkEnemyInRange(left) &&
+    checkEnemyInRange(right)
+  ) {
+    return decideForwardOrTurn(threatAnalysis, 'R');
+  }
+
+  if (
+    // front has an enemy just out of reach while left and right have enemies within range of throw
+    checkEnemyInRange(front, -1) &&
+    checkEnemyInRange(left) &&
+    checkEnemyInRange(right)
+  ) {
+    return decideForwardOrTurn(threatAnalysis, turnPreference);
+  }
+
+  return '';
+}
+
 function approachHighestScoringPotentialTarget(surroundings, forwardSurroundings, turnPreference) {
   const { front, back, left, right } = surroundings;
 
@@ -967,52 +1014,17 @@ export function huntNew(surroundings, forwardSurroundings = false, targetLocator
   }
 
   // look for potential target at cost 1
-  // front has no room to move
-  if (front.distance === 1) {
-    return turnPreference;
-  }
+  const actionAtCost1 = approachPotentialTargetAtCost1(surroundings, threatAnalysis, turnPreference);
 
-  if (
-    // front has an enemy just out of reach while left and right have no enemy
-    checkEnemyInRange(front, -1) &&
-    !checkEnemyInRange(left) &&
-    !checkEnemyInRange(right)
-  ) {
-    return 'F';
-  }
-
-  if (
-    // front has an enemy just out of reach and left has an enemy within range of throw
-    checkEnemyInRange(front, -1) &&
-    checkEnemyInRange(left) &&
-    !checkEnemyInRange(right)
-  ) {
-    return decideForwardOrTurn(threatAnalysis, 'L');
-  }
-
-  if (
-    // front has an enemy just out of reach and right has an enemy within range of throw
-    checkEnemyInRange(front, -1) &&
-    !checkEnemyInRange(left) &&
-    checkEnemyInRange(right)
-  ) {
-    return decideForwardOrTurn(threatAnalysis, 'R');
-  }
-
-  if (
-    // front has an enemy just out of reach while left and right have enemies within range of throw
-    checkEnemyInRange(front, -1) &&
-    checkEnemyInRange(left) &&
-    checkEnemyInRange(right)
-  ) {
-    return decideForwardOrTurn(threatAnalysis, turnPreference);
+  if (actionAtCost1) {
+    return actionAtCost1;
   }
 
   // look for potential target at cost 2
-  const action = approachPotentialTargetAtCost2(surroundings, forwardSurroundings, threatAnalysis, turnPreference);
+  const actionAtCost2 = approachPotentialTargetAtCost2(surroundings, forwardSurroundings, threatAnalysis, turnPreference);
 
-  if (action) {
-    return action;
+  if (actionAtCost2) {
+    return actionAtCost2;
   }
 
   // target available
