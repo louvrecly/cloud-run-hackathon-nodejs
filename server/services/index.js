@@ -1030,3 +1030,24 @@ export function decideAction(wasHit, surroundings, forwardSurroundings = false, 
   // hunt otherwise
   else return huntNew(surroundings, forwardSurroundings, targetLocator);
 }
+
+export function decideMove(ownState, arena, dims) {
+  const { front } = scanSurroundings(ownState, arena, dims);
+
+  if (!ownState.wasHit && checkEnemyInRange(front)) {
+    return 'T';
+  }
+
+  const moves = getMoves(front.distance);
+  const moveOptions = moves.map(move => {
+    const nextState = getNextState(ownState, move, dims);
+    const nextSurroundings = scanSurroundings(nextState, arena, dims);
+    const delta = evaluateDelta(nextSurroundings);
+
+    return { move, delta };
+  });
+
+  moveOptions.sort((moveOptionA, moveOptionB) => moveOptionB.delta - moveOptionA.delta);
+
+  return moveOptions[0].move;
+}
