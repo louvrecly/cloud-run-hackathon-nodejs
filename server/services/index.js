@@ -940,6 +940,22 @@ function approachHighestScoringPotentialTarget(surroundings, forwardSurroundings
   return '';
 }
 
+function approachPotentialTargetAtCost2(surroundings, forwardSurroundings, threatAnalysis, turnPreference) {
+  const forwardThreatAnalysis = analyzeThreats(forwardSurroundings);
+
+  // front has fewer enemies facing this way from left and right than those at the current location
+  if (threatAnalysis.transverse > forwardThreatAnalysis.transverse) {
+    return 'F';
+  }
+
+  // front has more enemies facing this way from left and right than those at the current location
+  if (threatAnalysis.transverse < forwardThreatAnalysis.transverse) {
+    return turnPreference;
+  }
+
+  return approachHighestScoringPotentialTarget(surroundings, forwardSurroundings, turnPreference);
+}
+
 export function huntNew(surroundings, forwardSurroundings = false, targetLocator = null) {
   const { front, back, left, right } = surroundings;
   const threatAnalysis = analyzeThreats(surroundings);
@@ -993,19 +1009,7 @@ export function huntNew(surroundings, forwardSurroundings = false, targetLocator
   }
 
   // look for potential target at cost 2
-  const forwardThreatAnalysis = analyzeThreats(forwardSurroundings);
-
-  // front has fewer enemies facing this way from left and right than those at the current location
-  if (threatAnalysis.transverse > forwardThreatAnalysis.transverse) {
-    return 'F';
-  }
-
-  // front has more enemies facing this way from left and right than those at the current location
-  if (threatAnalysis.transverse < forwardThreatAnalysis.transverse) {
-    return turnPreference;
-  }
-
-  const action = approachHighestScoringPotentialTarget(surroundings, forwardSurroundings, turnPreference);
+  const action = approachPotentialTargetAtCost2(surroundings, forwardSurroundings, threatAnalysis, turnPreference);
 
   if (action) {
     return action;
