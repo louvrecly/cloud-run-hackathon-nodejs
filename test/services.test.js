@@ -410,6 +410,20 @@ describe('getMultiplier should return the correct multiplier of either 1 or -1 f
 });
 
 describe('locateLeadingEnemy should return an object indicating the relative location of the leading enemy', () => {
+  test('locateLeadingEnemy should return null when there is no enemy', () => {
+    const ownState = {
+      x: 4,
+      y: 4,
+      direction: 'E',
+      wasHit: false,
+      score: 0,
+    };
+    const enemyState = {};
+    const targetLocator = locateLeadingEnemy({ ownState, enemyState });
+    assertType<Object>(targetLocator);
+    expect(targetLocator).toBeNull();
+  });
+
   test('locateLeadingEnemy should return 3 for longitudinal and 0 for transverse when the leading enemy is in the front', () => {
     const ownState = {
       x: 4,

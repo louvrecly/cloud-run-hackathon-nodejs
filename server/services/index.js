@@ -81,6 +81,9 @@ export function getMultiplier(direction, relativeDirection) {
 export function locateLeadingEnemy({ ownState, enemyState }) {
   const { direction } = ownState;
   const rankedIds = rankEnemies(enemyState);
+
+  if (!rankedIds.length) return null;
+
   const targetState = enemyState[rankedIds[0]];
 
   const longitudinalAxis = getDimAndIndex(direction, 'front');
