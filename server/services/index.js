@@ -252,6 +252,12 @@ export function evaluateDelta(surroundings) {
   return benefit - cost;
 }
 
+function getRandomAction(actions = []) {
+  return actions.length
+    ? actions[Math.floor(Math.random()) * actions.length]
+    : '';
+}
+
 export function getNextState(ownState, move, dims = [0, 0]) {
   switch (move) {
     case 'F':
@@ -416,7 +422,7 @@ export function escape(surroundings, targetLocator = null) {
               return 'R';
             }
           } else {
-            return ['L', 'R'][Math.floor(Math.random()) * 2];
+            return getRandomAction(['L', 'R']);
           }
         }
       }
@@ -458,7 +464,7 @@ export function escape(surroundings, targetLocator = null) {
             return 'R';
           }
         } else {
-          return ['L', 'R'][Math.floor(Math.random()) * 2];
+          return getRandomAction(['L', 'R']);
         }
       }
     }
@@ -503,7 +509,7 @@ export function escape(surroundings, targetLocator = null) {
               return 'R';
             }
           } else {
-            return ['L', 'R'][Math.floor(Math.random()) * 2];
+            return getRandomAction(['L', 'R']);
           }
         }
       }
@@ -824,7 +830,7 @@ export function hunt(surroundings, forwardSurroundings = false, targetLocator = 
           return 'R';
         }
       } else {
-        return ['L', 'R'][Math.floor(Math.random()) * 2];
+        return getRandomAction(['L', 'R']);
       }
     }
   } else if (
@@ -895,7 +901,7 @@ export function hunt(surroundings, forwardSurroundings = false, targetLocator = 
   ) {
     return 'F';
   } else {
-    return ['L', 'R'][Math.floor(Math.random()) * 2];
+    return getRandomAction(['L', 'R']);
   }
 }
 
@@ -1018,7 +1024,7 @@ function approachDistalTarget(targetLocator) {
       return 'R';
     }
 
-    return ['L', 'R'][Math.floor(Math.random()) * 2];
+    return getRandomAction(['L', 'R']);
   }
 
   // target in the front
@@ -1068,7 +1074,7 @@ export function huntNew(surroundings, forwardSurroundings = false, targetLocator
     return approachDistalTarget(targetLocator);
   }
 
-  return ['L', 'R'][Math.floor(Math.random()) * 2];
+  return getRandomAction(['L', 'R']);
 }
 
 export function decideAction(wasHit, surroundings, forwardSurroundings = false, targetLocator = null) {
