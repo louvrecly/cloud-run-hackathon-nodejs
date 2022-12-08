@@ -607,24 +607,8 @@ function escapeFrom2SideBlockingSituation(surroundings) {
   return '';
 }
 
-export function escapeNew(surroundings, targetLocator = null) {
+function escapeFrom1SideBlockingSituation(surroundings, threatAnalysis, turnPreference) {
   const { front, left, right } = surroundings;
-  const threatAnalysis = analyzeThreats(surroundings);
-  const turnPreference = turnToHighScorer(surroundings);
-
-  // check if at least 3 sides are blocked
-  const actionOn3SideBlocking = escapeFrom3SideBlockingSituation(surroundings, turnPreference);
-
-  if (actionOn3SideBlocking) {
-    return actionOn3SideBlocking;
-  }
-
-  // check if at least 2 sides are blocked
-  const actionOn2SideBlocking = escapeFrom2SideBlockingSituation(surroundings);
-
-  if (actionOn2SideBlocking) {
-    return actionOn2SideBlocking;
-  }
 
   if (
     // left has no room to escape
@@ -651,6 +635,34 @@ export function escapeNew(surroundings, targetLocator = null) {
     right.distance > 1
   ) {
     return turnPreference;
+  }
+
+  return '';
+}
+
+export function escapeNew(surroundings, targetLocator = null) {
+  const threatAnalysis = analyzeThreats(surroundings);
+  const turnPreference = turnToHighScorer(surroundings);
+
+  // check if at least 3 sides are blocked
+  const actionOn3SideBlocking = escapeFrom3SideBlockingSituation(surroundings, turnPreference);
+
+  if (actionOn3SideBlocking) {
+    return actionOn3SideBlocking;
+  }
+
+  // check if at least 2 sides are blocked
+  const actionOn2SideBlocking = escapeFrom2SideBlockingSituation(surroundings);
+
+  if (actionOn2SideBlocking) {
+    return actionOn2SideBlocking;
+  }
+
+  // check if at least 1 side is blocked
+  const actionOn1SideBlocking = escapeFrom1SideBlockingSituation(surroundings, threatAnalysis, turnPreference);
+
+  if (actionOn1SideBlocking) {
+    return actionOn1SideBlocking;
   }
 
   return decideForwardOrTurn(threatAnalysis, turnPreference);
