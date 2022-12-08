@@ -16,6 +16,7 @@ import {
   hasWall,
   checkEnemyInRange,
   getMoves,
+  evaluateDelta,
   escape,
   escapeNew,
   hunt,
@@ -2287,6 +2288,303 @@ describe('getMoves should return an array of available moves depending on the su
     expect(moves).toContain('R');
     expect(moves).toContain('T');
     expect(moves).not.toContain('F');
+  });
+});
+
+describe('evaluateDelta should return an expected value of delta with a given surroundings', () => {
+  test('evaluateDelta should return 0 when there is no enemy is the surroundings', () => {
+    const surroundings = {
+      front: {
+        distance: 5,
+        obstacle: null,
+      },
+      back: {
+        distance: 5,
+        obstacle: null,
+      },
+      left: {
+        distance: 5,
+        obstacle: null,
+      },
+      right: {
+        distance: 5,
+        obstacle: null,
+      },
+    };
+    const delta = evaluateDelta(surroundings);
+    expect(delta).toBe(0);
+  });
+
+  test('evaluateDelta should return 0 when left, right and back have enemies facing away', () => {
+    const surroundings = {
+      front: {
+        distance: 5,
+        obstacle: null,
+      },
+      back: {
+        distance: 2,
+        obstacle: {
+          x: 2,
+          y: 4,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: -1,
+        },
+      },
+      left: {
+        distance: 2,
+        obstacle: {
+          x: 4,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 0,
+        },
+      },
+      right: {
+        distance: 2,
+        obstacle: {
+          x: 4,
+          y: 6,
+          direction: 'E',
+          wasHit: false,
+          score: 0,
+          threatLevel: 0,
+        },
+      },
+    };
+    const delta = evaluateDelta(surroundings);
+    expect(delta).toBe(0);
+  });
+
+  test('evaluateDelta should return a negative value when back has an enemy facing this way', () => {
+    const surroundings = {
+      front: {
+        distance: 5,
+        obstacle: null,
+      },
+      back: {
+        distance: 2,
+        obstacle: {
+          x: 2,
+          y: 4,
+          direction: 'E',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 2,
+        obstacle: {
+          x: 4,
+          y: 2,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 0,
+        },
+      },
+      right: {
+        distance: 2,
+        obstacle: {
+          x: 4,
+          y: 6,
+          direction: 'E',
+          wasHit: false,
+          score: 0,
+          threatLevel: 0,
+        },
+      },
+    };
+    const delta = evaluateDelta(surroundings);
+    assertType<Number>(delta);
+    expect(delta).toBeLessThan(0);
+  });
+
+  test('evaluateDelta should return a negative value when left, right and back have enemies facing this way', () => {
+    const surroundings = {
+      front: {
+        distance: 5,
+        obstacle: null,
+      },
+      back: {
+        distance: 2,
+        obstacle: {
+          x: 2,
+          y: 4,
+          direction: 'E',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      left: {
+        distance: 2,
+        obstacle: {
+          x: 4,
+          y: 2,
+          direction: 'S',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      right: {
+        distance: 2,
+        obstacle: {
+          x: 4,
+          y: 6,
+          direction: 'N',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+    };
+    const delta = evaluateDelta(surroundings);
+    assertType<Number>(delta);
+    expect(delta).toBeLessThan(0);
+  });
+
+  test('evaluateDelta should return a positive value when front has an enemy facing away', () => {
+    const surroundings = {
+      front: {
+        distance: 3,
+        obstacle: {
+          x: 7,
+          y: 4,
+          direction: 'E',
+          wasHit: false,
+          score: 0,
+          threatLevel: -1,
+        },
+      },
+      back: {
+        distance: 5,
+        obstacle: null,
+      },
+      left: {
+        distance: 5,
+        obstacle: null,
+      },
+      right: {
+        distance: 5,
+        obstacle: null,
+      },
+    };
+    const delta = evaluateDelta(surroundings);
+    assertType<Number>(delta);
+    expect(delta).toBeGreaterThan(0);
+  });
+
+  test('evaluateDelta should return 0 when front has an enemy facing this way', () => {
+    const surroundings = {
+      front: {
+        distance: 3,
+        obstacle: {
+          x: 7,
+          y: 4,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 5,
+        obstacle: null,
+      },
+      left: {
+        distance: 5,
+        obstacle: null,
+      },
+      right: {
+        distance: 5,
+        obstacle: null,
+      },
+    };
+    const delta = evaluateDelta(surroundings);
+    assertType<Number>(delta);
+    expect(delta).toBe(0);
+  });
+
+  test('evaluateDelta should return a negative value when front and other directions have enemies facing this way', () => {
+    const surroundings = {
+      front: {
+        distance: 3,
+        obstacle: {
+          x: 7,
+          y: 4,
+          direction: 'W',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      back: {
+        distance: 5,
+        obstacle: null,
+      },
+      left: {
+        distance: 2,
+        obstacle: {
+          x: 4,
+          y: 2,
+          direction: 'S',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      right: {
+        distance: 5,
+        obstacle: null,
+      },
+    };
+    const delta = evaluateDelta(surroundings);
+    assertType<Number>(delta);
+    expect(delta).toBeLessThan(0);
+  });
+
+  test('evaluateDelta should return a negative value when front has an enemy facing away and back has an enemy facing this way', () => {
+    const surroundings = {
+      front: {
+        distance: 3,
+        obstacle: {
+          x: 7,
+          y: 4,
+          direction: 'N',
+          wasHit: false,
+          score: 0,
+          threatLevel: 0,
+        },
+      },
+      back: {
+        distance: 5,
+        obstacle: null,
+      },
+      left: {
+        distance: 2,
+        obstacle: {
+          x: 4,
+          y: 2,
+          direction: 'S',
+          wasHit: false,
+          score: 0,
+          threatLevel: 1,
+        },
+      },
+      right: {
+        distance: 5,
+        obstacle: null,
+      },
+    };
+    const delta = evaluateDelta(surroundings);
+    assertType<Number>(delta);
+    expect(delta).toBe(0);
   });
 });
 

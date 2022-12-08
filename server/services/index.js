@@ -231,6 +231,26 @@ export function getMoves(frontDistance) {
   return moves;
 }
 
+export function evaluateDelta(surroundings) {
+  const benefit = checkEnemyInRange(surroundings.front) ? 1 : 0;
+  const relativeDirections = Object.keys(surroundings);
+
+  const cost = relativeDirections.reduce((subtotal, relativeDirection) => {
+    const relativeDirectionView = surroundings[relativeDirection];
+
+    if (
+      checkEnemyInRange(relativeDirectionView) &&
+      relativeDirectionView.obstacle?.threatLevel > 0
+    ) {
+      return subtotal + 1;
+    }
+
+    return subtotal;
+  }, 0);
+
+  return benefit - cost;
+}
+
 export function escape(surroundings, targetLocator = null) {
   const { front, back, left, right } = surroundings;
 
