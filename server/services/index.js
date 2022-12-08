@@ -84,7 +84,7 @@ export function locateTarget({ ownState, enemyState }) {
 
   if (!rankedIds.length) return null;
 
-  const targetState = enemyState[rankedIds[0]];
+  const targetState = enemyState[rankedIds[rankedIds.length - 1]];
 
   const longitudinalAxis = getDimAndIndex(direction, 'front');
   const transverseAxis = getDimAndIndex(direction, 'right');
