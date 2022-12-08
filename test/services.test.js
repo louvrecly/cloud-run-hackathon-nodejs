@@ -32,7 +32,7 @@ describe('compareDirections should correctly compare 2 directions', () => {
     const directionB = 'E';
     const compareValue = compareDirections(directionA, directionB);
     assertType<Number>(compareValue);
-    expect(compareValue).toEqual(0);
+    expect(compareValue).toBe(0);
   });
 
   test('compareDirections should return 0 for S against S', () => {
@@ -40,7 +40,7 @@ describe('compareDirections should correctly compare 2 directions', () => {
     const directionB = 'S';
     const compareValue = compareDirections(directionA, directionB);
     assertType<Number>(compareValue);
-    expect(compareValue).toEqual(0);
+    expect(compareValue).toBe(0);
   });
 
   test('compareDirections should return 0 for W against W', () => {
@@ -48,7 +48,7 @@ describe('compareDirections should correctly compare 2 directions', () => {
     const directionB = 'W';
     const compareValue = compareDirections(directionA, directionB);
     assertType<Number>(compareValue);
-    expect(compareValue).toEqual(0);
+    expect(compareValue).toBe(0);
   });
 
   test('compareDirections should return 0 for N against N', () => {
@@ -56,7 +56,7 @@ describe('compareDirections should correctly compare 2 directions', () => {
     const directionB = 'N';
     const compareValue = compareDirections(directionA, directionB);
     assertType<Number>(compareValue);
-    expect(compareValue).toEqual(0);
+    expect(compareValue).toBe(0);
   });
 
   test('compareDirections should return 90 for S against E', () => {
@@ -64,7 +64,7 @@ describe('compareDirections should correctly compare 2 directions', () => {
     const directionB = 'E';
     const compareValue = compareDirections(directionA, directionB);
     assertType<Number>(compareValue);
-    expect(compareValue).toEqual(90);
+    expect(compareValue).toBe(90);
   });
 
   test('compareDirections should return 90 for W against S', () => {
@@ -72,7 +72,7 @@ describe('compareDirections should correctly compare 2 directions', () => {
     const directionB = 'S';
     const compareValue = compareDirections(directionA, directionB);
     assertType<Number>(compareValue);
-    expect(compareValue).toEqual(90);
+    expect(compareValue).toBe(90);
   });
 
   test('compareDirections should return 180 for W against E', () => {
@@ -80,7 +80,7 @@ describe('compareDirections should correctly compare 2 directions', () => {
     const directionB = 'E';
     const compareValue = compareDirections(directionA, directionB);
     assertType<Number>(compareValue);
-    expect(compareValue).toEqual(180);
+    expect(compareValue).toBe(180);
   });
 
   test('compareDirections should return 270 for W against N', () => {
@@ -88,7 +88,7 @@ describe('compareDirections should correctly compare 2 directions', () => {
     const directionB = 'N';
     const compareValue = compareDirections(directionA, directionB);
     assertType<Number>(compareValue);
-    expect(compareValue).toEqual(270);
+    expect(compareValue).toBe(270);
   });
 
   test('compareDirections should return -270 for N against W', () => {
@@ -96,7 +96,7 @@ describe('compareDirections should correctly compare 2 directions', () => {
     const directionB = 'W';
     const compareValue = compareDirections(directionA, directionB);
     assertType<Number>(compareValue);
-    expect(compareValue).toEqual(-270);
+    expect(compareValue).toBe(-270);
   });
 
   test('compareDirections should return -180 for N against S', () => {
@@ -104,7 +104,7 @@ describe('compareDirections should correctly compare 2 directions', () => {
     const directionB = 'S';
     const compareValue = compareDirections(directionA, directionB);
     assertType<Number>(compareValue);
-    expect(compareValue).toEqual(-180);
+    expect(compareValue).toBe(-180);
   });
 
   test('compareDirections should return -180 for E against W', () => {
@@ -112,7 +112,7 @@ describe('compareDirections should correctly compare 2 directions', () => {
     const directionB = 'W';
     const compareValue = compareDirections(directionA, directionB);
     assertType<Number>(compareValue);
-    expect(compareValue).toEqual(-180);
+    expect(compareValue).toBe(-180);
   });
 
   test('compareDirections should return -90 for E against S', () => {
@@ -120,7 +120,7 @@ describe('compareDirections should correctly compare 2 directions', () => {
     const directionB = 'S';
     const compareValue = compareDirections(directionA, directionB);
     assertType<Number>(compareValue);
-    expect(compareValue).toEqual(-90);
+    expect(compareValue).toBe(-90);
   });
 
   test('compareDirections should return -90 for N against E', () => {
@@ -128,7 +128,7 @@ describe('compareDirections should correctly compare 2 directions', () => {
     const directionB = 'E';
     const compareValue = compareDirections(directionA, directionB);
     assertType<Number>(compareValue);
-    expect(compareValue).toEqual(-90);
+    expect(compareValue).toBe(-90);
   });
 });
 
@@ -138,8 +138,8 @@ describe('createEmptyArena should create an empty arena', () => {
     const arena = createEmptyArena(dims[1], dims[0]);
     assertType<Array>(arena);
     assertType<Array>(arena[0]);
-    expect(arena.length).toEqual(dims[1]);
-    expect(arena[0].length).toEqual(dims[0]);
+    expect(arena.length).toBe(dims[1]);
+    expect(arena[0].length).toBe(dims[0]);
     arena.forEach(row => {
       row.forEach(col => {
         expect(col).toBeNull();
@@ -170,8 +170,8 @@ describe('scanArena should scan the arena', () => {
     const arena = scanArena(dims, state);
     assertType<Array>(arena);
     assertType<Array>(arena[0]);
-    expect(arena.length).toEqual(dims[1]);
-    expect(arena[0].length).toEqual(dims[0]);
+    expect(arena.length).toBe(dims[1]);
+    expect(arena[0].length).toBe(dims[0]);
     assertType<Object>(arena[0][0]);
     expect(arena[0][0]).not.toBeNull();
     assertType<Object>(arena[0][3]);
@@ -207,8 +207,8 @@ describe('scanArena should scan the arena', () => {
     const arena = scanArena(dims, state);
     assertType<Array>(arena);
     assertType<Array>(arena[0]);
-    expect(arena.length).toEqual(dims[1]);
-    expect(arena[0].length).toEqual(dims[0]);
+    expect(arena.length).toBe(dims[1]);
+    expect(arena[0].length).toBe(dims[0]);
     assertType<Object>(arena[1][4]);
     expect(arena[1][4]).not.toBeNull();
     assertType<Object>(arena[1][0]);
@@ -223,21 +223,21 @@ describe('checkIndexInRange should correctly check if the index provided is with
   test('checkIndexInRange should correctly return a boolean to indicate the provided index is in range', () => {
     const dims = [4, 3];
     assertType<Boolean>(checkIndexInRange(0, dims[0]));
-    expect(checkIndexInRange(0, dims[0])).toBeTruthy();
+    expect(checkIndexInRange(0, dims[0])).toBe(true);
     assertType<Boolean>(checkIndexInRange(0, dims[1]));
-    expect(checkIndexInRange(0, dims[1])).toBeTruthy();
+    expect(checkIndexInRange(0, dims[1])).toBe(true);
     assertType<Boolean>(checkIndexInRange(4, dims[0]));
-    expect(checkIndexInRange(4, dims[0])).toBeFalsy();
+    expect(checkIndexInRange(4, dims[0])).toBe(false);
     assertType<Boolean>(checkIndexInRange(4, dims[1]));
-    expect(checkIndexInRange(4, dims[1])).toBeFalsy();
+    expect(checkIndexInRange(4, dims[1])).toBe(false);
     assertType<Boolean>(checkIndexInRange(3, dims[0]));
-    expect(checkIndexInRange(3, dims[0])).toBeTruthy();
+    expect(checkIndexInRange(3, dims[0])).toBe(true);
     assertType<Boolean>(checkIndexInRange(3, dims[1]));
-    expect(checkIndexInRange(3, dims[1])).toBeFalsy();
+    expect(checkIndexInRange(3, dims[1])).toBe(false);
     assertType<Boolean>(checkIndexInRange(-1, dims[0]));
-    expect(checkIndexInRange(-1, dims[0])).toBeFalsy();
+    expect(checkIndexInRange(-1, dims[0])).toBe(false);
     assertType<Boolean>(checkIndexInRange(-1, dims[1]));
-    expect(checkIndexInRange(-1, dims[1])).toBeFalsy();
+    expect(checkIndexInRange(-1, dims[1])).toBe(false);
   });
 });
 
@@ -251,8 +251,8 @@ describe('getDimAndIndex should return the correct dimension axis and the index 
     assertType<String>(dimAndIndex.dim);
     expect(dimAndIndex).toHaveProperty('index');
     assertType<Number>(dimAndIndex.index);
-    expect(dimAndIndex.dim).toEqual('x');
-    expect(dimAndIndex.index).toEqual(0);
+    expect(dimAndIndex.dim).toBe('x');
+    expect(dimAndIndex.index).toBe(0);
   });
 
   test('getDimAndIndex should return y dimension and 1 index for S and front', () => {
@@ -264,8 +264,8 @@ describe('getDimAndIndex should return the correct dimension axis and the index 
     assertType<String>(dimAndIndex.dim);
     expect(dimAndIndex).toHaveProperty('index');
     assertType<Number>(dimAndIndex.index);
-    expect(dimAndIndex.dim).toEqual('y');
-    expect(dimAndIndex.index).toEqual(1);
+    expect(dimAndIndex.dim).toBe('y');
+    expect(dimAndIndex.index).toBe(1);
   });
 
   test('getDimAndIndex should return x dimension and 0 index for W and back', () => {
@@ -277,8 +277,8 @@ describe('getDimAndIndex should return the correct dimension axis and the index 
     assertType<String>(dimAndIndex.dim);
     expect(dimAndIndex).toHaveProperty('index');
     assertType<Number>(dimAndIndex.index);
-    expect(dimAndIndex.dim).toEqual('x');
-    expect(dimAndIndex.index).toEqual(0);
+    expect(dimAndIndex.dim).toBe('x');
+    expect(dimAndIndex.index).toBe(0);
   });
 
   test('getDimAndIndex should return y dimension and 1 index for N and back', () => {
@@ -290,8 +290,8 @@ describe('getDimAndIndex should return the correct dimension axis and the index 
     assertType<String>(dimAndIndex.dim);
     expect(dimAndIndex).toHaveProperty('index');
     assertType<Number>(dimAndIndex.index);
-    expect(dimAndIndex.dim).toEqual('y');
-    expect(dimAndIndex.index).toEqual(1);
+    expect(dimAndIndex.dim).toBe('y');
+    expect(dimAndIndex.index).toBe(1);
   });
 
   test('getDimAndIndex should return y dimension and 1 index for E and left', () => {
@@ -303,8 +303,8 @@ describe('getDimAndIndex should return the correct dimension axis and the index 
     assertType<String>(dimAndIndex.dim);
     expect(dimAndIndex).toHaveProperty('index');
     assertType<Number>(dimAndIndex.index);
-    expect(dimAndIndex.dim).toEqual('y');
-    expect(dimAndIndex.index).toEqual(1);
+    expect(dimAndIndex.dim).toBe('y');
+    expect(dimAndIndex.index).toBe(1);
   });
 
   test('getDimAndIndex should return x dimension and 0 index for S and right', () => {
@@ -316,8 +316,8 @@ describe('getDimAndIndex should return the correct dimension axis and the index 
     assertType<String>(dimAndIndex.dim);
     expect(dimAndIndex).toHaveProperty('index');
     assertType<Number>(dimAndIndex.index);
-    expect(dimAndIndex.dim).toEqual('x');
-    expect(dimAndIndex.index).toEqual(0);
+    expect(dimAndIndex.dim).toBe('x');
+    expect(dimAndIndex.index).toBe(0);
   });
 
   test('getDimAndIndex should return y dimension and 1 index for W and right', () => {
@@ -329,8 +329,8 @@ describe('getDimAndIndex should return the correct dimension axis and the index 
     assertType<String>(dimAndIndex.dim);
     expect(dimAndIndex).toHaveProperty('index');
     assertType<Number>(dimAndIndex.index);
-    expect(dimAndIndex.dim).toEqual('y');
-    expect(dimAndIndex.index).toEqual(1);
+    expect(dimAndIndex.dim).toBe('y');
+    expect(dimAndIndex.index).toBe(1);
   });
 
   test('getDimAndIndex should return x dimension and 0 index for N and left', () => {
@@ -342,8 +342,8 @@ describe('getDimAndIndex should return the correct dimension axis and the index 
     assertType<String>(dimAndIndex.dim);
     expect(dimAndIndex).toHaveProperty('index');
     assertType<Number>(dimAndIndex.index);
-    expect(dimAndIndex.dim).toEqual('x');
-    expect(dimAndIndex.index).toEqual(0);
+    expect(dimAndIndex.dim).toBe('x');
+    expect(dimAndIndex.index).toBe(0);
   });
 });
 
@@ -353,7 +353,7 @@ describe('getMultiplier should return the correct multiplier of either 1 or -1 f
     const relativeDirection = 'front';
     const multiplier = getMultiplier(direction, relativeDirection);
     assertType<Number>(multiplier);
-    expect(multiplier).toEqual(1);
+    expect(multiplier).toBe(1);
   });
 
   test('getMultiplier should return -1 as multiplier value for S and back', () => {
@@ -361,7 +361,7 @@ describe('getMultiplier should return the correct multiplier of either 1 or -1 f
     const relativeDirection = 'back';
     const multiplier = getMultiplier(direction, relativeDirection);
     assertType<Number>(multiplier);
-    expect(multiplier).toEqual(-1);
+    expect(multiplier).toBe(-1);
   });
 
   test('getMultiplier should return -1 as multiplier value for W and front', () => {
@@ -369,7 +369,7 @@ describe('getMultiplier should return the correct multiplier of either 1 or -1 f
     const relativeDirection = 'front';
     const multiplier = getMultiplier(direction, relativeDirection);
     assertType<Number>(multiplier);
-    expect(multiplier).toEqual(-1);
+    expect(multiplier).toBe(-1);
   });
 
   test('getMultiplier should return 1 as multiplier value for N and back', () => {
@@ -377,7 +377,7 @@ describe('getMultiplier should return the correct multiplier of either 1 or -1 f
     const relativeDirection = 'back';
     const multiplier = getMultiplier(direction, relativeDirection);
     assertType<Number>(multiplier);
-    expect(multiplier).toEqual(1);
+    expect(multiplier).toBe(1);
   });
 
   test('getMultiplier should return -1 as multiplier value for E and left', () => {
@@ -385,7 +385,7 @@ describe('getMultiplier should return the correct multiplier of either 1 or -1 f
     const relativeDirection = 'left';
     const multiplier = getMultiplier(direction, relativeDirection);
     assertType<Number>(multiplier);
-    expect(multiplier).toEqual(-1);
+    expect(multiplier).toBe(-1);
   });
 
   test('getMultiplier should return 1 as multiplier value for S and left', () => {
@@ -393,7 +393,7 @@ describe('getMultiplier should return the correct multiplier of either 1 or -1 f
     const relativeDirection = 'left';
     const multiplier = getMultiplier(direction, relativeDirection);
     assertType<Number>(multiplier);
-    expect(multiplier).toEqual(1);
+    expect(multiplier).toBe(1);
   });
 
   test('getMultiplier should return -1 as multiplier value for W and right', () => {
@@ -401,7 +401,7 @@ describe('getMultiplier should return the correct multiplier of either 1 or -1 f
     const relativeDirection = 'right';
     const multiplier = getMultiplier(direction, relativeDirection);
     assertType<Number>(multiplier);
-    expect(multiplier).toEqual(-1);
+    expect(multiplier).toBe(-1);
   });
 
   test('getMultiplier should return 1 as multiplier value for N and right', () => {
@@ -409,7 +409,7 @@ describe('getMultiplier should return the correct multiplier of either 1 or -1 f
     const relativeDirection = 'right';
     const multiplier = getMultiplier(direction, relativeDirection);
     assertType<Number>(multiplier);
-    expect(multiplier).toEqual(1);
+    expect(multiplier).toBe(1);
   });
 });
 
@@ -937,9 +937,9 @@ describe('getForwardState should return the state after the forward action with 
     assertType<Number>(forwardState.y);
     expect(forwardState).toHaveProperty('direction');
     assertType<String>(forwardState.direction);
-    expect(forwardState.x).toEqual(1);
-    expect(forwardState.y).toEqual(0);
-    expect(forwardState.direction).toEqual('E');
+    expect(forwardState.x).toBe(1);
+    expect(forwardState.y).toBe(0);
+    expect(forwardState.direction).toBe('E');
   });
 
   test('getForwardState should return a state at (0, 1) towards S', () => {
@@ -969,9 +969,9 @@ describe('getForwardState should return the state after the forward action with 
     assertType<Number>(forwardState.y);
     expect(forwardState).toHaveProperty('direction');
     assertType<String>(forwardState.direction);
-    expect(forwardState.x).toEqual(0);
-    expect(forwardState.y).toEqual(1);
-    expect(forwardState.direction).toEqual('S');
+    expect(forwardState.x).toBe(0);
+    expect(forwardState.y).toBe(1);
+    expect(forwardState.direction).toBe('S');
   });
 
   test('getForwardState should return a state at (2, 2) towards W', () => {
@@ -1001,9 +1001,9 @@ describe('getForwardState should return the state after the forward action with 
     assertType<Number>(forwardState.y);
     expect(forwardState).toHaveProperty('direction');
     assertType<String>(forwardState.direction);
-    expect(forwardState.x).toEqual(2);
-    expect(forwardState.y).toEqual(2);
-    expect(forwardState.direction).toEqual('W');
+    expect(forwardState.x).toBe(2);
+    expect(forwardState.y).toBe(2);
+    expect(forwardState.direction).toBe('W');
   });
 
   test('getForwardState should return a state at (3, 1) towards N', () => {
@@ -1033,9 +1033,9 @@ describe('getForwardState should return the state after the forward action with 
     assertType<Number>(forwardState.y);
     expect(forwardState).toHaveProperty('direction');
     assertType<String>(forwardState.direction);
-    expect(forwardState.x).toEqual(3);
-    expect(forwardState.y).toEqual(1);
-    expect(forwardState.direction).toEqual('N');
+    expect(forwardState.x).toBe(3);
+    expect(forwardState.y).toBe(1);
+    expect(forwardState.direction).toBe('N');
   });
 
   test('getForwardState should return null when wall is in the front', () => {
@@ -1192,7 +1192,7 @@ describe('getThreatLevel should return an integer value of 1, 0 or -1 from the a
     const relativeDirection = 'front';
     const threatLevel = getThreatLevel(ownDirection, enemyDirection, relativeDirection);
     assertType<Number>(threatLevel);
-    expect(threatLevel).toEqual(-1);
+    expect(threatLevel).toBe(-1);
   });
 
   test('getThreatLevel should return -1 for S vs S in the front', () => {
@@ -1201,7 +1201,7 @@ describe('getThreatLevel should return an integer value of 1, 0 or -1 from the a
     const relativeDirection = 'front';
     const threatLevel = getThreatLevel(ownDirection, enemyDirection, relativeDirection);
     assertType<Number>(threatLevel);
-    expect(threatLevel).toEqual(-1);
+    expect(threatLevel).toBe(-1);
   });
 
   test('getThreatLevel should return 1 for W vs W in the back', () => {
@@ -1210,7 +1210,7 @@ describe('getThreatLevel should return an integer value of 1, 0 or -1 from the a
     const relativeDirection = 'back';
     const threatLevel = getThreatLevel(ownDirection, enemyDirection, relativeDirection);
     assertType<Number>(threatLevel);
-    expect(threatLevel).toEqual(1);
+    expect(threatLevel).toBe(1);
   });
 
   test('getThreatLevel should return 1 for N vs N in the back', () => {
@@ -1219,7 +1219,7 @@ describe('getThreatLevel should return an integer value of 1, 0 or -1 from the a
     const relativeDirection = 'back';
     const threatLevel = getThreatLevel(ownDirection, enemyDirection, relativeDirection);
     assertType<Number>(threatLevel);
-    expect(threatLevel).toEqual(1);
+    expect(threatLevel).toBe(1);
   });
 
   test('getThreatLevel should return 0 for S vs E in the front', () => {
@@ -1228,7 +1228,7 @@ describe('getThreatLevel should return an integer value of 1, 0 or -1 from the a
     const relativeDirection = 'front';
     const threatLevel = getThreatLevel(ownDirection, enemyDirection, relativeDirection);
     assertType<Number>(threatLevel);
-    expect(threatLevel).toEqual(0);
+    expect(threatLevel).toBe(0);
   });
 
   test('getThreatLevel should return 1 for N vs S in the front', () => {
@@ -1237,7 +1237,7 @@ describe('getThreatLevel should return an integer value of 1, 0 or -1 from the a
     const relativeDirection = 'front';
     const threatLevel = getThreatLevel(ownDirection, enemyDirection, relativeDirection);
     assertType<Number>(threatLevel);
-    expect(threatLevel).toEqual(1);
+    expect(threatLevel).toBe(1);
   });
 
   test('getThreatLevel should return -1 for E vs W in the back', () => {
@@ -1246,7 +1246,7 @@ describe('getThreatLevel should return an integer value of 1, 0 or -1 from the a
     const relativeDirection = 'back';
     const threatLevel = getThreatLevel(ownDirection, enemyDirection, relativeDirection);
     assertType<Number>(threatLevel);
-    expect(threatLevel).toEqual(-1);
+    expect(threatLevel).toBe(-1);
   });
 
   test('getThreatLevel should return 0 for W vs N in the back', () => {
@@ -1255,7 +1255,7 @@ describe('getThreatLevel should return an integer value of 1, 0 or -1 from the a
     const relativeDirection = 'back';
     const threatLevel = getThreatLevel(ownDirection, enemyDirection, relativeDirection);
     assertType<Number>(threatLevel);
-    expect(threatLevel).toEqual(0);
+    expect(threatLevel).toBe(0);
   });
 
   test('getThreatLevel should return 1 for S vs E on the left', () => {
@@ -1264,7 +1264,7 @@ describe('getThreatLevel should return an integer value of 1, 0 or -1 from the a
     const relativeDirection = 'left';
     const threatLevel = getThreatLevel(ownDirection, enemyDirection, relativeDirection);
     assertType<Number>(threatLevel);
-    expect(threatLevel).toEqual(1);
+    expect(threatLevel).toBe(1);
   });
 
   test('getThreatLevel should return 0 for N vs S on the right', () => {
@@ -1273,7 +1273,7 @@ describe('getThreatLevel should return an integer value of 1, 0 or -1 from the a
     const relativeDirection = 'right';
     const threatLevel = getThreatLevel(ownDirection, enemyDirection, relativeDirection);
     assertType<Number>(threatLevel);
-    expect(threatLevel).toEqual(0);
+    expect(threatLevel).toBe(0);
   });
 
   test('getThreatLevel should return 0 for E vs W on the left', () => {
@@ -1282,7 +1282,7 @@ describe('getThreatLevel should return an integer value of 1, 0 or -1 from the a
     const relativeDirection = 'left';
     const threatLevel = getThreatLevel(ownDirection, enemyDirection, relativeDirection);
     assertType<Number>(threatLevel);
-    expect(threatLevel).toEqual(0);
+    expect(threatLevel).toBe(0);
   });
 
   test('getThreatLevel should return 1 for W vs N on the right', () => {
@@ -1291,7 +1291,7 @@ describe('getThreatLevel should return an integer value of 1, 0 or -1 from the a
     const relativeDirection = 'right';
     const threatLevel = getThreatLevel(ownDirection, enemyDirection, relativeDirection);
     assertType<Number>(threatLevel);
-    expect(threatLevel).toEqual(1);
+    expect(threatLevel).toBe(1);
   });
 });
 
@@ -1654,7 +1654,7 @@ describe('scanSurroundings should return an object with the keys of 4 relative d
     const arena = scanArena(dims, state);
     const surroundings = scanSurroundings(ownState, arena, dims);
     assertType<Object>(surroundings);
-    expect(Object.keys(surroundings).every(key => relativeDirections.includes(key))).toBeTruthy();
+    expect(Object.keys(surroundings).every(key => relativeDirections.includes(key))).toBe(true);
     assertType<Object>(surroundings.front.obstacle);
     expect(surroundings.front.obstacle).toHaveProperty('key');
     assertType<String>(surroundings.front.obstacle.key);
@@ -1670,13 +1670,13 @@ describe('scanSurroundings should return an object with the keys of 4 relative d
     assertType<Number>(surroundings.front.obstacle.score);
     expect(surroundings.front.obstacle).toHaveProperty('threatLevel');
     assertType<Number>(surroundings.front.obstacle.threatLevel);
-    expect(surroundings.front.distance).toEqual(3);
-    expect(surroundings.back.obstacle).toEqual('wall');
-    expect(surroundings.back.distance).toEqual(1);
-    expect(surroundings.left.obstacle).toEqual('wall');
-    expect(surroundings.left.distance).toEqual(1);
-    expect(surroundings.right.obstacle).toEqual('wall');
-    expect(surroundings.right.distance).toEqual(3);
+    expect(surroundings.front.distance).toBe(3);
+    expect(surroundings.back.obstacle).toBe('wall');
+    expect(surroundings.back.distance).toBe(1);
+    expect(surroundings.left.obstacle).toBe('wall');
+    expect(surroundings.left.distance).toBe(1);
+    expect(surroundings.right.obstacle).toBe('wall');
+    expect(surroundings.right.distance).toBe(3);
   });
 
   test('scanSurroundings should locate enemy on the left', () => {
@@ -1701,11 +1701,11 @@ describe('scanSurroundings should return an object with the keys of 4 relative d
     const arena = scanArena(dims, state);
     const surroundings = scanSurroundings(ownState, arena, dims);
     assertType<Object>(surroundings);
-    expect(Object.keys(surroundings).every(key => relativeDirections.includes(key))).toBeTruthy();
-    expect(surroundings.front.obstacle).toEqual('wall');
-    expect(surroundings.front.distance).toEqual(3);
-    expect(surroundings.back.obstacle).toEqual('wall');
-    expect(surroundings.back.distance).toEqual(1);
+    expect(Object.keys(surroundings).every(key => relativeDirections.includes(key))).toBe(true);
+    expect(surroundings.front.obstacle).toBe('wall');
+    expect(surroundings.front.distance).toBe(3);
+    expect(surroundings.back.obstacle).toBe('wall');
+    expect(surroundings.back.distance).toBe(1);
     assertType<Object>(surroundings.left.obstacle);
     expect(surroundings.left.obstacle).toHaveProperty('key');
     assertType<String>(surroundings.left.obstacle.key);
@@ -1721,9 +1721,9 @@ describe('scanSurroundings should return an object with the keys of 4 relative d
     assertType<Number>(surroundings.left.obstacle.score);
     expect(surroundings.left.obstacle).toHaveProperty('threatLevel');
     assertType<Number>(surroundings.left.obstacle.threatLevel);
-    expect(surroundings.left.distance).toEqual(3);
-    expect(surroundings.right.obstacle).toEqual('wall');
-    expect(surroundings.right.distance).toEqual(1);
+    expect(surroundings.left.distance).toBe(3);
+    expect(surroundings.right.obstacle).toBe('wall');
+    expect(surroundings.right.distance).toBe(1);
   });
 
   test('scanSurroundings should locate enemy on the right', () => {
@@ -1748,13 +1748,13 @@ describe('scanSurroundings should return an object with the keys of 4 relative d
     const arena = scanArena(dims, state);
     const surroundings = scanSurroundings(ownState, arena, dims);
     assertType<Object>(surroundings);
-    expect(Object.keys(surroundings).every(key => relativeDirections.includes(key))).toBeTruthy();
-    expect(surroundings.front.obstacle).toEqual('wall');
-    expect(surroundings.front.distance).toEqual(4);
-    expect(surroundings.back.obstacle).toEqual('wall');
-    expect(surroundings.back.distance).toEqual(1);
-    expect(surroundings.left.obstacle).toEqual('wall');
-    expect(surroundings.left.distance).toEqual(1);
+    expect(Object.keys(surroundings).every(key => relativeDirections.includes(key))).toBe(true);
+    expect(surroundings.front.obstacle).toBe('wall');
+    expect(surroundings.front.distance).toBe(4);
+    expect(surroundings.back.obstacle).toBe('wall');
+    expect(surroundings.back.distance).toBe(1);
+    expect(surroundings.left.obstacle).toBe('wall');
+    expect(surroundings.left.distance).toBe(1);
     assertType<Object>(surroundings.right.obstacle);
     expect(surroundings.right.obstacle).toHaveProperty('key');
     assertType<String>(surroundings.right.obstacle.key);
@@ -1770,7 +1770,7 @@ describe('scanSurroundings should return an object with the keys of 4 relative d
     assertType<Number>(surroundings.right.obstacle.score);
     expect(surroundings.right.obstacle).toHaveProperty('threatLevel');
     assertType<Number>(surroundings.right.obstacle.threatLevel);
-    expect(surroundings.right.distance).toEqual(2);
+    expect(surroundings.right.distance).toBe(2);
   });
 
   test('scanSurroundings should locate enemy in the back', () => {
@@ -1795,9 +1795,9 @@ describe('scanSurroundings should return an object with the keys of 4 relative d
     const arena = scanArena(dims, state);
     const surroundings = scanSurroundings(ownState, arena, dims);
     assertType<Object>(surroundings);
-    expect(Object.keys(surroundings).every(key => relativeDirections.includes(key))).toBeTruthy();
-    expect(surroundings.front.obstacle).toEqual('wall');
-    expect(surroundings.front.distance).toEqual(1);
+    expect(Object.keys(surroundings).every(key => relativeDirections.includes(key))).toBe(true);
+    expect(surroundings.front.obstacle).toBe('wall');
+    expect(surroundings.front.distance).toBe(1);
     assertType<Object>(surroundings.back.obstacle);
     expect(surroundings.back.obstacle).toHaveProperty('key');
     assertType<String>(surroundings.back.obstacle.key);
@@ -1813,11 +1813,11 @@ describe('scanSurroundings should return an object with the keys of 4 relative d
     assertType<Number>(surroundings.back.obstacle.score);
     expect(surroundings.back.obstacle).toHaveProperty('threatLevel');
     assertType<Number>(surroundings.back.obstacle.threatLevel);
-    expect(surroundings.back.distance).toEqual(2);
-    expect(surroundings.left.obstacle).toEqual('wall');
-    expect(surroundings.left.distance).toEqual(1);
-    expect(surroundings.right.obstacle).toEqual('wall');
-    expect(surroundings.right.distance).toEqual(4);
+    expect(surroundings.back.distance).toBe(2);
+    expect(surroundings.left.obstacle).toBe('wall');
+    expect(surroundings.left.distance).toBe(1);
+    expect(surroundings.right.obstacle).toBe('wall');
+    expect(surroundings.right.distance).toBe(4);
   });
 });
 
@@ -1844,10 +1844,10 @@ describe('hasEnemy and hasWall should return a boolean to indicate if a provided
     assertType<Boolean>(backHasEnemy);
     assertType<Boolean>(leftHasEnemy);
     assertType<Boolean>(rightHasEnemy);
-    expect(frontHasEnemy).toEqual(false);
-    expect(backHasEnemy).toEqual(false);
-    expect(leftHasEnemy).toEqual(false);
-    expect(rightHasEnemy).toEqual(false);
+    expect(frontHasEnemy).toBe(false);
+    expect(backHasEnemy).toBe(false);
+    expect(leftHasEnemy).toBe(false);
+    expect(rightHasEnemy).toBe(false);
     const frontHasWall = hasWall(front);
     const backHasWall = hasWall(back);
     const leftHasWall = hasWall(left);
@@ -1856,10 +1856,10 @@ describe('hasEnemy and hasWall should return a boolean to indicate if a provided
     assertType<Boolean>(backHasWall);
     assertType<Boolean>(leftHasWall);
     assertType<Boolean>(rightHasWall);
-    expect(frontHasWall).toEqual(false);
-    expect(backHasWall).toEqual(false);
-    expect(leftHasWall).toEqual(false);
-    expect(rightHasWall).toEqual(false);
+    expect(frontHasWall).toBe(false);
+    expect(backHasWall).toBe(false);
+    expect(leftHasWall).toBe(false);
+    expect(rightHasWall).toBe(false);
   });
 
   test('hasEnemy should detect enemy in no relative direction while hasWall should detect wall in four', () => {
@@ -1884,10 +1884,10 @@ describe('hasEnemy and hasWall should return a boolean to indicate if a provided
     assertType<Boolean>(backHasEnemy);
     assertType<Boolean>(leftHasEnemy);
     assertType<Boolean>(rightHasEnemy);
-    expect(frontHasEnemy).toEqual(false);
-    expect(backHasEnemy).toEqual(false);
-    expect(leftHasEnemy).toEqual(false);
-    expect(rightHasEnemy).toEqual(false);
+    expect(frontHasEnemy).toBe(false);
+    expect(backHasEnemy).toBe(false);
+    expect(leftHasEnemy).toBe(false);
+    expect(rightHasEnemy).toBe(false);
     const frontHasWall = hasWall(front);
     const backHasWall = hasWall(back);
     const leftHasWall = hasWall(left);
@@ -1896,10 +1896,10 @@ describe('hasEnemy and hasWall should return a boolean to indicate if a provided
     assertType<Boolean>(backHasWall);
     assertType<Boolean>(leftHasWall);
     assertType<Boolean>(rightHasWall);
-    expect(frontHasWall).toEqual(true);
-    expect(backHasWall).toEqual(true);
-    expect(leftHasWall).toEqual(true);
-    expect(rightHasWall).toEqual(true);
+    expect(frontHasWall).toBe(true);
+    expect(backHasWall).toBe(true);
+    expect(leftHasWall).toBe(true);
+    expect(rightHasWall).toBe(true);
   });
 
   test('hasEnemy should detect enemy in one relative direction while hasWall should detect wall in three', () => {
@@ -1931,10 +1931,10 @@ describe('hasEnemy and hasWall should return a boolean to indicate if a provided
     assertType<Boolean>(backHasEnemy);
     assertType<Boolean>(leftHasEnemy);
     assertType<Boolean>(rightHasEnemy);
-    expect(frontHasEnemy).toEqual(true);
-    expect(backHasEnemy).toEqual(false);
-    expect(leftHasEnemy).toEqual(false);
-    expect(rightHasEnemy).toEqual(false);
+    expect(frontHasEnemy).toBe(true);
+    expect(backHasEnemy).toBe(false);
+    expect(leftHasEnemy).toBe(false);
+    expect(rightHasEnemy).toBe(false);
     const frontHasWall = hasWall(front);
     const backHasWall = hasWall(back);
     const leftHasWall = hasWall(left);
@@ -1943,10 +1943,10 @@ describe('hasEnemy and hasWall should return a boolean to indicate if a provided
     assertType<Boolean>(backHasWall);
     assertType<Boolean>(leftHasWall);
     assertType<Boolean>(rightHasWall);
-    expect(frontHasWall).toEqual(false);
-    expect(backHasWall).toEqual(true);
-    expect(leftHasWall).toEqual(true);
-    expect(rightHasWall).toEqual(true);
+    expect(frontHasWall).toBe(false);
+    expect(backHasWall).toBe(true);
+    expect(leftHasWall).toBe(true);
+    expect(rightHasWall).toBe(true);
   });
 
   test('hasEnemy should detect enemy in two relative directions while hasWall should detect wall in two', () => {
@@ -1985,10 +1985,10 @@ describe('hasEnemy and hasWall should return a boolean to indicate if a provided
     assertType<Boolean>(backHasEnemy);
     assertType<Boolean>(leftHasEnemy);
     assertType<Boolean>(rightHasEnemy);
-    expect(frontHasEnemy).toEqual(false);
-    expect(backHasEnemy).toEqual(true);
-    expect(leftHasEnemy).toEqual(false);
-    expect(rightHasEnemy).toEqual(true);
+    expect(frontHasEnemy).toBe(false);
+    expect(backHasEnemy).toBe(true);
+    expect(leftHasEnemy).toBe(false);
+    expect(rightHasEnemy).toBe(true);
     const frontHasWall = hasWall(front);
     const backHasWall = hasWall(back);
     const leftHasWall = hasWall(left);
@@ -1997,10 +1997,10 @@ describe('hasEnemy and hasWall should return a boolean to indicate if a provided
     assertType<Boolean>(backHasWall);
     assertType<Boolean>(leftHasWall);
     assertType<Boolean>(rightHasWall);
-    expect(frontHasWall).toEqual(true);
-    expect(backHasWall).toEqual(false);
-    expect(leftHasWall).toEqual(true);
-    expect(rightHasWall).toEqual(false);
+    expect(frontHasWall).toBe(true);
+    expect(backHasWall).toBe(false);
+    expect(leftHasWall).toBe(true);
+    expect(rightHasWall).toBe(false);
   });
 
   test('hasEnemy should detect enemy in three relative directions while hasWall should detect wall in one', () => {
@@ -2046,10 +2046,10 @@ describe('hasEnemy and hasWall should return a boolean to indicate if a provided
     assertType<Boolean>(backHasEnemy);
     assertType<Boolean>(leftHasEnemy);
     assertType<Boolean>(rightHasEnemy);
-    expect(frontHasEnemy).toEqual(true);
-    expect(backHasEnemy).toEqual(true);
-    expect(leftHasEnemy).toEqual(true);
-    expect(rightHasEnemy).toEqual(false);
+    expect(frontHasEnemy).toBe(true);
+    expect(backHasEnemy).toBe(true);
+    expect(leftHasEnemy).toBe(true);
+    expect(rightHasEnemy).toBe(false);
     const frontHasWall = hasWall(front);
     const backHasWall = hasWall(back);
     const leftHasWall = hasWall(left);
@@ -2058,10 +2058,10 @@ describe('hasEnemy and hasWall should return a boolean to indicate if a provided
     assertType<Boolean>(backHasWall);
     assertType<Boolean>(leftHasWall);
     assertType<Boolean>(rightHasWall);
-    expect(frontHasWall).toEqual(false);
-    expect(backHasWall).toEqual(false);
-    expect(leftHasWall).toEqual(false);
-    expect(rightHasWall).toEqual(true);
+    expect(frontHasWall).toBe(false);
+    expect(backHasWall).toBe(false);
+    expect(leftHasWall).toBe(false);
+    expect(rightHasWall).toBe(true);
   });
 
   test('hasEnemy should detect enemy in four relative directions while hasWall should detect wall in none', () => {
@@ -2114,10 +2114,10 @@ describe('hasEnemy and hasWall should return a boolean to indicate if a provided
     assertType<Boolean>(backHasEnemy);
     assertType<Boolean>(leftHasEnemy);
     assertType<Boolean>(rightHasEnemy);
-    expect(frontHasEnemy).toEqual(true);
-    expect(backHasEnemy).toEqual(true);
-    expect(leftHasEnemy).toEqual(true);
-    expect(rightHasEnemy).toEqual(true);
+    expect(frontHasEnemy).toBe(true);
+    expect(backHasEnemy).toBe(true);
+    expect(leftHasEnemy).toBe(true);
+    expect(rightHasEnemy).toBe(true);
     const frontHasWall = hasWall(front);
     const backHasWall = hasWall(back);
     const leftHasWall = hasWall(left);
@@ -2126,10 +2126,10 @@ describe('hasEnemy and hasWall should return a boolean to indicate if a provided
     assertType<Boolean>(backHasWall);
     assertType<Boolean>(leftHasWall);
     assertType<Boolean>(rightHasWall);
-    expect(frontHasWall).toEqual(false);
-    expect(backHasWall).toEqual(false);
-    expect(leftHasWall).toEqual(false);
-    expect(rightHasWall).toEqual(false);
+    expect(frontHasWall).toBe(false);
+    expect(backHasWall).toBe(false);
+    expect(leftHasWall).toBe(false);
+    expect(rightHasWall).toBe(false);
   });
 });
 
@@ -2603,7 +2603,7 @@ describe('getNextState should return the next state with the move and dimensions
     const dims = [9, 9];
     const nextState = getNextState(ownState, move, dims);
     assertType<Object>(nextState);
-    expect(nextState).toEqual(ownState);
+    expect(nextState).toBe(ownState);
   });
 
   test('getNextState should return a state facing N when the current direction is N and the move is L', () => {
@@ -2733,7 +2733,7 @@ describe('escape should return a relative direction in a given surroundings', ()
     const surroundings = scanSurroundings(ownState, arena, dims);
     const action = escape(surroundings);
     assertType<String>(action);
-    expect(action.length).toEqual(1);
+    expect(action.length).toBe(1);
     expect(action).equal('F');
   });
 
@@ -2760,7 +2760,7 @@ describe('escape should return a relative direction in a given surroundings', ()
     const surroundings = scanSurroundings(ownState, arena, dims);
     const action = escape(surroundings);
     assertType<String>(action);
-    expect(action.length).toEqual(1);
+    expect(action.length).toBe(1);
     expect(action).equal('R');
   });
 
@@ -2787,7 +2787,7 @@ describe('escape should return a relative direction in a given surroundings', ()
     const surroundings = scanSurroundings(ownState, arena, dims);
     const action = escape(surroundings);
     assertType<String>(action);
-    expect(action.length).toEqual(1);
+    expect(action.length).toBe(1);
     expect(action).equal('R');
   });
 
@@ -2814,7 +2814,7 @@ describe('escape should return a relative direction in a given surroundings', ()
     const surroundings = scanSurroundings(ownState, arena, dims);
     const action = escape(surroundings);
     assertType<String>(action);
-    expect(action.length).toEqual(1);
+    expect(action.length).toBe(1);
     expect(action).equal('L');
   });
 
@@ -2848,7 +2848,7 @@ describe('escape should return a relative direction in a given surroundings', ()
     const surroundings = scanSurroundings(ownState, arena, dims);
     const action = escape(surroundings);
     assertType<String>(action);
-    expect(action.length).toEqual(1);
+    expect(action.length).toBe(1);
     expect(action).equal('R');
   });
 
@@ -2882,7 +2882,7 @@ describe('escape should return a relative direction in a given surroundings', ()
     const surroundings = scanSurroundings(ownState, arena, dims);
     const action = escape(surroundings);
     assertType<String>(action);
-    expect(action.length).toEqual(1);
+    expect(action.length).toBe(1);
     expect(action).equal('L');
   });
 
@@ -2916,8 +2916,8 @@ describe('escape should return a relative direction in a given surroundings', ()
     const surroundings = scanSurroundings(ownState, arena, dims);
     const action = escape(surroundings);
     assertType<String>(action);
-    expect(action.length).toEqual(1);
-    expect(['L', 'R'].includes(action)).toBeTruthy();
+    expect(action.length).toBe(1);
+    expect(['L', 'R'].includes(action)).toBe(true);
   });
 
   test('escape should return R when being hit from the left and the right while front has a wall and right enemy has a higher score', () => {
@@ -2950,7 +2950,7 @@ describe('escape should return a relative direction in a given surroundings', ()
     const surroundings = scanSurroundings(ownState, arena, dims);
     const action = escape(surroundings);
     assertType<String>(action);
-    expect(action.length).toEqual(1);
+    expect(action.length).toBe(1);
     expect(action).equal('R');
   });
 
@@ -2977,7 +2977,7 @@ describe('escape should return a relative direction in a given surroundings', ()
     const surroundings = scanSurroundings(ownState, arena, dims);
     const action = escape(surroundings);
     assertType<String>(action);
-    expect(action.length).toEqual(1);
+    expect(action.length).toBe(1);
     expect(action).equal('R');
   });
 
@@ -3011,8 +3011,8 @@ describe('escape should return a relative direction in a given surroundings', ()
     const surroundings = scanSurroundings(ownState, arena, dims);
     const action = escape(surroundings);
     assertType<String>(action);
-    expect(action.length).toEqual(1);
-    expect(['L', 'R'].includes(action)).toBeTruthy();
+    expect(action.length).toBe(1);
+    expect(['L', 'R'].includes(action)).toBe(true);
   });
 });
 
@@ -5479,7 +5479,7 @@ describe('hunt should return a relative direction in a given surroundings', () =
     const surroundings = scanSurroundings(ownState, arena, dims);
     const action = hunt(surroundings);
     assertType<String>(action);
-    expect(action.length).toEqual(1);
+    expect(action.length).toBe(1);
     expect(action).equal('L');
   });
 
@@ -5506,7 +5506,7 @@ describe('hunt should return a relative direction in a given surroundings', () =
     const surroundings = scanSurroundings(ownState, arena, dims);
     const action = hunt(surroundings);
     assertType<String>(action);
-    expect(action.length).toEqual(1);
+    expect(action.length).toBe(1);
     expect(action).equal('R');
   });
 
@@ -5533,7 +5533,7 @@ describe('hunt should return a relative direction in a given surroundings', () =
     const surroundings = scanSurroundings(ownState, arena, dims);
     const action = hunt(surroundings);
     assertType<String>(action);
-    expect(action.length).toEqual(1);
+    expect(action.length).toBe(1);
     expect(action).equal('F');
   });
 
@@ -5560,7 +5560,7 @@ describe('hunt should return a relative direction in a given surroundings', () =
     const surroundings = scanSurroundings(ownState, arena, dims);
     const action = hunt(surroundings);
     assertType<String>(action);
-    expect(action.length).toEqual(1);
+    expect(action.length).toBe(1);
     expect(action).equal('L');
   });
 
@@ -5587,7 +5587,7 @@ describe('hunt should return a relative direction in a given surroundings', () =
     const surroundings = scanSurroundings(ownState, arena, dims);
     const action = hunt(surroundings);
     assertType<String>(action);
-    expect(action.length).toEqual(1);
+    expect(action.length).toBe(1);
     expect(action).equal('R');
   });
 
@@ -5614,7 +5614,7 @@ describe('hunt should return a relative direction in a given surroundings', () =
     const surroundings = scanSurroundings(ownState, arena, dims);
     const action = hunt(surroundings);
     assertType<String>(action);
-    expect(action.length).toEqual(1);
+    expect(action.length).toBe(1);
     expect(action).equal('L');
   });
 
@@ -5641,7 +5641,7 @@ describe('hunt should return a relative direction in a given surroundings', () =
     const surroundings = scanSurroundings(ownState, arena, dims);
     const action = hunt(surroundings);
     assertType<String>(action);
-    expect(action.length).toEqual(1);
+    expect(action.length).toBe(1);
     expect(action).equal('R');
   });
 
@@ -5668,7 +5668,7 @@ describe('hunt should return a relative direction in a given surroundings', () =
     const surroundings = scanSurroundings(ownState, arena, dims);
     const action = hunt(surroundings);
     assertType<String>(action);
-    expect(action.length).toEqual(1);
+    expect(action.length).toBe(1);
     expect(action).equal('F');
   });
 
@@ -5697,7 +5697,7 @@ describe('hunt should return a relative direction in a given surroundings', () =
     const forwardSurroundings = forwardState && scanSurroundings(forwardState, arena, dims);
     const action = hunt(surroundings, forwardSurroundings);
     assertType<String>(action);
-    expect(action.length).toEqual(1);
+    expect(action.length).toBe(1);
     expect(action).equal('F');
   });
 
@@ -5726,7 +5726,7 @@ describe('hunt should return a relative direction in a given surroundings', () =
     const forwardSurroundings = forwardState && scanSurroundings(forwardState, arena, dims);
     const action = hunt(surroundings, forwardSurroundings);
     assertType<String>(action);
-    expect(action.length).toEqual(1);
+    expect(action.length).toBe(1);
     expect(action).equal('F');
   });
 });
@@ -8548,7 +8548,7 @@ describe('decideAction should return a relative direction given the state of bei
     const forwardSurroundings = forwardState && scanSurroundings(forwardState, arena, dims);
     const action = decideAction(ownState.wasHit, surroundings, forwardSurroundings);
     assertType<String>(action);
-    expect(action.length).toEqual(1);
+    expect(action.length).toBe(1);
     expect(action).equal('L');
   });
 
@@ -8577,7 +8577,7 @@ describe('decideAction should return a relative direction given the state of bei
     const forwardSurroundings = forwardState && scanSurroundings(forwardState, arena, dims);
     const action = decideAction(ownState.wasHit, surroundings, forwardSurroundings);
     assertType<String>(action);
-    expect(action.length).toEqual(1);
+    expect(action.length).toBe(1);
     expect(action).equal('R');
   });
 
@@ -8613,7 +8613,7 @@ describe('decideAction should return a relative direction given the state of bei
     const forwardSurroundings = forwardState && scanSurroundings(forwardState, arena, dims);
     const action = decideAction(ownState.wasHit, surroundings, forwardSurroundings);
     assertType<String>(action);
-    expect(action.length).toEqual(1);
+    expect(action.length).toBe(1);
     expect(action).equal('L');
   });
 
@@ -8649,7 +8649,7 @@ describe('decideAction should return a relative direction given the state of bei
     const forwardSurroundings = forwardState && scanSurroundings(forwardState, arena, dims);
     const action = decideAction(ownState.wasHit, surroundings, forwardSurroundings);
     assertType<String>(action);
-    expect(action.length).toEqual(1);
+    expect(action.length).toBe(1);
     expect(action).equal('R');
   });
 
@@ -8678,7 +8678,7 @@ describe('decideAction should return a relative direction given the state of bei
     const forwardSurroundings = forwardState && scanSurroundings(forwardState, arena, dims);
     const action = decideAction(ownState.wasHit, surroundings, forwardSurroundings);
     assertType<String>(action);
-    expect(action.length).toEqual(1);
+    expect(action.length).toBe(1);
     expect(action).equal('F');
   });
 
@@ -8707,7 +8707,7 @@ describe('decideAction should return a relative direction given the state of bei
     const forwardSurroundings = forwardState && scanSurroundings(forwardState, arena, dims);
     const action = decideAction(ownState.wasHit, surroundings, forwardSurroundings);
     assertType<String>(action);
-    expect(action.length).toEqual(1);
+    expect(action.length).toBe(1);
     expect(action).equal('F');
   });
 });

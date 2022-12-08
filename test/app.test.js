@@ -41,7 +41,7 @@ describe('Unit Tests on requests at /', () => {
       .send(payload)
       .set('Content-Type', 'application/json')
       .expect(200)
-      .then(res => expect(['F', 'L', 'R', 'T'].includes(res.text)).toBeTruthy());
+      .then(res => expect(['F', 'L', 'R', 'T']).toContain(res.text));
   });
 
   test('should respond F when being hit by enemy from the left and forward is available', async () => {
@@ -72,7 +72,7 @@ describe('Unit Tests on requests at /', () => {
       .send(payload)
       .set('Content-Type', 'application/json')
       .expect(200)
-      .then(res => expect(res.text).toEqual('F'));
+      .then(res => expect(res.text).toBe('F'));
   });
 
   test('should respond F when being hit by enemy from the right and forward is available', async () => {
@@ -103,7 +103,7 @@ describe('Unit Tests on requests at /', () => {
       .send(payload)
       .set('Content-Type', 'application/json')
       .expect(200)
-      .then(res => expect(res.text).toEqual('F'));
+      .then(res => expect(res.text).toBe('F'));
   });
 
   test('should respond L when being hit by enemy from the front and left is available', async () => {
@@ -134,7 +134,7 @@ describe('Unit Tests on requests at /', () => {
       .send(payload)
       .set('Content-Type', 'application/json')
       .expect(200)
-      .then(res => expect(res.text).toEqual('L'));
+      .then(res => expect(res.text).toBe('L'));
   });
 
   test('should respond R when being hit by enemy from the front and right is available', async () => {
@@ -165,7 +165,7 @@ describe('Unit Tests on requests at /', () => {
       .send(payload)
       .set('Content-Type', 'application/json')
       .expect(200)
-      .then(res => expect(res.text).toEqual('R'));
+      .then(res => expect(res.text).toBe('R'));
   });
 
   test('should respond L when being hit by enemy from the back and left is available', async () => {
@@ -196,7 +196,7 @@ describe('Unit Tests on requests at /', () => {
       .send(payload)
       .set('Content-Type', 'application/json')
       .expect(200)
-      .then(res => expect(res.text).toEqual('L'));
+      .then(res => expect(res.text).toBe('L'));
   });
 
   test('should respond R when being hit by enemy from the back and right is available', async () => {
@@ -227,7 +227,7 @@ describe('Unit Tests on requests at /', () => {
       .send(payload)
       .set('Content-Type', 'application/json')
       .expect(200)
-      .then(res => expect(res.text).toEqual('R'));
+      .then(res => expect(res.text).toBe('R'));
   });
 
   test('should respond T when enemy is in range of throw', async () => {
@@ -328,7 +328,7 @@ describe('Unit Tests on requests at /', () => {
           .send(payload)
           .set('Content-Type', 'application/json')
           .expect(200)
-          .then(res => expect(res.text).toEqual('T'))
+          .then(res => expect(res.text).toBe('T'))
       )
     );
   });
