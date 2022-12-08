@@ -1109,10 +1109,7 @@ function approachDistalTarget(targetLocator) {
   return 'F';
 }
 
-export function huntNew(surroundings, forwardSurroundings = false, targetLocator = null) {
-  const threatAnalysis = analyzeThreats(surroundings);
-  const turnPreference = turnToHighScorer(surroundings);
-
+export function huntNew(surroundings, threatAnalysis, turnPreference, forwardSurroundings = false, targetLocator = null) {
   // look for proximal target at cost 0
   if (checkEnemyInRange(surroundings.front)) {
     return 'T';
@@ -1150,9 +1147,12 @@ export function decideAction(wasHit, surroundings, forwardSurroundings = false, 
   const turnPreference = turnToHighScorer(surroundings, defaultTurn);
 
   // escape if under attack
-  if (wasHit) return escapeNew(surroundings, threatAnalysis, turnPreference);
+  if (wasHit) {
+    return escapeNew(surroundings, threatAnalysis, turnPreference);
+  }
+
   // hunt otherwise
-  else return huntNew(surroundings, forwardSurroundings, targetLocator);
+  return huntNew(surroundings, threatAnalysis, turnPreference, forwardSurroundings, targetLocator);
 }
 
 export function decideMove(ownState, arena, dims) {
