@@ -517,8 +517,27 @@ export function escape(surroundings, targetLocator = null) {
   }
 }
 
-function turnToHighScorer(surroundings, defaultTurn = '') {
+export function turnToHighScorer(surroundings, defaultTurn = '') {
   const { left, right } = surroundings;
+
+  if (
+    // both left and right have enemies within range of throw
+    checkEnemyInRange(left) &&
+    checkEnemyInRange(right)
+  ) {
+    // turn to the enemy with higher score
+    return left.obstacle.score > right.obstacle.score ? 'L' : 'R';
+  }
+
+  // only left has an enemy within range of throw
+  if (checkEnemyInRange(left)) {
+    return 'L';
+  }
+
+  // only right has an enemy within range of throw
+  if (checkEnemyInRange(right)) {
+    return 'R';
+  }
 
   if (
     // both left and right have enemies
@@ -649,15 +668,7 @@ function escapeFromOneSideBlockingSituation(surroundings, threatAnalysis, turnPr
   return '';
 }
 
-export function escapeNew(surroundings, targetLocator = null) {
-  const threatAnalysis = analyzeThreats(surroundings);
-  const defaultTurn = !targetLocator || targetLocator.transverse === 0
-    ? ''
-    : targetLocator.transverse < 0
-    ? 'L'
-    : 'R';
-  const turnPreference = turnToHighScorer(surroundings, defaultTurn);
-
+export function escapeNew(surroundings, threatAnalysis, turnPreference) {
   // check if at least 3 sides are blocked
   const actionOn3SideBlocking = escapeFromThreeSideBlockingSituation(surroundings, turnPreference);
 
@@ -1130,8 +1141,16 @@ export function huntNew(surroundings, forwardSurroundings = false, targetLocator
 }
 
 export function decideAction(wasHit, surroundings, forwardSurroundings = false, targetLocator = null) {
+  const threatAnalysis = analyzeThreats(surroundings);
+  const defaultTurn = !targetLocator || targetLocator.transverse === 0
+    ? ''
+    : targetLocator.transverse < 0
+    ? 'L'
+    : 'R';
+  const turnPreference = turnToHighScorer(surroundings, defaultTurn);
+
   // escape if under attack
-  if (wasHit) return escapeNew(surroundings, targetLocator);
+  if (wasHit) return escapeNew(surroundings, threatAnalysis, turnPreference);
   // hunt otherwise
   else return huntNew(surroundings, forwardSurroundings, targetLocator);
 }
