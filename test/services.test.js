@@ -15,6 +15,7 @@ import {
   hasEnemy,
   hasWall,
   checkEnemyInRange,
+  getMoves,
   escape,
   escapeNew,
   hunt,
@@ -2264,6 +2265,28 @@ describe('checkEnemyInRange should return a boolean to indicate an enemy is in r
     expect(checkEnemyInRange(surroundings.back, -1)).toBe(false);
     expect(checkEnemyInRange(surroundings.left, -1)).toBe(false);
     expect(checkEnemyInRange(surroundings.right, -1)).toBe(false);
+  });
+});
+
+describe('getMoves should return an array of available moves depending on the surroundings', () => {
+  test(`getMoves should return ['L', 'R', 'T', 'F'] when front is not blocked`, () => {
+    const moves = getMoves(2);
+    assertType<Array>(moves);
+    expect(moves).toHaveLength(4);
+    expect(moves).toContain('L');
+    expect(moves).toContain('R');
+    expect(moves).toContain('T');
+    expect(moves).toContain('F');
+  });
+
+  test(`getMoves should return ['L', 'R', 'T'] when front is blocked`, () => {
+    const moves = getMoves(1);
+    assertType<Array>(moves);
+    expect(moves).toHaveLength(3);
+    expect(moves).toContain('L');
+    expect(moves).toContain('R');
+    expect(moves).toContain('T');
+    expect(moves).not.toContain('F');
   });
 });
 

@@ -221,6 +221,16 @@ export function checkEnemyInRange({ obstacle, distance }, offset = 0) {
   return hasEnemy({ obstacle }) && distance + offset < 4;
 }
 
+export function getMoves(frontDistance) {
+  const moves = ['L', 'R', 'T'];
+
+  if (frontDistance > 1) {
+    moves.push('F');
+  }
+
+  return moves;
+}
+
 export function escape(surroundings, targetLocator = null) {
   const { front, back, left, right } = surroundings;
 
