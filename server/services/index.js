@@ -551,10 +551,8 @@ function decideForwardOrTurn(threatAnalysis, turn) {
   return turn;
 }
 
-export function escapeNew(surroundings, targetLocator = null) {
+function escapeFrom3SideBlockingSituation(surroundings, turnPreference) {
   const { front, back, left, right } = surroundings;
-  const threatAnalysis = analyzeThreats(surroundings);
-  const turnPreference = turnToHighScorer(surroundings);
 
   if (
     // front, left and right have no room to escape
@@ -571,6 +569,21 @@ export function escapeNew(surroundings, targetLocator = null) {
     }
 
     return turnPreference;
+  }
+
+  return '';
+}
+
+export function escapeNew(surroundings, targetLocator = null) {
+  const { front, left, right } = surroundings;
+  const threatAnalysis = analyzeThreats(surroundings);
+  const turnPreference = turnToHighScorer(surroundings);
+
+  // check if at least 3 sides are blocked
+  const actionOn3SideBlocking = escapeFrom3SideBlockingSituation(surroundings, turnPreference);
+
+  if (actionOn3SideBlocking) {
+    return actionOn3SideBlocking;
   }
 
   if (
