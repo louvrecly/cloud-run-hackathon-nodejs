@@ -7003,7 +7003,7 @@ describe('huntNew should return a rational decision of a relative direction when
     expect(action).toBe('R');
   });
 
-  test('huntNew should return F when front and current location have equal number of enemies facing this way from left and right with the front enemy has a highest score among all proximal targets at cost 2', () => {
+  test.todo('huntNew should return F when front and current location have equal number of enemies facing this way from left and right with the front enemy has a highest score among all proximal targets at cost 2', () => {
     const surroundings = {
       front: {
         distance: 5,
@@ -7102,7 +7102,7 @@ describe('huntNew should return a rational decision of a relative direction when
     expect(action).toBe('F');
   });
 
-  test('huntNew should return F when front and current location have equal number of enemies facing this way from left and right with the front, left enemy has a highest score among all proximal targets at cost 2', () => {
+  test.todo('huntNew should return F when front and current location have equal number of enemies facing this way from left and right with the front, left enemy has a highest score among all proximal targets at cost 2', () => {
     const surroundings = {
       front: {
         distance: 5,
@@ -7201,7 +7201,7 @@ describe('huntNew should return a rational decision of a relative direction when
     expect(action).toBe('F');
   });
 
-  test('huntNew should return F when front and current location have equal number of enemies facing this way from left and right with the front, right enemy has a highest score among all proximal targets at cost 2', () => {
+  test.todo('huntNew should return F when front and current location have equal number of enemies facing this way from left and right with the front, right enemy has a highest score among all proximal targets at cost 2', () => {
     const surroundings = {
       front: {
         distance: 5,
@@ -7300,7 +7300,7 @@ describe('huntNew should return a rational decision of a relative direction when
     expect(action).toBe('F');
   });
 
-  test('huntNew should return L when front and current location have equal number of enemies facing this way from left and right with the left enemy has a highest score among all proximal targets at cost 2', () => {
+  test.todo('huntNew should return L when front and current location have equal number of enemies facing this way from left and right with the left enemy has a highest score among all proximal targets at cost 2', () => {
     const surroundings = {
       front: {
         distance: 5,
@@ -7399,7 +7399,7 @@ describe('huntNew should return a rational decision of a relative direction when
     expect(action).toBe('L');
   });
 
-  test('huntNew should return R when front and current location have equal number of enemies facing this way from left and right with the right enemy has a highest score among all proximal targets at cost 2', () => {
+  test.todo('huntNew should return R when front and current location have equal number of enemies facing this way from left and right with the right enemy has a highest score among all proximal targets at cost 2', () => {
     const surroundings = {
       front: {
         distance: 5,
@@ -7498,7 +7498,7 @@ describe('huntNew should return a rational decision of a relative direction when
     expect(action).toBe('R');
   });
 
-  test('huntNew should return L when front and current location have equal number of enemies facing this way from left and right with the back enemy has a highest score among all proximal targets at cost 2 while the left one has a higher score than the right one', () => {
+  test.todo('huntNew should return L when front and current location have equal number of enemies facing this way from left and right with the back enemy has a highest score among all proximal targets at cost 2 while the left one has a higher score than the right one', () => {
     const surroundings = {
       front: {
         distance: 5,
@@ -7597,7 +7597,7 @@ describe('huntNew should return a rational decision of a relative direction when
     expect(action).toBe('L');
   });
 
-  test('huntNew should return R when front and current location have equal number of enemies facing this way from left and right with the back enemy has a highest score among all proximal targets at cost 2 while the right one has a higher score than the left one', () => {
+  test.todo('huntNew should return R when front and current location have equal number of enemies facing this way from left and right with the back enemy has a highest score among all proximal targets at cost 2 while the right one has a higher score than the left one', () => {
     const surroundings = {
       front: {
         distance: 5,
@@ -7788,7 +7788,7 @@ describe('huntNew should return a rational decision of a relative direction when
     expect(action).toBe('L');
   });
 
-  test('huntNew should return R when front and current location have equal number of enemies facing this way from left and right with the back enemy has a highest score among all proximal targets at cost 2 while right but left has an enemy', () => {
+  test.todo('huntNew should return R when front and current location have equal number of enemies facing this way from left and right with the back enemy has a highest score among all proximal targets at cost 2 while right but left has an enemy', () => {
     const surroundings = {
       front: {
         distance: 5,

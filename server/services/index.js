@@ -979,7 +979,7 @@ function chooseProximalTarget(surroundings, forwardSurroundings, turnPreference)
   // at least 1 proximal target located
   if (proximalTargetLocators.length) {
     proximalTargetLocators.sort((locatorA, locatorB) => locatorB.score - locatorA.score);
-    const { actions } = proximalTargetLocators[0];
+    const { actions } = proximalTargetLocators[proximalTargetLocators.length - 1];
 
     return actions[0];
   }
