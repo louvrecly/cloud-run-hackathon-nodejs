@@ -691,13 +691,6 @@ export function escapeNew(surroundings, threatAnalysis, turnPreference) {
     return actionOnTwoSideBlocking;
   }
 
-  // check if at least 1 side is blocked
-  const actionOnOneSideBlocking = escapeFromOneSideBlockingSituation(surroundings, threatAnalysis, turnPreference);
-
-  if (actionOnOneSideBlocking) {
-    return actionOnOneSideBlocking;
-  }
-
   if (threatAnalysis.overall < 2) {
     // front has an enemy facing this way within range of throw
     if (checkEnemyInRange(front) && front.obstacle?.threatLevel > 0) {
@@ -718,6 +711,13 @@ export function escapeNew(surroundings, threatAnalysis, turnPreference) {
     if (checkEnemyInRange(back) && back.obstacle?.threatLevel > 0) {
       return turnPreference;
     }
+  }
+
+  // check if at least 1 side is blocked
+  const actionOnOneSideBlocking = escapeFromOneSideBlockingSituation(surroundings, threatAnalysis, turnPreference);
+
+  if (actionOnOneSideBlocking) {
+    return actionOnOneSideBlocking;
   }
 
   return decideForwardOrTurn(threatAnalysis, turnPreference);
