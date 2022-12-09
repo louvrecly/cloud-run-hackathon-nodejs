@@ -152,13 +152,13 @@ export function analyzeThreats(surroundings) {
   const { front, back, left, right } = surroundings;
 
   const longitudinal = [front, back].reduce((threatCount, relativeDirection) => {
-    return relativeDirection.obstacle?.threatLevel && relativeDirection.obstacle.threatLevel > 0
+    return checkEnemyInRange(relativeDirection) && relativeDirection.obstacle.threatLevel > 0
       ? threatCount + relativeDirection.obstacle.threatLevel
       : threatCount;
   }, 0);
 
   const transverse = [left, right].reduce((threatCount, relativeDirection) => {
-    return relativeDirection.obstacle?.threatLevel && relativeDirection.obstacle.threatLevel > 0
+    return checkEnemyInRange(relativeDirection) && relativeDirection.obstacle.threatLevel > 0
       ? threatCount + relativeDirection.obstacle.threatLevel
       : threatCount;
     }, 0);
