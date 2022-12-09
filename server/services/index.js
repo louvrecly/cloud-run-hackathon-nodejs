@@ -579,6 +579,14 @@ function decideForwardOrTurn(threatAnalysis, turn) {
   return turn;
 }
 
+function determineDefaultTurn(targetLocator) {
+  if (!targetLocator || targetLocator.transverse === 0) {
+    return ''
+  }
+
+  return targetLocator.transverse < 0 ? 'L' : 'R';
+}
+
 function escapeFromThreeSideBlockingSituation(surroundings, turnPreference) {
   const { front, back, left, right } = surroundings;
 
@@ -1139,11 +1147,7 @@ export function huntNew(surroundings, threatAnalysis, turnPreference, forwardSur
 
 export function decideAction(wasHit, surroundings, forwardSurroundings = null, targetLocator = null) {
   const threatAnalysis = analyzeThreats(surroundings);
-  const defaultTurn = !targetLocator || targetLocator.transverse === 0
-    ? ''
-    : targetLocator.transverse < 0
-    ? 'L'
-    : 'R';
+  const defaultTurn = determineDefaultTurn(targetLocator);
   const turnPreference = turnToHighScorer(surroundings, defaultTurn);
 
   // escape if under attack
