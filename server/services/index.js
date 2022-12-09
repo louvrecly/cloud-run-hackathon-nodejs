@@ -525,7 +525,7 @@ export function turnToPreferredTarget(surroundings, defaultTurn = '') {
     checkEnemyInRange(left) &&
     checkEnemyInRange(right)
   ) {
-    return left.obstacle.score < right.obstacle.score ? 'L' : 'R';
+    return left.obstacle.score > right.obstacle.score ? 'L' : 'R';
   }
 
   // only left has an enemy within range of throw
@@ -543,7 +543,7 @@ export function turnToPreferredTarget(surroundings, defaultTurn = '') {
     hasEnemy(left) &&
     hasEnemy(right)
   ) {
-    return left.obstacle.score < right.obstacle.score ? 'L' : 'R';
+    return left.obstacle.score > right.obstacle.score ? 'L' : 'R';
   }
 
   // only left has an enemy
