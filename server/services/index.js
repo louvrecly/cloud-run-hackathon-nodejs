@@ -678,24 +678,24 @@ function escapeFromOneSideBlockingSituation(surroundings, threatAnalysis, turnPr
 
 export function escapeNew(surroundings, threatAnalysis, turnPreference) {
   // check if at least 3 sides are blocked
-  const actionOn3SideBlocking = escapeFromThreeSideBlockingSituation(surroundings, turnPreference);
+  const actionOnThreeSideBlocking = escapeFromThreeSideBlockingSituation(surroundings, turnPreference);
 
-  if (actionOn3SideBlocking) {
-    return actionOn3SideBlocking;
+  if (actionOnThreeSideBlocking) {
+    return actionOnThreeSideBlocking;
   }
 
   // check if at least 2 sides are blocked
-  const actionOn2SideBlocking = escapeFromTwoSideBlockingSituation(surroundings);
+  const actionOnTwoSideBlocking = escapeFromTwoSideBlockingSituation(surroundings);
 
-  if (actionOn2SideBlocking) {
-    return actionOn2SideBlocking;
+  if (actionOnTwoSideBlocking) {
+    return actionOnTwoSideBlocking;
   }
 
   // check if at least 1 side is blocked
-  const actionOn1SideBlocking = escapeFromOneSideBlockingSituation(surroundings, threatAnalysis, turnPreference);
+  const actionOnOneSideBlocking = escapeFromOneSideBlockingSituation(surroundings, threatAnalysis, turnPreference);
 
-  if (actionOn1SideBlocking) {
-    return actionOn1SideBlocking;
+  if (actionOnOneSideBlocking) {
+    return actionOnOneSideBlocking;
   }
 
   return decideForwardOrTurn(threatAnalysis, turnPreference);
@@ -1124,17 +1124,17 @@ export function huntNew(surroundings, threatAnalysis, turnPreference, forwardSur
   }
 
   // look for proximal target at cost 1
-  const actionAtCost1 = approachProximalTargetAtCostOne(surroundings, threatAnalysis, turnPreference);
+  const actionAtCostOne = approachProximalTargetAtCostOne(surroundings, threatAnalysis, turnPreference);
 
-  if (actionAtCost1) {
-    return actionAtCost1;
+  if (actionAtCostOne) {
+    return actionAtCostOne;
   }
 
   // look for proximal target at cost 2
-  const actionAtCost2 = approachProximalTargetAtCostTwo(surroundings, forwardSurroundings, threatAnalysis, turnPreference);
+  const actionAtCostTwo = approachProximalTargetAtCostTwo(surroundings, forwardSurroundings, threatAnalysis, turnPreference);
 
-  if (actionAtCost2) {
-    return actionAtCost2;
+  if (actionAtCostTwo) {
+    return actionAtCostTwo;
   }
 
   // target available
