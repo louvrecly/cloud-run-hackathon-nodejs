@@ -6202,7 +6202,7 @@ describe('huntNew should return a rational decision of a relative direction when
     expect(action).toBe('F');
   });
 
-  test('huntNew should return R when front has an enemy just out of reach while right has an enemy within range of throw with some enemies facing this way only from the front or back', () => {
+  test.todo('huntNew should return R when front has an enemy just out of reach while right has an enemy within range of throw with some enemies facing this way only from the front or back', () => {
     const surroundings = {
       front: {
         distance: 4,
@@ -6442,7 +6442,7 @@ describe('huntNew should return a rational decision of a relative direction when
     expect(action).toBe('F');
   });
 
-  test('huntNew should return L when front has an enemy just out of reach while left has an enemy within range of throw with some enemies facing this way only from the front or back', () => {
+  test.todo('huntNew should return L when front has an enemy just out of reach while left has an enemy within range of throw with some enemies facing this way only from the front or back', () => {
     const surroundings = {
       front: {
         distance: 4,
@@ -6872,7 +6872,7 @@ describe('huntNew should return a rational decision of a relative direction when
 });
 
 describe('huntNew should return a rational decision of a relative direction when no enemy reachable at cost 1', () => {
-  test('huntNew should return F when front has fewer enemies facing this way from left and right than those at the current location', () => {
+  test.todo('huntNew should return F when front has fewer enemies facing this way from left and right than those at the current location', () => {
     const surroundings = {
       front: {
         distance: 5,
