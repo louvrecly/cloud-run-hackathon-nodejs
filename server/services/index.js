@@ -698,24 +698,26 @@ export function escapeNew(surroundings, threatAnalysis, turnPreference) {
     return actionOnOneSideBlocking;
   }
 
-  // front has an enemy facing this way within range of throw
-  if (checkEnemyInRange(front) && front.obstacle?.threatLevel > 0) {
-    return 'T';
-  }
+  if (threatAnalysis.overall < 2) {
+    // front has an enemy facing this way within range of throw
+    if (checkEnemyInRange(front) && front.obstacle?.threatLevel > 0) {
+      return 'T';
+    }
 
-  // left has an enemy facing this way within range of throw
-  if (checkEnemyInRange(left) && left.obstacle?.threatLevel > 0) {
-    return 'L';
-  }
+    // left has an enemy facing this way within range of throw
+    if (checkEnemyInRange(left) && left.obstacle?.threatLevel > 0) {
+      return 'L';
+    }
 
-  // right has an enemy facing this way within range of throw
-  if (checkEnemyInRange(right) && right.obstacle?.threatLevel > 0) {
-    return 'R';
-  }
+    // right has an enemy facing this way within range of throw
+    if (checkEnemyInRange(right) && right.obstacle?.threatLevel > 0) {
+      return 'R';
+    }
 
-  // back has an enemy facing this way within range of throw
-  if (checkEnemyInRange(back) && back.obstacle?.threatLevel > 0) {
-    return turnPreference;
+    // back has an enemy facing this way within range of throw
+    if (checkEnemyInRange(back) && back.obstacle?.threatLevel > 0) {
+      return turnPreference;
+    }
   }
 
   return decideForwardOrTurn(threatAnalysis, turnPreference);
