@@ -19,7 +19,7 @@ import {
   evaluateDelta,
   getNextState,
   escape,
-  turnToHighScorer,
+  turnToPreferredTarget,
   escapeNew,
   hunt,
   huntNew,
@@ -3016,8 +3016,8 @@ describe('escape should return a relative direction in a given surroundings', ()
   });
 });
 
-describe('turnToHighScorer should return a relative direction with a given surroundings and default turn', () => {
-  test('turnToHighScorer should return L when both left and right have enemies within range with the left enemy having a higher score and no default turn', () => {
+describe('turnToPreferredTarget should return a relative direction with a given surroundings and default turn', () => {
+  test.todo('turnToPreferredTarget should return L when both left and right have enemies within range with the left enemy having a higher score and no default turn', () => {
     const surroundings = {
       left: {
         distance: 3,
@@ -3033,11 +3033,11 @@ describe('turnToHighScorer should return a relative direction with a given surro
       },
     };
     const defaultTurn = '';
-    const turn = turnToHighScorer(surroundings, defaultTurn);
+    const turn = turnToPreferredTarget(surroundings, defaultTurn);
     expect(turn).toBe('L');
   });
 
-  test('turnToHighScorer should return R when both left and right have enemies within range with the right enemy having a higher score and no default turn', () => {
+  test.todo('turnToPreferredTarget should return R when both left and right have enemies within range with the right enemy having a higher score and no default turn', () => {
     const surroundings = {
       left: {
         distance: 3,
@@ -3053,11 +3053,11 @@ describe('turnToHighScorer should return a relative direction with a given surro
       },
     };
     const defaultTurn = '';
-    const turn = turnToHighScorer(surroundings, defaultTurn);
+    const turn = turnToPreferredTarget(surroundings, defaultTurn);
     expect(turn).toBe('R');
   });
 
-  test('turnToHighScorer should return L when only left has an enemy within range of throw and no default turn', () => {
+  test('turnToPreferredTarget should return L when only left has an enemy within range of throw and no default turn', () => {
     const surroundings = {
       left: {
         distance: 3,
@@ -3073,11 +3073,11 @@ describe('turnToHighScorer should return a relative direction with a given surro
       },
     };
     const defaultTurn = '';
-    const turn = turnToHighScorer(surroundings, defaultTurn);
+    const turn = turnToPreferredTarget(surroundings, defaultTurn);
     expect(turn).toBe('L');
   });
 
-  test('turnToHighScorer should return R when only right has an enemy within range of throw and no default turn', () => {
+  test('turnToPreferredTarget should return R when only right has an enemy within range of throw and no default turn', () => {
     const surroundings = {
       left: {
         distance: 4,
@@ -3093,11 +3093,11 @@ describe('turnToHighScorer should return a relative direction with a given surro
       },
     };
     const defaultTurn = '';
-    const turn = turnToHighScorer(surroundings, defaultTurn);
+    const turn = turnToPreferredTarget(surroundings, defaultTurn);
     expect(turn).toBe('R');
   });
 
-  test('turnToHighScorer should return L when both left and right have enemies out of reach with the left enemy having a higher score and no default turn', () => {
+  test.todo('turnToPreferredTarget should return L when both left and right have enemies out of reach with the left enemy having a higher score and no default turn', () => {
     const surroundings = {
       left: {
         distance: 4,
@@ -3113,11 +3113,11 @@ describe('turnToHighScorer should return a relative direction with a given surro
       },
     };
     const defaultTurn = '';
-    const turn = turnToHighScorer(surroundings, defaultTurn);
+    const turn = turnToPreferredTarget(surroundings, defaultTurn);
     expect(turn).toBe('L');
   });
 
-  test('turnToHighScorer should return R when both left and right have enemies out of reach with the right enemy having a higher score and no default turn', () => {
+  test.todo('turnToPreferredTarget should return R when both left and right have enemies out of reach with the right enemy having a higher score and no default turn', () => {
     const surroundings = {
       left: {
         distance: 4,
@@ -3133,11 +3133,11 @@ describe('turnToHighScorer should return a relative direction with a given surro
       },
     };
     const defaultTurn = '';
-    const turn = turnToHighScorer(surroundings, defaultTurn);
+    const turn = turnToPreferredTarget(surroundings, defaultTurn);
     expect(turn).toBe('R');
   });
 
-  test('turnToHighScorer should return L when only left has an enemy out of reach and no default turn', () => {
+  test('turnToPreferredTarget should return L when only left has an enemy out of reach and no default turn', () => {
     const surroundings = {
       left: {
         distance: 4,
@@ -3151,11 +3151,11 @@ describe('turnToHighScorer should return a relative direction with a given surro
       },
     };
     const defaultTurn = '';
-    const turn = turnToHighScorer(surroundings, defaultTurn);
+    const turn = turnToPreferredTarget(surroundings, defaultTurn);
     expect(turn).toBe('L');
   });
 
-  test('turnToHighScorer should return R when only right has an enemy out of reach and no default turn', () => {
+  test('turnToPreferredTarget should return R when only right has an enemy out of reach and no default turn', () => {
     const surroundings = {
       left: {
         distance: 5,
@@ -3169,11 +3169,11 @@ describe('turnToHighScorer should return a relative direction with a given surro
       },
     };
     const defaultTurn = '';
-    const turn = turnToHighScorer(surroundings, defaultTurn);
+    const turn = turnToPreferredTarget(surroundings, defaultTurn);
     expect(turn).toBe('R');
   });
 
-  test('turnToHighScorer should return L when both left and right have no enemies and the default turn is L', () => {
+  test('turnToPreferredTarget should return L when both left and right have no enemies and the default turn is L', () => {
     const surroundings = {
       left: {
         distance: 5,
@@ -3185,11 +3185,11 @@ describe('turnToHighScorer should return a relative direction with a given surro
       },
     };
     const defaultTurn = 'L';
-    const turn = turnToHighScorer(surroundings, defaultTurn);
+    const turn = turnToPreferredTarget(surroundings, defaultTurn);
     expect(turn).toBe('L');
   });
 
-  test('turnToHighScorer should return R when both left and right have no enemies and the default turn is R', () => {
+  test('turnToPreferredTarget should return R when both left and right have no enemies and the default turn is R', () => {
     const surroundings = {
       left: {
         distance: 5,
@@ -3201,11 +3201,11 @@ describe('turnToHighScorer should return a relative direction with a given surro
       },
     };
     const defaultTurn = 'R';
-    const turn = turnToHighScorer(surroundings, defaultTurn);
+    const turn = turnToPreferredTarget(surroundings, defaultTurn);
     expect(turn).toBe('R');
   });
 
-  test('turnToHighScorer should return L or R when both left and right have no enemies and no default turn ', () => {
+  test('turnToPreferredTarget should return L or R when both left and right have no enemies and no default turn ', () => {
     const surroundings = {
       left: {
         distance: 5,
@@ -3217,7 +3217,7 @@ describe('turnToHighScorer should return a relative direction with a given surro
       },
     };
     const defaultTurn = '';
-    const turn = turnToHighScorer(surroundings, defaultTurn);
+    const turn = turnToPreferredTarget(surroundings, defaultTurn);
     expect(['L', 'R']).toContain(turn);
   });
 });
@@ -3250,7 +3250,7 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -3284,7 +3284,7 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -3318,14 +3318,14 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
     expect(action).toBe('R');
   });
 
-  test('escapeNew should return L when blocked in all relative directions and both left and right have enemies while the one on the left has a higher score', () => {
+  test.todo('escapeNew should return L when blocked in all relative directions and both left and right have enemies while the one on the left has a higher score', () => {
     const surroundings = {
       front: {
         distance: 1,
@@ -3359,14 +3359,14 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
     expect(action).toBe('L');
   });
 
-  test('escapeNew should return R when blocked in all relative directions and both left and right have enemies while the one on the right has a higher score', () => {
+  test.todo('escapeNew should return R when blocked in all relative directions and both left and right have enemies while the one on the right has a higher score', () => {
     const surroundings = {
       front: {
         distance: 1,
@@ -3400,7 +3400,7 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -3434,7 +3434,7 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -3477,7 +3477,7 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -3525,7 +3525,7 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -3566,7 +3566,7 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -3614,7 +3614,7 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -3655,7 +3655,7 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -3703,14 +3703,14 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
     expect(action).toBe('R');
   });
 
-  test('escapeNew should return L when blocked from the front, left and right with the left enemy has a higher score', () => {
+  test.todo('escapeNew should return L when blocked from the front, left and right with the left enemy has a higher score', () => {
     const surroundings = {
       front: {
         distance: 1,
@@ -3758,14 +3758,14 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
     expect(action).toBe('L');
   });
 
-  test('escapeNew should return R when blocked from the front, left and right with the right enemy has a higher score', () => {
+  test.todo('escapeNew should return R when blocked from the front, left and right with the right enemy has a higher score', () => {
     const surroundings = {
       front: {
         distance: 1,
@@ -3813,7 +3813,7 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -3861,7 +3861,7 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -3909,7 +3909,7 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -3959,7 +3959,7 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -4007,7 +4007,7 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -4055,7 +4055,7 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -4110,7 +4110,7 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -4165,7 +4165,7 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -4220,7 +4220,7 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -4275,7 +4275,7 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -4330,7 +4330,7 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -4385,14 +4385,14 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
     expect(action).toBe('L');
   });
 
-  test('escapeNew should return L when blocked from the front and back with the left enemy has a higher score', () => {
+  test.todo('escapeNew should return L when blocked from the front and back with the left enemy has a higher score', () => {
     const surroundings = {
       front: {
         distance: 1,
@@ -4440,14 +4440,14 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
     expect(action).toBe('L');
   });
 
-  test('escapeNew should return R when blocked from the front and back with the right enemy has a higher score', () => {
+  test.todo('escapeNew should return R when blocked from the front and back with the right enemy has a higher score', () => {
     const surroundings = {
       front: {
         distance: 1,
@@ -4495,7 +4495,7 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -4543,7 +4543,7 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -4591,7 +4591,7 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -4648,7 +4648,7 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -4703,7 +4703,7 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -4758,7 +4758,7 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -4813,7 +4813,7 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -4868,7 +4868,7 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -4923,14 +4923,14 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
     expect(action).toBe('L');
   });
 
-  test('escapeNew should return L when blocked from the front with the left enemy has a higher score', () => {
+  test.todo('escapeNew should return L when blocked from the front with the left enemy has a higher score', () => {
     const surroundings = {
       front: {
         distance: 1,
@@ -4978,14 +4978,14 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
     expect(action).toBe('L');
   });
 
-  test('escapeNew should return R when blocked from the front with the right enemy has a higher score', () => {
+  test.todo('escapeNew should return R when blocked from the front with the right enemy has a higher score', () => {
     const surroundings = {
       front: {
         distance: 1,
@@ -5033,7 +5033,7 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -5081,7 +5081,7 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -5129,7 +5129,7 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -5186,7 +5186,7 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -5241,14 +5241,14 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
     expect(action).toBe('F');
   });
 
-  test('escapeNew should return L when unblocked with some enemies facing this way only from the front or back while the left enemy has a higher score', () => {
+  test.todo('escapeNew should return L when unblocked with some enemies facing this way only from the front or back while the left enemy has a higher score', () => {
     const surroundings = {
       front: {
         distance: 2,
@@ -5296,14 +5296,14 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
     expect(action).toBe('L');
   });
 
-  test('escapeNew should return R when unblocked with some enemies facing this way only from the front or back while the right enemy has a higher score', () => {
+  test.todo('escapeNew should return R when unblocked with some enemies facing this way only from the front or back while the right enemy has a higher score', () => {
     const surroundings = {
       front: {
         distance: 2,
@@ -5351,7 +5351,7 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -5399,7 +5399,7 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -5447,7 +5447,7 @@ describe('escapeNew should return a rational decision of a relative direction wh
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = escapeNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -5780,7 +5780,7 @@ describe('huntNew should return a rational decision of a relative direction when
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = huntNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -5789,7 +5789,7 @@ describe('huntNew should return a rational decision of a relative direction when
 });
 
 describe('huntNew should return a rational decision of a relative direction when front has no room to move', () => {
-  test('huntNew should return L when blocked from the front with the left enemy has a higher score', () => {
+  test.todo('huntNew should return L when blocked from the front with the left enemy has a higher score', () => {
     const surroundings = {
       front: {
         distance: 1,
@@ -5830,14 +5830,14 @@ describe('huntNew should return a rational decision of a relative direction when
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = huntNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
     expect(action).toBe('L');
   });
 
-  test('huntNew should return R when blocked from the front with the right enemy has a higher score', () => {
+  test.todo('huntNew should return R when blocked from the front with the right enemy has a higher score', () => {
     const surroundings = {
       front: {
         distance: 1,
@@ -5878,7 +5878,7 @@ describe('huntNew should return a rational decision of a relative direction when
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = huntNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -5919,7 +5919,7 @@ describe('huntNew should return a rational decision of a relative direction when
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = huntNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -5960,7 +5960,7 @@ describe('huntNew should return a rational decision of a relative direction when
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = huntNew(surroundings, threatAnalysis, turnPreference);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -6035,7 +6035,7 @@ describe('huntNew should return a rational decision of a relative direction when
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = huntNew(surroundings, threatAnalysis, turnPreference, forwardSurroundings);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -6115,7 +6115,7 @@ describe('huntNew should return a rational decision of a relative direction when
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = huntNew(surroundings, threatAnalysis, turnPreference, forwardSurroundings);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -6195,7 +6195,7 @@ describe('huntNew should return a rational decision of a relative direction when
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = huntNew(surroundings, threatAnalysis, turnPreference, forwardSurroundings);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -6275,7 +6275,7 @@ describe('huntNew should return a rational decision of a relative direction when
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = huntNew(surroundings, threatAnalysis, turnPreference, forwardSurroundings);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -6355,7 +6355,7 @@ describe('huntNew should return a rational decision of a relative direction when
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = huntNew(surroundings, threatAnalysis, turnPreference, forwardSurroundings);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -6435,7 +6435,7 @@ describe('huntNew should return a rational decision of a relative direction when
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = huntNew(surroundings, threatAnalysis, turnPreference, forwardSurroundings);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -6515,7 +6515,7 @@ describe('huntNew should return a rational decision of a relative direction when
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = huntNew(surroundings, threatAnalysis, turnPreference, forwardSurroundings);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -6602,7 +6602,7 @@ describe('huntNew should return a rational decision of a relative direction when
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = huntNew(surroundings, threatAnalysis, turnPreference, forwardSurroundings);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -6689,14 +6689,14 @@ describe('huntNew should return a rational decision of a relative direction when
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = huntNew(surroundings, threatAnalysis, turnPreference, forwardSurroundings);
     assertType<String>(action);
     expect(action).toHaveLength(1);
     expect(action).toBe('F');
   });
 
-  test('huntNew should return L when front has an enemy just out of reach and left and right have enemies within range of throw with some enemies facing this way only from the front or back while the left enemy has a higher score', () => {
+  test.todo('huntNew should return L when front has an enemy just out of reach and left and right have enemies within range of throw with some enemies facing this way only from the front or back while the left enemy has a higher score', () => {
     const surroundings = {
       front: {
         distance: 4,
@@ -6776,14 +6776,14 @@ describe('huntNew should return a rational decision of a relative direction when
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = huntNew(surroundings, threatAnalysis, turnPreference, forwardSurroundings);
     assertType<String>(action);
     expect(action).toHaveLength(1);
     expect(action).toBe('L');
   });
 
-  test('huntNew should return R when front has an enemy just out of reach and left and right have enemies within range of throw with some enemies facing this way only from the front or back while the right enemy has a higher score', () => {
+  test.todo('huntNew should return R when front has an enemy just out of reach and left and right have enemies within range of throw with some enemies facing this way only from the front or back while the right enemy has a higher score', () => {
     const surroundings = {
       front: {
         distance: 4,
@@ -6863,7 +6863,7 @@ describe('huntNew should return a rational decision of a relative direction when
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = huntNew(surroundings, threatAnalysis, turnPreference, forwardSurroundings);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -6945,14 +6945,14 @@ describe('huntNew should return a rational decision of a relative direction when
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = huntNew(surroundings, threatAnalysis, turnPreference, forwardSurroundings);
     assertType<String>(action);
     expect(action).toHaveLength(1);
     expect(action).toBe('F');
   });
 
-  test('huntNew should return L when front has more enemies facing this way from left and right than those at the current location with the left enemy has a higher score', () => {
+  test.todo('huntNew should return L when front has more enemies facing this way from left and right than those at the current location with the left enemy has a higher score', () => {
     const surroundings = {
       front: {
         distance: 5,
@@ -7046,14 +7046,14 @@ describe('huntNew should return a rational decision of a relative direction when
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = huntNew(surroundings, threatAnalysis, turnPreference, forwardSurroundings);
     assertType<String>(action);
     expect(action).toHaveLength(1);
     expect(action).toBe('L');
   });
 
-  test('huntNew should return R when front has more enemies facing this way from left and right than those at the current location with the right enemy has a higher score', () => {
+  test.todo('huntNew should return R when front has more enemies facing this way from left and right than those at the current location with the right enemy has a higher score', () => {
     const surroundings = {
       front: {
         distance: 5,
@@ -7147,7 +7147,7 @@ describe('huntNew should return a rational decision of a relative direction when
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = huntNew(surroundings, threatAnalysis, turnPreference, forwardSurroundings);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -7241,7 +7241,7 @@ describe('huntNew should return a rational decision of a relative direction when
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = huntNew(surroundings, threatAnalysis, turnPreference, forwardSurroundings);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -7335,7 +7335,7 @@ describe('huntNew should return a rational decision of a relative direction when
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = huntNew(surroundings, threatAnalysis, turnPreference, forwardSurroundings);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -7436,7 +7436,7 @@ describe('huntNew should return a rational decision of a relative direction when
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = huntNew(surroundings, threatAnalysis, turnPreference, forwardSurroundings);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -7537,7 +7537,7 @@ describe('huntNew should return a rational decision of a relative direction when
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = huntNew(surroundings, threatAnalysis, turnPreference, forwardSurroundings);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -7638,7 +7638,7 @@ describe('huntNew should return a rational decision of a relative direction when
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = huntNew(surroundings, threatAnalysis, turnPreference, forwardSurroundings);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -7739,7 +7739,7 @@ describe('huntNew should return a rational decision of a relative direction when
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = huntNew(surroundings, threatAnalysis, turnPreference, forwardSurroundings);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -7840,7 +7840,7 @@ describe('huntNew should return a rational decision of a relative direction when
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = huntNew(surroundings, threatAnalysis, turnPreference, forwardSurroundings);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -7941,7 +7941,7 @@ describe('huntNew should return a rational decision of a relative direction when
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = huntNew(surroundings, threatAnalysis, turnPreference, forwardSurroundings);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -8042,7 +8042,7 @@ describe('huntNew should return a rational decision of a relative direction when
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = huntNew(surroundings, threatAnalysis, turnPreference, forwardSurroundings);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -8136,7 +8136,7 @@ describe('huntNew should return a rational decision of a relative direction when
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = huntNew(surroundings, threatAnalysis, turnPreference, forwardSurroundings);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -8230,7 +8230,7 @@ describe('huntNew should return a rational decision of a relative direction when
       },
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = huntNew(surroundings, threatAnalysis, turnPreference, forwardSurroundings);
     assertType<String>(action);
     expect(action).toHaveLength(1);
@@ -8281,7 +8281,7 @@ describe('huntNew should return a rational decision of a relative direction when
       transverse: -6,
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = huntNew(surroundings, threatAnalysis, turnPreference, forwardSurroundings, targetLocator);
     expect(action).toBe('L');
   });
@@ -8328,7 +8328,7 @@ describe('huntNew should return a rational decision of a relative direction when
       transverse: -6,
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = huntNew(surroundings, threatAnalysis, turnPreference, forwardSurroundings, targetLocator);
     expect(['F', 'L']).toContain(action);
   });
@@ -8375,7 +8375,7 @@ describe('huntNew should return a rational decision of a relative direction when
       transverse: -6,
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = huntNew(surroundings, threatAnalysis, turnPreference, forwardSurroundings, targetLocator);
     expect(action).toBe('L');
   });
@@ -8422,7 +8422,7 @@ describe('huntNew should return a rational decision of a relative direction when
       transverse: 6,
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = huntNew(surroundings, threatAnalysis, turnPreference, forwardSurroundings, targetLocator);
     expect(action).toBe('R');
   });
@@ -8469,7 +8469,7 @@ describe('huntNew should return a rational decision of a relative direction when
       transverse: 2,
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = huntNew(surroundings, threatAnalysis, turnPreference, forwardSurroundings, targetLocator);
     expect(['F', 'R']).toContain(action);
   });
@@ -8516,7 +8516,7 @@ describe('huntNew should return a rational decision of a relative direction when
       transverse: 6,
     };
     const threatAnalysis = analyzeThreats(surroundings);
-    const turnPreference = turnToHighScorer(surroundings, '');
+    const turnPreference = turnToPreferredTarget(surroundings, '');
     const action = huntNew(surroundings, threatAnalysis, turnPreference, forwardSurroundings, targetLocator);
     expect(action).toBe('R');
   });

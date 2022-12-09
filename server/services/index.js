@@ -517,7 +517,7 @@ export function escape(surroundings, targetLocator = null) {
   }
 }
 
-export function turnToHighScorer(surroundings, defaultTurn = '') {
+export function turnToPreferredTarget(surroundings, defaultTurn = '') {
   const { left, right } = surroundings;
 
   if (
@@ -525,8 +525,7 @@ export function turnToHighScorer(surroundings, defaultTurn = '') {
     checkEnemyInRange(left) &&
     checkEnemyInRange(right)
   ) {
-    // turn to the enemy with higher score
-    return left.obstacle.score > right.obstacle.score ? 'L' : 'R';
+    return left.obstacle.score < right.obstacle.score ? 'L' : 'R';
   }
 
   // only left has an enemy within range of throw
@@ -544,8 +543,7 @@ export function turnToHighScorer(surroundings, defaultTurn = '') {
     hasEnemy(left) &&
     hasEnemy(right)
   ) {
-    // turn to the enemy with higher score
-    return left.obstacle.score > right.obstacle.score ? 'L' : 'R';
+    return left.obstacle.score < right.obstacle.score ? 'L' : 'R';
   }
 
   // only left has an enemy
@@ -1148,7 +1146,7 @@ export function huntNew(surroundings, threatAnalysis, turnPreference, forwardSur
 export function decideAction(wasHit, surroundings, forwardSurroundings = null, targetLocator = null) {
   const threatAnalysis = analyzeThreats(surroundings);
   const defaultTurn = determineDefaultTurn(targetLocator);
-  const turnPreference = turnToHighScorer(surroundings, defaultTurn);
+  const turnPreference = turnToPreferredTarget(surroundings, defaultTurn);
 
   // escape if under attack
   if (wasHit) {
