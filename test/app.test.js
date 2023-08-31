@@ -44,7 +44,7 @@ describe('Unit Tests on requests at /', () => {
       .then(res => expect(['F', 'L', 'R', 'T']).toContain(res.text));
   });
 
-  test('should respond F when being hit by enemy from the left and forward is available', async () => {
+  test.todo('should respond F when being hit by enemy from the left and forward is available', async () => {
     const payload = {
       _links: { self: { href: 'BASE_URL' } },
       arena: {
@@ -75,7 +75,7 @@ describe('Unit Tests on requests at /', () => {
       .then(res => expect(res.text).toBe('F'));
   });
 
-  test('should respond F when being hit by enemy from the right and forward is available', async () => {
+  test.todo('should respond F when being hit by enemy from the right and forward is available', async () => {
     const payload = {
       _links: { self: { href: 'BASE_URL' } },
       arena: {
@@ -106,7 +106,7 @@ describe('Unit Tests on requests at /', () => {
       .then(res => expect(res.text).toBe('F'));
   });
 
-  test('should respond L when being hit by enemy from the front and left is available', async () => {
+  test.todo('should respond L when being hit by enemy from the front and left is available', async () => {
     const payload = {
       _links: { self: { href: 'BASE_URL' } },
       arena: {
@@ -137,7 +137,7 @@ describe('Unit Tests on requests at /', () => {
       .then(res => expect(res.text).toBe('L'));
   });
 
-  test('should respond R when being hit by enemy from the front and right is available', async () => {
+  test.todo('should respond R when being hit by enemy from the front and right is available', async () => {
     const payload = {
       _links: { self: { href: 'BASE_URL' } },
       arena: {

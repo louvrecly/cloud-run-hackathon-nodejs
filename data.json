@@ -1,0 +1,51 @@
+[
+  {
+    "action": "T",
+    "ownState": {
+      "x": 3,
+      "y": 2,
+      "direction": "W",
+      "wasHit": false,
+      "score": 0
+    },
+    "enemyState": {
+      "ENEMY_BOT_URL": {
+        "x": 0,
+        "y": 2,
+        "direction": "E",
+        "wasHit": false,
+        "score": 0
+      }
+    },
+    "surroundings": {
+      "front": {
+        "obstacle": {
+          "key": "ENEMY_BOT_URL",
+          "x": 0,
+          "y": 2,
+          "direction": "E",
+          "wasHit": false,
+          "score": 0,
+          "threatLevel": 1
+        },
+        "distance": 3
+      },
+      "back": {
+        "obstacle": "wall",
+        "distance": 1
+      },
+      "left": {
+        "obstacle": "wall",
+        "distance": 1
+      },
+      "right": {
+        "obstacle": "wall",
+        "distance": 3
+      }
+    },
+    "targetLocator": {
+      "longitudinal": 3,
+      "transverse": 0
+    }
+  }
+]
